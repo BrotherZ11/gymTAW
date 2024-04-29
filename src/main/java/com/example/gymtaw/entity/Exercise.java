@@ -16,7 +16,7 @@ public class Exercise {
     @Column(name = "name", nullable = false, length = 45)
     private String name;
 
-    @Column(name = "description", nullable = false, length = 45)
+    @Column(name = "description", nullable = false, length = 500)
     private String description;
 
     @Column(name = "video", nullable = false, length = 250)
