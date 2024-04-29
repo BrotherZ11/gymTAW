@@ -28,20 +28,19 @@
 
     <tr>
         <th>ID</th>
-        <th>TITULO</th>
-        <th>AÑO PUBLICACIÓN</th>
-        <th>EDITORIAL</th>
-        <th></th>
-        <th></th>
+        <th>DESCRIPCION</th>
+        <th>FECHA</th>
     </tr>
     <%
         for(Routine r : lista){
     %>
     <tr>
         <td><%=r.getName()%></td>
+        <td><%=r.getDescription()%></td>
+        <td><%=r.getDate()%></td>
         <td><a href="/rutina_bodybuilding/ver?id=<%= r.getId()  %>">Ver</a> </td>
-        <td><a href="/rutina_bodybuilding/editar?id=<%= r.getId()  %>">Editar</a> </td>
-        <td><a href="/rutina_bodybuilding/borrar?id=<%= r.getId()  %>">Borrar</a> </td>
+        <td><a href="/editar?id=<%= r.getId()  %>">Editar</a> </td>
+        <td><a href="/borrar?id=<%= r.getId()  %>">Borrar</a> </td>
         <td><a href="/rutina_bodybuilding/asignar?id=<%= r.getId()  %>">Asignar</a> </td>
     </tr>
     <%
