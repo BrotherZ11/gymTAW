@@ -13,10 +13,10 @@ public class Exercise {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Column(name = "name", nullable = false, length = 45)
+    @Column(name = "name", nullable = false, length = 250)
     private String name;
 
-    @Column(name = "description", nullable = false, length = 45)
+    @Column(name = "description", nullable = false, length = 500)
     private String description;
 
     @Column(name = "video", nullable = false, length = 250)

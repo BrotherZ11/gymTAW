@@ -13,13 +13,13 @@ public class ClientExercise {
     @Column(name = "idclient_exercise", nullable = false)
     private Integer id;
 
-    @Column(name = "reps", length = 45)
+    @Column(name = "reps", length = 250)
     private String reps;
 
-    @Column(name = "sets", length = 45)
+    @Column(name = "sets", length = 250)
     private String sets;
 
-    @Column(name = "weight", length = 45)
+    @Column(name = "weight", length = 250)
     private String weight;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

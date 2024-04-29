@@ -18,7 +18,10 @@ public class Routine {
     @Column(name = "idroutine", nullable = false)
     private Integer id;
 
-    @Column(name = "description", length = 45)
+    @Column(name = "name", length = 250)
+    private String name;
+
+    @Column(name = "description", length = 500)
     private String description;
 
     @Column(name = "date")

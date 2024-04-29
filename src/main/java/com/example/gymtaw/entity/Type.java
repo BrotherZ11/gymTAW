@@ -16,7 +16,7 @@ public class Type {
     @Column(name = "idtype", nullable = false)
     private Integer id;
 
-    @Column(name = "name", length = 45)
+    @Column(name = "name", length = 250)
     private String name;
 
 }
