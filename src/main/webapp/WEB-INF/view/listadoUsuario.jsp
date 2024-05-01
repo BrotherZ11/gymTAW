@@ -16,8 +16,6 @@
     <title>Listado de los usuarios de la Aplicación</title>
 </head>
 <body>
-
-</body>
 <form>
     <table border="1 ">
 
@@ -44,4 +42,6 @@
         %>
     </table>
 </form>
+</body>
+
 </html>
