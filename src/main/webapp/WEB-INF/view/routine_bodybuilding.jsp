@@ -22,7 +22,7 @@
 <form:form method="post" action="/rutina_bodybuilding/filtrar" modelAttribute="filtro">
     Nombre de la rutina: <form:input path="titulo" />
     <form:button>Filtrar</form:button>
-    <a href="/rutina_bodybuilding/crear">Nueva rutina ... </a>
+    <a href="/crear">Nueva rutina ... </a>
 </form:form>
 <table border="1 ">
 

@@ -1,4 +1,6 @@
-<%@ page import="com.example.gymtaw.entity.Routine" %><%--
+<%@ page import="com.example.gymtaw.entity.Routine" %>
+<%@ page import="java.util.Date" %>
+<%@ page import="java.time.LocalDate" %><%--
   Created by IntelliJ IDEA.
   User: dzarz
   Date: 29/04/2024
@@ -10,10 +12,12 @@
     Routine rutina = (Routine) request.getAttribute("rutina");
     boolean esEditar = (rutina.getId() != -1);
     String nombre = "", descripcion = "";
+    LocalDate fecha = LocalDate.now();
 
     if (esEditar) {
         nombre = rutina.getName();
         descripcion = rutina.getDescription() + "";
+        fecha = rutina.getDate();
     }
 %>
 <html>
@@ -32,6 +36,10 @@
         <tr>
             <td>Descripcion:</td>
             <td><input type="text" name="descripcion" size="100"  maxlength="100" value="<%= descripcion %>" /></td>
+        </tr>
+        <tr>
+            <td>Fecha:</td>
+            <td><input type="date" name="fecha" size="100"  maxlength="100" value="<%= fecha %>" /></td>
         </tr>
         <tr>
             <td colspan="2"> <button>Enviar</button></td>

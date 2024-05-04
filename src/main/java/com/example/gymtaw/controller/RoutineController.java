@@ -1,7 +1,9 @@
 package com.example.gymtaw.controller;
 
 import com.example.gymtaw.dao.RoutineRepository;
+import com.example.gymtaw.dao.SessionRoutineRepository;
 import com.example.gymtaw.entity.Routine;
+import com.example.gymtaw.entity.SessionRoutine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -19,27 +20,43 @@ public class RoutineController {
     @Autowired
     RoutineRepository routineRepository;
 
+    @Autowired
+    SessionRoutineRepository sessionRoutineRepository;
+
     @GetMapping("/rutina_bodybuilding")
     public String doListar (Model model) {
-        List<Routine> routines = routineRepository.findAll();
-        model.addAttribute("lista", routines);
+        List<Routine> rutinas = routineRepository.findAll();
+        model.addAttribute("lista", rutinas);
         return "routine_bodybuilding";
     }
 
     @GetMapping("/borrar")
     public String doBorrar (@RequestParam("id") Integer id) {
+        List<SessionRoutine> sessions = sessionRoutineRepository.findSessionsByRoutineId(id);
+        if (!sessions.isEmpty()) {
+            // Si hay sesiones asociadas a esta rutina, elimínalas primero
+            sessionRoutineRepository.deleteAll(sessions);
+        }
         this.routineRepository.deleteById(id);
         return "redirect:/";
     }
 
+    @GetMapping("/crear")
+    public String doNuevo (Model model) {
+            Routine rutina = new Routine();
+            rutina.setId(-1);
+            model.addAttribute("rutina", rutina);
+
+        return "routine";
+    }
 
 
     @GetMapping("/editar")
     public String doEditar (@RequestParam("id") Integer id, Model model) {
-        Routine routines = this.routineRepository.findById(id).orElse(null);
-        model.addAttribute("rutina", routines);
+        Routine rutina = this.routineRepository.findById(id).orElse(null);
+        model.addAttribute("rutina", rutina);
 
-        return "routine_bodybuilding";
+        return "routine";
     }
 
     @PostMapping("/guardar")
@@ -48,10 +65,11 @@ public class RoutineController {
                              @RequestParam("descripcion") String descripcion,
                              @RequestParam("fecha") LocalDate fecha){
 
-        Routine routines = this.routineRepository.findById(id).orElse(new Routine());
-        routines.setName(nombre);
-        routines.setDescription(descripcion);
-        routines.setDate(fecha);
+        Routine rutina = this.routineRepository.findById(id).orElse(new Routine());
+        rutina.setName(nombre);
+        rutina.setDescription(descripcion);
+        rutina.setDate(fecha);
+        this.routineRepository.save(rutina);
 
         return "redirect:/";
     }
