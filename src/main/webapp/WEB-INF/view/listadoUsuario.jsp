@@ -34,8 +34,8 @@
             <td><%= usuario.getDni() %></td>
             <td><%= usuario.getName() %></td>
             <td><%= usuario.getSurname() %></td>
-            <td><a>Borrar</a> </td>
-            <td><a>Editar</a> </td>
+            <td><a href="/users/borrar?id=<%= usuario.getId() %>">Borrar</a> </td>
+            <td><a href="/users/editar?id=<%= usuario.getId() %>">Editar</a> </td>
         </tr>
         <%
             }
