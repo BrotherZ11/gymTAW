@@ -4,10 +4,12 @@ import com.example.gymtaw.dao.RoutineRepository;
 import com.example.gymtaw.dao.SessionRoutineRepository;
 import com.example.gymtaw.entity.Routine;
 import com.example.gymtaw.entity.SessionRoutine;
+import com.example.gymtaw.ui.Filtro;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -23,10 +25,19 @@ public class RoutineController {
     @Autowired
     SessionRoutineRepository sessionRoutineRepository;
 
-    @GetMapping("/rutina_bodybuilding")
+    @GetMapping("/")
     public String doListar (Model model) {
         List<Routine> rutinas = routineRepository.findAll();
         model.addAttribute("lista", rutinas);
+        model.addAttribute("filtro", new Filtro());
+        return "routine_bodybuilding";
+    }
+
+    @PostMapping("/filtrar")
+    public String doListar(@ModelAttribute("filtro") Filtro filtro, Model model){
+        List<Routine> rutinas = routineRepository.findByFiltro(filtro.getNombre());
+        model.addAttribute("lista", rutinas);
+        model.addAttribute("filtro", filtro);
         return "routine_bodybuilding";
     }
 

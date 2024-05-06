@@ -1,3 +1,4 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="com.example.gymtaw.entity.Routine" %>
 <%@ page import="java.util.List" %><%--
   Created by IntelliJ IDEA.
@@ -19,8 +20,8 @@
 <body>
 <h1> Rutinas </h1>
 <h2> TAW </h2>
-<form:form method="post" action="/rutina_bodybuilding/filtrar" modelAttribute="filtro">
-    Nombre de la rutina: <form:input path="titulo" />
+<form:form method="post" action="/filtrar" modelAttribute="filtro">
+    Nombre de la rutina: <form:input path="nombre" />
     <form:button>Filtrar</form:button>
     <a href="/crear">Nueva rutina ... </a>
 </form:form>
