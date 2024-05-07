@@ -25,7 +25,7 @@
 <a>Cerrar sesion</a> <%--Aqui lleva al login?--%>
 
 <div class="button-container">
-    <form method="get" action="/entrenamientos" >
+    <form method="get" action="/entrenamiento" >
         <button type="submit" style="width: 250px; height: 200px">
             <img src="images/dumbell.png" style="width: 200px; height: 150px">
         </button>
