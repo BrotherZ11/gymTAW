@@ -14,7 +14,7 @@ public class TypeController {
     @Autowired
     TypeRepository typeRepository;
 
-    @GetMapping("/")
+    @GetMapping("/listar")
     public String doListar (Model model) {
         List<Type> types = typeRepository.findAll();
         model.addAttribute("lista", types);
