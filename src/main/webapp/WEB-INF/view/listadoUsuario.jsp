@@ -35,12 +35,13 @@
             <td><%= usuario.getName() %></td>
             <td><%= usuario.getSurname() %></td>
             <td><a href="/users/borrar?id=<%= usuario.getId() %>">Borrar</a> </td>
-            <td><a href="/users/editar?id=<%= usuario.getId() %>">Editar</a> </td>
+            <td><a href="/users/editarUsuario?id=<%= usuario.getId() %>">Editar</a> </td>
         </tr>
         <%
             }
         %>
     </table>
+    <a href="/users/crearUsuario">Crear nuevo usuario</a>
 </form>
 </body>
 

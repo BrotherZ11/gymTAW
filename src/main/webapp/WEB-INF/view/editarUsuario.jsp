@@ -8,14 +8,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     User usuario = (User) request.getAttribute("usuario");
-    boolean esEditar = (usuario.getId() != -1);
-    String nombre = "", apellido = "", dni = "";
+    String nombre = usuario.getName();
+    String apellido = usuario.getSurname();
+    String dni = usuario.getDni();
 
-    if (esEditar) {
-        nombre = usuario.getName();
-        apellido = usuario.getSurname();
-        dni = usuario.getDni();
-    }
 %>
 <html>
 <head>
@@ -23,7 +19,7 @@
 </head>
 <body>
 <h1>Información del usuario</h1>
-<form method="post" action="/users/guardar">
+<form method="post" action="/users/guardarEdicion">
     <input type="hidden" name="id" value="<%= usuario.getId() %>">
     <table border="0">
         <tr>

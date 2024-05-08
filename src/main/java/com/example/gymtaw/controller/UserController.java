@@ -1,7 +1,10 @@
 package com.example.gymtaw.controller;
 
+import com.example.gymtaw.dao.RolRepository;
 import com.example.gymtaw.dao.UserRepository;
+import com.example.gymtaw.entity.Rol;
 import com.example.gymtaw.entity.User;
+import com.example.gymtaw.ui.Usuario;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +21,8 @@ import java.util.List;
 public class UserController extends BaseController{
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    RolRepository rolRepository;
 
     @GetMapping("/")
     public String doListarUsuarios (Model model, HttpSession session) {
@@ -42,9 +47,9 @@ public class UserController extends BaseController{
         return strTo;
     }
 
-    @GetMapping("/editar")
+    @GetMapping("/editarUsuario")
     public String editarUsuario (@RequestParam("id") Integer id,Model model, HttpSession session) {
-        String strTo = "usuario";
+        String strTo = "editarUsuario";
         if(!estaAutenticado(session)){
             strTo = "redirect:/";
         } else {
@@ -54,11 +59,23 @@ public class UserController extends BaseController{
         return strTo;
     }
 
-    @PostMapping("/guardar")
-    public String doGuardar (@RequestParam("id") Integer id,
+    @GetMapping("/crearUsuario")
+    public String crearUsuario (Model model, HttpSession session) {
+        String strTo = "crearUsuario";
+        if(!estaAutenticado(session)){
+            strTo = "redirect:/";
+        }
+        User user = new User();
+        user.setId(-1);
+        model.addAttribute("usuario", user);
+        return strTo;
+    }
+
+    @PostMapping("/guardarEdicion")
+    public String doGuardarEdicion (@RequestParam("id") Integer id,
                              @RequestParam("nombre") String nombre,
                              @RequestParam("apellido") String apellido,
-                             @RequestParam("edad") short edad,
+                             @RequestParam("edad") Integer edad,
                              @RequestParam("telefono") String telefono,
                              @RequestParam("genero") String genero,
                              HttpSession session) {
@@ -70,12 +87,49 @@ public class UserController extends BaseController{
             User usuario = this.userRepository.findById(id).orElse(new User());
             usuario.setName(nombre);
             usuario.setSurname(apellido);
-            usuario.setAge((int) edad);
+            usuario.setAge(edad);
             usuario.setPhone(telefono);
             usuario.setGender(genero);
             this.userRepository.save(usuario);
         }
+        return strTo;
+    }
 
+    @PostMapping("/guardarCreacion")
+    public String doGuardarCreacion (@RequestParam("id") Integer id,
+                             @RequestParam("gmail") String gmail,
+                             @RequestParam("nombre") String nombre,
+                             @RequestParam("apellido") String apellido,
+                             @RequestParam("edad") Integer edad,
+                             @RequestParam("telefono") String telefono,
+                             @RequestParam("genero") String genero,
+                             @RequestParam("contrasena") String contrasena,
+                             @RequestParam("dni") String dni,
+                             @RequestParam("rol") String rol,
+                             HttpSession session) {
+
+        String strTo = "redirect:/users/";
+        if (!estaAutenticado(session)) {
+            strTo = "redirect:/";
+        } else {
+            User usuario = userRepository.findById(id).orElse(new User());
+            usuario.setEmail(gmail);
+            usuario.setName(nombre);
+            usuario.setSurname(apellido);
+            usuario.setAge(edad);
+            usuario.setPhone(telefono);
+            usuario.setGender(genero);
+            usuario.setPassword(contrasena);
+            usuario.setDni(dni);
+
+            Rol rolUsuario = new Rol();
+            rolUsuario.setUser(usuario);
+            rolUsuario.setId(usuario.getId());
+            rolUsuario.setType(rol);
+
+            this.userRepository.save(usuario);
+            this.rolRepository.save(rolUsuario);
+        }
         return strTo;
     }
 }
