@@ -19,28 +19,10 @@
     Nombre de la rutina: <form:input path="titulo" />
     <form:button>Filtrar</form:button>
 </form:form>
-<table border="1 ">
-
-    <tr>
-        <th>NOMBRE</th>
-        <th>APELLIDO</th>
-        <th>DNI</th>
-        <th></th>
-        <th></th>
-    </tr>
-    <%
-        for(User u : lista){
-    %>
-    <tr>
-        <td><%=u.getName()%></td>
-        <td><%=u.getSurname()%></td>
-        <td><%=u.getDni()%></td>
-        <td><a href="/routine_client?idEntrenador=<%=idEntrenador%>&idCliente=<%=u.getId()%>">Rutinas</a></td>
-        <td><a href="/routine_client?id=<%=idEntrenador%>">Valoraciones</a></td>
-    </tr>
-    <%
-        }
-    %>
-</table>
+<div>
+    <a href="home/crosstraining/clients?idEntrenador=<%=idEntrenador%>">Clientes</a><br>
+    <a href="home/crosstraining/clients">Rutinas</a><br>
+    <a>Entrenamiento</a>
+</div>
 </body>
 </html>

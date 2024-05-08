@@ -32,9 +32,9 @@ public class LoginController extends BaseController {
             Optional<Rol> rol = this.rolRepository.findById(usuario.getId());
             if(rol.isPresent() && rol.get().getType().equals("admin")){
                 strTo = "redirect:/users/";
+            } else if(rol.isPresent() && rol.get().getType().equals("cross-training")){
+                strTo = "redirect:/home/trainer?idEntrenador="+usuario.getId();
             } /*else if(usuario.getPermiso() == ...){
-                strTo = "redirect:";
-            } else if(usuario.getPermiso() == ...){
                 strTo = "redirect:";
             } else {
                 strTo = "redirect:";
@@ -58,9 +58,9 @@ public class LoginController extends BaseController {
             session.setAttribute("usuario", user);
              if(rol != null && rol.getType().equals("admin")){
                 strTo = "redirect:/users/";
+            } else if(rol != null && rol.getType().equals("cross-training")){
+                strTo = "redirect:/home/trainer?idEntrenador="+user.getId();
             } /*else if(usuario.getPermiso() == ...){
-                strTo = "redirect:";
-            } else if(usuario.getPermiso() == ...){
                 strTo = "redirect:";
             } else {
                 strTo = "redirect:";

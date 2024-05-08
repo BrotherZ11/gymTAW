@@ -9,12 +9,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @Controller
+@RequestMapping("/trainer")
 public class RoutineController {
 
     @Autowired
@@ -23,11 +25,11 @@ public class RoutineController {
     @Autowired
     SessionRoutineRepository sessionRoutineRepository;
 
-    @GetMapping("/rutina_bodybuilding")
+    @GetMapping("/rutina")
     public String doListar (Model model) {
         List<Routine> rutinas = routineRepository.findAll();
         model.addAttribute("lista", rutinas);
-        return "routine_bodybuilding";
+        return "routine_trainer";
     }
 
     @GetMapping("/borrar")
@@ -72,12 +74,5 @@ public class RoutineController {
         this.routineRepository.save(rutina);
 
         return "redirect:/";
-    }
-
-    @GetMapping("/rutina_crosstraining")
-    public String doListarCrosstraining (Model model) {
-        List<Routine> rutinas = routineRepository.findAll();
-        model.addAttribute("lista", rutinas);
-        return "routine_crosstraining";
     }
 }
