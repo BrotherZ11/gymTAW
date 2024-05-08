@@ -73,4 +73,11 @@ public class RoutineController {
 
         return "redirect:/";
     }
+
+    @GetMapping("/rutina_crosstraining")
+    public String doListarCrosstraining (Model model) {
+        List<Routine> rutinas = routineRepository.findAll();
+        model.addAttribute("lista", rutinas);
+        return "routine_crosstraining";
+    }
 }
