@@ -35,8 +35,8 @@
         <td><%=u.getName()%></td>
         <td><%=u.getSurname()%></td>
         <td><%=u.getDni()%></td>
-        <td><a href="/routine_client/ver?id=<%=idEntrenador%>">Rutinas</a></td>
-        <td><a href="/routine_client/ver?id=<%=idEntrenador%>">Valoraciones</a></td>
+        <td><a href="/routine_client?idEntrenador=<%=idEntrenador%>&idCliente=<%=u.getId()%>">Rutinas</a></td>
+        <td><a href="/routine_client?id=<%=idEntrenador%>">Valoraciones</a></td>
     </tr>
     <%
         }

@@ -1,6 +1,7 @@
 package com.example.gymtaw.controller;
 
 import com.example.gymtaw.dao.ClientRepository;
+import com.example.gymtaw.dao.RoutineRepository;
 import com.example.gymtaw.entity.Routine;
 import com.example.gymtaw.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,9 @@ public class ClientController {
     @Autowired
     ClientRepository clientRepository;
 
+    @Autowired
+    RoutineRepository routineRepository;
+
     @GetMapping("/clients")
     public String doListar (@RequestParam("idEntrenador") Integer idEntrenador, Model model) {
         List<User> clients = clientRepository.getClientesByIdEntrenador(idEntrenador);
@@ -24,16 +28,13 @@ public class ClientController {
         return "clients";
     }
 
-    /*
     @GetMapping("/routine_client")
     public String doRoutineClient (@RequestParam("idEntrenador") Integer idEntrenador,
-                                   @RequestParam("idEntrenador") Integer idCliente,
+                                   @RequestParam("idCliente") Integer idCliente,
                                    Model model) {
-        List<User> clients = clientRepository.getClientesByIdEntrenador(idEntrenador);
-        model.addAttribute("lista", clients);
-        model.addAttribute("idEntrenador", idEntrenador);
-        return "clients";
+        List<Routine> routines = routineRepository.getRoutinesByIdEntrenadorAndIdCliente(idEntrenador, idCliente);
+        model.addAttribute("lista", routines);
+        return "routine_client";
     }
-     */
 
 }
