@@ -34,7 +34,7 @@ public class UserController extends BaseController{
             model.addAttribute("usuarios", usuarios);
         }
 
-        return "listadoUsuario";
+        return strTo;
     }
 
     @GetMapping("/borrar")

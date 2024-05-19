@@ -17,12 +17,15 @@
 </head>
 <body>
 <form>
+    <a href="/salir">Salir</a>
+    <ahrefg></ahrefg>
     <table border="1 ">
 
         <tr>
             <th>DNI</th>
             <th>NOMBRE</th>
             <th>APELLIDOS</th>
+            <th></th>
             <th></th>
             <th></th>
         </tr>

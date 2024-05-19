@@ -12,7 +12,7 @@
     <title>login page</title>
 </head>
 <body>
-    <h1>Bienvenido a /PONER NOMBRE DE GIMNASIO/</h1>
+    <h1>Bienvenido a GYMTAW</h1>
     <br/>
     <form:form action="/autenticar" modelAttribute="usuario" method="post">
     ${error}
