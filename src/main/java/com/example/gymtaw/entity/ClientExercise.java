@@ -10,16 +10,17 @@ import lombok.Setter;
 @Table(name = "client_exercise")
 public class ClientExercise {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idclient_exercise", nullable = false)
     private Integer id;
 
-    @Column(name = "reps", length = 250)
+    @Column(name = "reps", length = 45)
     private String reps;
 
-    @Column(name = "sets", length = 250)
+    @Column(name = "sets", length = 45)
     private String sets;
 
-    @Column(name = "weight", length = 250)
+    @Column(name = "weight", length = 45)
     private String weight;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

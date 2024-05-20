@@ -2,8 +2,6 @@ package com.example.gymtaw.controller;
 
 import com.example.gymtaw.dao.ClientRepository;
 import com.example.gymtaw.dao.RoutineRepository;
-import com.example.gymtaw.entity.Routine;
-import com.example.gymtaw.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

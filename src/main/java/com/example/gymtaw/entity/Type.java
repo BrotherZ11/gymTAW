@@ -1,9 +1,6 @@
 package com.example.gymtaw.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,10 +10,11 @@ import lombok.Setter;
 @Table(name = "type")
 public class Type {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idtype", nullable = false)
     private Integer id;
 
-    @Column(name = "name", length = 250)
+    @Column(name = "name", length = 45)
     private String name;
 
 }

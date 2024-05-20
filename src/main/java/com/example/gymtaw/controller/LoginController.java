@@ -2,8 +2,6 @@ package com.example.gymtaw.controller;
 
 import com.example.gymtaw.dao.RolRepository;
 import com.example.gymtaw.dao.UserRepository;
-import com.example.gymtaw.entity.Rol;
-import com.example.gymtaw.entity.User;
 import com.example.gymtaw.ui.Usuario;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;

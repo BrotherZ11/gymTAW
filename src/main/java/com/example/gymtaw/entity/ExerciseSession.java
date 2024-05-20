@@ -10,6 +10,7 @@ import lombok.Setter;
 @Table(name = "exercise_session")
 public class ExerciseSession {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "exercise_sessioncol", nullable = false)
     private Integer id;
 
