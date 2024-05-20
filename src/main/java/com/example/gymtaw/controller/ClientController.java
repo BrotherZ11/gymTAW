@@ -39,4 +39,19 @@ public class ClientController {
         return "routine_client";
     }
 
+    @GetMapping("/entrenamiento")
+    public String entrenamientoUsuario(Model model){
+        List<Routine> lista =this.routineRepository.findAll();
+        model.addAttribute("rutinas",lista);
+        return "clientTraining";
+    }
+
+
+    @GetMapping("/desempenio")
+    public String valoracionUsuario(Model model){
+        List<Routine> lista =this.routineRepository.findAll();
+        model.addAttribute("rutinas",lista);
+        return "clientValoration";
+    }
+
 }

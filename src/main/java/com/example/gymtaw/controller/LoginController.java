@@ -35,9 +35,10 @@ public class LoginController extends BaseController {
                 strTo = "redirect:/users/";
             } else if(rol.isPresent() && rol.get().getType().equals("cross-training")){
                 strTo = "redirect:/home/trainer?idEntrenador="+usuario.getId();
-            } /*else if(usuario.getPermiso() == ...){
-                strTo = "redirect:";
-            } else {
+            } else if(rol.isPresent() && rol.get().getType().equals("client")){
+                strTo = "redirect:/home/client?idCliente="+usuario.getId();
+
+            }/* else {
                 strTo = "redirect:";
             }*/
         } else {

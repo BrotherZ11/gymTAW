@@ -16,4 +16,10 @@ public class HomeController {
         return "home_trainer";
     }
 
+    @GetMapping("/client")
+    public String doHomeCliente (@RequestParam("idCliente") Integer idCliente, Model model) {
+        model.addAttribute("idCliente", idCliente);
+        return "userMenu";
+    }
+
 }
