@@ -22,4 +22,7 @@ public class Rol {
     @Column(name = "type")
     private String type;
 
+    @OneToOne(mappedBy = "rol")
+    private User User;
+
 }

@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 @Getter
 @Setter
 @Entity
@@ -37,5 +40,32 @@ public class User {
 
     @Column(name = "gender", nullable = false, length = 45)
     private String gender;
+
+
+    @MapsId
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "id", nullable = false)
+    private Rol rol;
+
+    @OneToMany(mappedBy = "user")
+    private Set<ClientExercise> clientExercises = new LinkedHashSet<>();
+
+    @OneToOne(mappedBy = "user")
+    private Rol Rol;
+
+    @OneToMany(mappedBy = "idEntrenador")
+    private Set<TrainerClient> trainerClients = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "idCliente")
+    private Set<TrainerClient> clientsTrainer = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "trainer")
+    private Set<TrainerRoutine> trainerRoutines = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "user")
+    private Set<TrainerRoutine> userRoutines = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "user")
+    private Set<Valoracion> valoracions = new LinkedHashSet<>();
 
 }

@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 @Getter
 @Setter
 @Entity
@@ -16,5 +19,8 @@ public class Type {
 
     @Column(name = "name", length = 45)
     private String name;
+
+    @OneToMany(mappedBy = "typeIdtype")
+    private Set<Exercise> exercises = new LinkedHashSet<>();
 
 }
