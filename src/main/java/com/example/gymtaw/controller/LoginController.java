@@ -33,7 +33,7 @@ public class LoginController extends BaseController {
             Optional<Rol> rol = this.rolRepository.findById(usuario.getId());
             if(rol.isPresent() && rol.get().getType().equals("admin")){
                 strTo = "redirect:/users/";
-            } else if(rol.isPresent() && rol.get().getType().equals("cross-training")){
+            } else if(rol.isPresent() && (rol.get().getType().equals("cross-training") || rol.get().getType().equals("bodybuilding")){
                 strTo = "redirect:/home/trainer?idEntrenador="+usuario.getId();
             } /*else if(usuario.getPermiso() == ...){
                 strTo = "redirect:";
