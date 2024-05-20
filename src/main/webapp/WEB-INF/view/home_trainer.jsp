@@ -6,14 +6,15 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%Integer idEntrenador = (Integer) request.getAttribute("idEntrenador");%>
 <html>
 <head>
     <title>Title</title>
 </head>
 <body>
     <div>
-        <a href="home/crosstraining/clients">Clintes</a>
-        <a href="home/crosstraining/rutina">Rutinas</a>
+        <a href="trainer/clients?idEntrenador=<%=idEntrenador%>">Clientes</a>
+        <a href="trainer/rutina">Rutinas</a>
         <a>Entrenamientos</a>
     </div>
 </body>
