@@ -1,4 +1,4 @@
-<%@ page import="com.example.gymtaw.entity.Routine" %>
+<%@ page import="com.example.gymtaw.entity.RoutineEntity" %>
 <%@ page import="java.util.Date" %>
 <%@ page import="java.time.LocalDate" %><%--
   Created by IntelliJ IDEA.
@@ -9,7 +9,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    Routine rutina = (Routine) request.getAttribute("rutina");
+    RoutineEntity rutina = (RoutineEntity) request.getAttribute("rutina");
     boolean esEditar = (rutina.getId() != -1);
     String nombre = "", descripcion = "";
     LocalDate fecha = LocalDate.now();

@@ -2,8 +2,8 @@ package com.example.gymtaw.controller;
 
 import com.example.gymtaw.dao.ClientRepository;
 import com.example.gymtaw.dao.RoutineRepository;
-import com.example.gymtaw.entity.Routine;
-import com.example.gymtaw.entity.User;
+import com.example.gymtaw.entity.RoutineEntity;
+import com.example.gymtaw.entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,8 +25,9 @@ public class ClientController {
 
     @GetMapping("/clients")
     public String doListar (@RequestParam("idEntrenador") Integer idEntrenador, Model model) {
-        List<User> clients = clientRepository.getClientesByIdEntrenador(idEntrenador);
+        List<UserEntity> clients = clientRepository.getClientesByIdEntrenador(idEntrenador);
         model.addAttribute("lista", clients);
+        model.addAttribute("idEntrenador", idEntrenador);
         return "clients";
     }
 
@@ -34,8 +35,8 @@ public class ClientController {
     public String doRoutineClient (@RequestParam("idEntrenador") Integer idEntrenador,
                                    @RequestParam("idCliente") Integer idCliente,
                                    Model model) {
-        List<Routine> routines = routineRepository.getRoutinesByIdEntrenadorAndIdCliente(idEntrenador, idCliente);
-        model.addAttribute("lista", routines);
+        List<RoutineEntity> routineEntities = routineRepository.getRoutinesByIdEntrenadorAndIdCliente(idEntrenador, idCliente);
+        model.addAttribute("lista", routineEntities);
         return "routine_client";
     }
 

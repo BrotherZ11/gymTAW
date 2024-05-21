@@ -2,8 +2,8 @@ package com.example.gymtaw.controller;
 
 import com.example.gymtaw.dao.RoutineRepository;
 import com.example.gymtaw.dao.SessionRoutineRepository;
-import com.example.gymtaw.entity.Routine;
-import com.example.gymtaw.entity.SessionRoutine;
+import com.example.gymtaw.entity.RoutineEntity;
+import com.example.gymtaw.entity.SessionRoutineEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -27,14 +28,14 @@ public class RoutineController {
 
     @GetMapping("/rutina")
     public String doListar (Model model) {
-        List<Routine> rutinas = routineRepository.findAll();
+        List<RoutineEntity> rutinas = routineRepository.findAll();
         model.addAttribute("lista", rutinas);
         return "routine_trainer";
     }
 
     @GetMapping("/borrar")
     public String doBorrar (@RequestParam("id") Integer id) {
-        List<SessionRoutine> sessions = sessionRoutineRepository.findSessionsByRoutineId(id);
+        List<SessionRoutineEntity> sessions = sessionRoutineRepository.findSessionsByRoutineId(id);
         if (!sessions.isEmpty()) {
             // Si hay sesiones asociadas a esta rutina, elimínalas primero
             sessionRoutineRepository.deleteAll(sessions);
@@ -45,8 +46,8 @@ public class RoutineController {
 
     @GetMapping("/crear")
     public String doNuevo (Model model) {
-            Routine rutina = new Routine();
-            rutina.setId(-1);
+            RoutineEntity rutina = new RoutineEntity();
+            rutina.setIdroutine(-1);
             model.addAttribute("rutina", rutina);
 
         return "routine";
@@ -55,7 +56,7 @@ public class RoutineController {
 
     @GetMapping("/editar")
     public String doEditar (@RequestParam("id") Integer id, Model model) {
-        Routine rutina = this.routineRepository.findById(id).orElse(null);
+        RoutineEntity rutina = this.routineRepository.findById(id).orElse(null);
         model.addAttribute("rutina", rutina);
 
         return "routine";
@@ -67,10 +68,10 @@ public class RoutineController {
                              @RequestParam("descripcion") String descripcion,
                              @RequestParam("fecha") LocalDate fecha){
 
-        Routine rutina = this.routineRepository.findById(id).orElse(new Routine());
+        RoutineEntity rutina = this.routineRepository.findById(id).orElse(new RoutineEntity());
         rutina.setName(nombre);
         rutina.setDescription(descripcion);
-        rutina.setDate(fecha);
+        rutina.setDate(Date.valueOf(fecha));
         this.routineRepository.save(rutina);
 
         return "redirect:/";

@@ -1,9 +1,9 @@
 <%@ page import="java.util.List" %>
-<%@ page import="com.example.gymtaw.entity.Routine" %>
+<%@ page import="com.example.gymtaw.entity.RoutineEntity" %>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    List<Routine> lista = (List<Routine>) request.getAttribute("lista");
+    List<RoutineEntity> lista = (List<RoutineEntity>) request.getAttribute("lista");
     String filtro = request.getParameter("filtro");
     if (filtro == null) filtro = "";
 %>
@@ -26,7 +26,7 @@
         <th>FECHA</th>
     </tr>
     <%
-        for(Routine r : lista){
+        for(RoutineEntity r : lista){
     %>
     <tr>
         <td><%=r.getName()%></td>
