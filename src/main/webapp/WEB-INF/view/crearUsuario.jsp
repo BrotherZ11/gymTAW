@@ -55,10 +55,10 @@
             <td>Rol:</td>
             <td><label for="rol">Elige un rol:</label>
                 <select name="rol" id="rol">
-                    <option value="admin">Admin</option>
-                    <option value="cliente">Cliente</option>
-                    <option value="bodybuilding">Bodybuilding</option>
-                    <option value="cross-training">Cross-training</option>
+                    <option value="3">Admin</option>
+                    <option value="4">Cliente</option>
+                    <option value="1">Bodybuilding</option>
+                    <option value="2">Cross-training</option>
                 </select></td>
         </tr>
         <tr>

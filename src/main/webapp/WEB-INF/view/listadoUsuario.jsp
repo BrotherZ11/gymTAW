@@ -1,3 +1,4 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="com.example.gymtaw.entity.UserEntity" %>
 <%@ page import="java.util.List" %><%--
   Created by IntelliJ IDEA.
@@ -17,11 +18,11 @@
 </head>
 <body>
 <form:form method="post" action="/users/filtrar" modelAttribute="filtro">
-    <form:select path="nombreRol">
-        <form:option value="admin">Admin</form:option>
-        <form:option value="bodybuilding">Bodybuilding</form:option>
-        <form:option value="cross-training">Cross-training</form:option>
-        <form:option value="cliente">Cliente</form:option>
+    <form:select path="idRol">
+        <form:option value="3">Admin</form:option>
+        <form:option value="1">Bodybuilding</form:option>
+        <form:option value="2">Cross-training</form:option>
+        <form:option value="4">Cliente</form:option>
     </form:select>
     <form:button>Filtrar</form:button>
 </form:form>

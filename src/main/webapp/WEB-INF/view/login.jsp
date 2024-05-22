@@ -19,7 +19,7 @@
         <table>
             <tr>
                 <td>Usuario:</td>
-                <td><form:input path="userEntity"/></td>
+                <td><form:input path="user"/></td>
             </tr>
             <tr>
                 <td>Contraseña</td>

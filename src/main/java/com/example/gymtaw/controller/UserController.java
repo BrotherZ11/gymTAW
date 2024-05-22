@@ -2,8 +2,7 @@ package com.example.gymtaw.controller;
 
 import com.example.gymtaw.dao.RolRepository;
 import com.example.gymtaw.dao.UserRepository;
-import com.example.gymtaw.entity.Rol;
-import com.example.gymtaw.entity.User;
+import com.example.gymtaw.entity.UserEntity;
 import com.example.gymtaw.ui.Filtro;
 import com.example.gymtaw.ui.Usuario;
 import jakarta.servlet.http.HttpSession;
@@ -42,7 +41,7 @@ public class UserController extends BaseController{
         if(!estaAutenticado(session)){
             strTo = "redirect:/";
         }
-        List<User> usuarios = rolRepository.findUsersByRol(filtro.getNombreRol());
+        List<UserEntity> usuarios = userRepository.findUserEntitiesByIdRol(filtro.getIdRol());
         model.addAttribute("usuarios", usuarios);
         model.addAttribute("filtro", new Filtro());
 
@@ -117,7 +116,7 @@ public class UserController extends BaseController{
                              @RequestParam("genero") String genero,
                              @RequestParam("contrasena") String contrasena,
                              @RequestParam("dni") String dni,
-                             @RequestParam("rol") String rol,
+                             @RequestParam("rol") int rol,
                              HttpSession session) {
 
         String strTo = "redirect:/users/";
@@ -133,14 +132,9 @@ public class UserController extends BaseController{
             usuario.setGender(genero);
             usuario.setPassword(contrasena);
             usuario.setDni(dni);
-
-            RolEntity rolUsuario = new RolEntity();
-            //rolUsuario.setUser(usuario);
-            //rolUsuario.setId(usuario.getId());
-            rolUsuario.setType(rol);
+            usuario.setIdRol(rol);
 
             this.userRepository.save(usuario);
-            this.rolRepository.save(rolUsuario);
         }
         return strTo;
     }

@@ -1,17 +1,17 @@
 package com.example.gymtaw.ui;
 
 public class Filtro {
-    private String nombreRol;
+    private int idRol;
 
     public Filtro(){
 
     }
 
-    public String getNombreRol() {
-        return nombreRol;
+    public int getIdRol() {
+        return idRol;
     }
 
-    public void setNombreRol(String nombreRol) {
-        this.nombreRol = nombreRol;
+    public void setIdRol(int nombreRol) {
+        this.idRol = nombreRol;
     }
 }

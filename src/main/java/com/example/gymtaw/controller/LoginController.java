@@ -29,10 +29,10 @@ public class LoginController extends BaseController {
         String strTo = "login";
         if (estaAutenticado(session)) {
             UserEntity usuario = (UserEntity) session.getAttribute("usuario");
-            Optional<RolEntity> rol = this.rolRepository.findById(usuario.getId());
-            if(rol.isPresent() && rol.get().getType().equals("admin")){
+            RolEntity rol = this.rolRepository.findById(usuario.getIdRol()).get();
+            if(rol.getType().equals("admin")){
                 strTo = "redirect:/users/";
-            } else if(rol.isPresent() && (rol.get().getType().equals("cross-training") || rol.get().getType().equals("bodybuilding"))){
+            } else if(rol.getType().equals("cross-training") || rol.getType().equals("bodybuilding")){
                 strTo = "redirect:/home/trainer?idEntrenador="+usuario.getId();
             } /*else if(usuario.getPermiso() == ...){
                 strTo = "redirect:";
@@ -49,17 +49,17 @@ public class LoginController extends BaseController {
     public String doAutentica (@ModelAttribute("usuario") Usuario usuario,
                                Model model, HttpSession session) {
         String strTo = "redirect:";
-        UserEntity userEntity = this.userRepository.autenticacion(usuario.getUser(), usuario.getPassword());
-        if (userEntity == null) {
+        UserEntity user = this.userRepository.autenticacion(usuario.getUser(), usuario.getPassword());
+        if (user == null) {
             model.addAttribute("error", "Usuario o contraseña incorrectos");
             strTo = this.doLogin(model, session);
         } else {
-            RolEntity rol = this.rolRepository.findById(userEntity.getId()).orElse(null);
-            session.setAttribute("usuario", userEntity);
-             if(rol != null && rol.getType().equals("admin")){
+            RolEntity rol = this.rolRepository.findById(user.getIdRol()).get();
+            session.setAttribute("usuario", user);
+             if(rol.getType().equals("admin")){
                 strTo = "redirect:/users/";
-            } else if(rol != null && rol.getType().equals("cross-training")){
-                strTo = "redirect:/home/trainer?idEntrenador="+ userEntity.getId();
+            } else if(rol.getType().equals("cross-training")){
+                strTo = "redirect:/home/trainer?idEntrenador="+ user.getId();
             } /*else if(usuario.getPermiso() == ...){
                 strTo = "redirect:";
             } else {
