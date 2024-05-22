@@ -28,7 +28,7 @@ public class UserController extends BaseController{
         if(!estaAutenticado(session)){
             strTo = "redirect:/";
         } else {
-            List<User> usuarios = userRepository.findAll();
+            List<UserEntity> usuarios = userRepository.findAll();
             model.addAttribute("usuarios", usuarios);
             model.addAttribute("filtro", new Filtro());
         }
@@ -65,7 +65,7 @@ public class UserController extends BaseController{
         if(!estaAutenticado(session)){
             strTo = "redirect:/";
         } else {
-            User usuario = userRepository.findById(id).get();
+            UserEntity usuario = userRepository.findById(id).get();
             model.addAttribute("usuario", usuario);
         }
         return strTo;
@@ -77,9 +77,9 @@ public class UserController extends BaseController{
         if(!estaAutenticado(session)){
             strTo = "redirect:/";
         }
-        User user = new User();
-        user.setId(-1);
-        model.addAttribute("usuario", user);
+        UserEntity userEntity = new UserEntity();
+        userEntity.setId(-1);
+        model.addAttribute("usuario", userEntity);
         return strTo;
     }
 
@@ -96,7 +96,7 @@ public class UserController extends BaseController{
         if (!estaAutenticado(session)) {
             strTo = "redirect:/";
         } else {
-            User usuario = this.userRepository.findById(id).orElse(new User());
+            UserEntity usuario = this.userRepository.findById(id).orElse(new UserEntity());
             usuario.setName(nombre);
             usuario.setSurname(apellido);
             usuario.setAge(edad);
@@ -124,7 +124,7 @@ public class UserController extends BaseController{
         if (!estaAutenticado(session)) {
             strTo = "redirect:/";
         } else {
-            User usuario = userRepository.findById(id).orElse(new User());
+            UserEntity usuario = userRepository.findById(id).orElse(new UserEntity());
             usuario.setEmail(gmail);
             usuario.setName(nombre);
             usuario.setSurname(apellido);
@@ -134,9 +134,9 @@ public class UserController extends BaseController{
             usuario.setPassword(contrasena);
             usuario.setDni(dni);
 
-            Rol rolUsuario = new Rol();
-            rolUsuario.setUser(usuario);
-            rolUsuario.setId(usuario.getId());
+            RolEntity rolUsuario = new RolEntity();
+            //rolUsuario.setUser(usuario);
+            //rolUsuario.setId(usuario.getId());
             rolUsuario.setType(rol);
 
             this.userRepository.save(usuario);

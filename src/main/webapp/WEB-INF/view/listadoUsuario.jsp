@@ -1,5 +1,4 @@
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ page import="com.example.gymtaw.entity.User" %>
+<%@ page import="com.example.gymtaw.entity.UserEntity" %>
 <%@ page import="java.util.List" %><%--
   Created by IntelliJ IDEA.
   User: gonla
@@ -10,7 +9,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
-    List<User> listaUsuarios =(List<User>)request.getAttribute("usuarios");
+    List<UserEntity> listaUsuarios =(List<UserEntity>)request.getAttribute("usuarios");
 %>
 <html>
 <head>
@@ -42,7 +41,7 @@
         </tr>
 
         <%
-            for (User usuario: listaUsuarios) {
+            for (UserEntity usuario: listaUsuarios) {
         %>
         <tr>
             <td><%= usuario.getDni() %></td>

@@ -1,4 +1,5 @@
-<%@ page import="com.example.gymtaw.entity.User" %><%--
+<%@ page import="com.example.gymtaw.entity.UserEntity" %>
+<%@ page import="com.example.gymtaw.entity.UserEntity" %><%--
   Created by IntelliJ IDEA.
   User: Usuario
   Date: 05/05/2024
@@ -7,7 +8,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    User user = (User) request.getAttribute("usuario");
+    UserEntity userEntity = (UserEntity) request.getAttribute("usuario");
 %>
 <html>
 <head>
@@ -16,7 +17,7 @@
 <body>
 <h1>Datos del nuevo usuario</h1>
 <form method="post" action="/users/guardarCreacion">
-    <input type="hidden" name="id" value="<%=user.getId()%>">
+    <input type="hidden" name="id" value="<%=userEntity.getId()%>">
     <table border="0">
         <tr>
             <td>Gmail:</td>
