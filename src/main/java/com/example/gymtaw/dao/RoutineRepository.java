@@ -9,7 +9,10 @@ import java.util.List;
 
 public interface RoutineRepository extends JpaRepository<RoutineEntity, Integer> {
 
-    @Query(value = "select * from Routine r join trainer_routine tr on r.idroutine = tr.routine_idroutine  where tr.trainer_id = :idEntrenador and tr.user_id = :idCliente", nativeQuery = true)
+    @Query(value = "select * from routine join trainer_routine\n" +
+            "on routine.idroutine = trainer_routine.routine_idroutine\n" +
+            "where trainer_routine.trainer_id = :idEntrenador\n" +
+            "and trainer_routine.user_id = :idCliente", nativeQuery = true)
     public List<RoutineEntity> getRoutinesByIdEntrenadorAndIdCliente(@Param("idEntrenador") Integer idEntrenador,
                                                                      @Param("idCliente") Integer idCliente);
 

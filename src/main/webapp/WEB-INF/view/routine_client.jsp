@@ -26,19 +26,29 @@
         <th>FECHA</th>
     </tr>
     <%
+        if(lista.isEmpty()){
+    %>
+    <tr>
+        <td>No tiene ninguna rutina</td>
+        <td> - </td>
+        <td> - </td>
+    </tr>
+    <%
+    }else{
         for(RoutineEntity r : lista){
     %>
     <tr>
         <td><%=r.getName()%></td>
         <td><%=r.getDescription()%></td>
         <td><%=r.getDate()%></td>
-        <td><a href="/rutina_bodybuilding/ver?id=<%= r.getId()  %>">Ver</a> </td>
-        <td><a href="/editar?id=<%= r.getId()  %>">Editar</a> </td>
-        <td><a href="/borrar?id=<%= r.getId()  %>">Borrar</a> </td>
-        <td><a href="/rutina_bodybuilding/asignar?id=<%= r.getId()  %>">Asignar</a> </td>
+        <td><a href="session_client?idRutina=<%= r.getIdroutine()  %>">Ver</a> </td>
+        <td><a href="/editar?id=<%= r.getIdroutine()  %>">Editar</a> </td>
+        <td><a href="/borrar?id=<%= r.getIdroutine()  %>">Borrar</a> </td>
+        <td><a href="/rutina_bodybuilding/asignar?id=<%= r.getIdroutine()  %>">Asignar</a> </td>
     </tr>
     <%
         }
+    }
     %>
 </table>
 </body>

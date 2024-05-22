@@ -30,19 +30,30 @@
             <th></th>
             <th></th>
         </tr>
-
-            <%
+        <%
+        if(lista.isEmpty()){
+        %>
+        <tr>
+            <td>No tienes usuarios</td>
+            <td> - </td>
+            <td> - </td>
+            <td> - </td>
+            <td> - </td>
+        </tr>
+        <%
+        }else{
             for (UserEntity usuario: lista) {
         %>
         <tr>
             <td><%= usuario.getDni() %></td>
             <td><%= usuario.getName() %></td>
             <td><%= usuario.getSurname() %></td>
-            <td><a href="/routine_client?idEntrenador=<%= idEntrenador %>&idCliente=<%= usuario.getId() %>">Rutina</a> </td>
+            <td><a href="routine_client?idEntrenador=<%= idEntrenador %>&idCliente=<%= usuario.getId() %>">Rutina</a> </td>
             <td><a href="/users/editarUsuario?id=<%= usuario.getId() %>">Valoración</a> </td>
         </tr>
-            <%
+        <%
             }
+        }
         %>
 </div>
 </body>
