@@ -9,22 +9,27 @@ import java.util.List;
 
 public interface RoutineRepository extends JpaRepository<RoutineEntity, Integer> {
 
-    @Query(value = "select * from routine join trainer_routine\n" +
-            "on routine.idroutine = trainer_routine.routine_idroutine\n" +
-            "where trainer_routine.trainer_id = :idEntrenador\n" +
-            "and trainer_routine.user_id = :idCliente", nativeQuery = true)
+    @Query(value = "SELECT routine.idroutine as idroutine, routine.name as name, routine.description as description, routine.date as date, routine.idTrainer as id_trainer " +
+            "FROM routine JOIN trainer_routine " +
+            "ON routine.idroutine = trainer_routine.routine_idroutine " +
+            "WHERE trainer_routine.trainer_id = :idEntrenador " +
+            "AND trainer_routine.user_id = :idCliente",
+            nativeQuery = true)
     public List<RoutineEntity> getRoutinesByIdEntrenadorAndIdCliente(@Param("idEntrenador") Integer idEntrenador,
                                                                      @Param("idCliente") Integer idCliente);
 
-    @Query(value = "select * from routine join trainer_routine\n" +
-            "on routine.idroutine = trainer_routine.routine_idroutine\n" +
-            "where trainer_routine.trainer_id = :idEntrenador\n" +
-            "and trainer_routine.user_id != :idCliente", nativeQuery = true)
+    @Query(value = "SELECT routine.idroutine as idroutine, routine.name as name, routine.description as description, routine.date as date, routine.idTrainer as id_trainer " +
+            "FROM routine JOIN trainer_routine " +
+            "ON routine.idroutine = trainer_routine.routine_idroutine " +
+            "WHERE trainer_routine.trainer_id = :idEntrenador " +
+            "AND trainer_routine.user_id != :idCliente",
+            nativeQuery = true)
     public List<RoutineEntity> getRoutinesByIdEntrenadorDontHaveIdCliente(@Param("idEntrenador") Integer idEntrenador,
-                                                       @Param("idCliente") Integer idCliente);
-    @Query(value = "select * from routine join trainer_routine\n" +
-            "on routine.idroutine = trainer_routine.routine_idroutine\n" +
-            "where trainer_routine.trainer_id = :idEntrenador\n", nativeQuery = true)
-    public List<RoutineEntity> getRoutinesByIdEntrenador(@Param("idEntrenador") Integer idEntrenador);
+                                                                          @Param("idCliente") Integer idCliente);
 
+    @Query(value = "SELECT  routine.idroutine as idroutine, routine.name as name, routine.description as description, routine.date as date, routine.idTrainer as id_trainer " +
+            " FROM routine " +
+            "WHERE routine.idTrainer = :idEntrenador",
+            nativeQuery = true)
+    public List<RoutineEntity> getRoutinesByIdEntrenador(@Param("idEntrenador") Integer idEntrenador);
 }
