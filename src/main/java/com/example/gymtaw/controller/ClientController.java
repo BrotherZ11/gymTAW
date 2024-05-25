@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -42,9 +43,9 @@ public class ClientController {
                                    @RequestParam("idCliente") Integer idCliente,
                                    Model model) {
         List<RoutineEntity> routineTotalEntities = routineRepository.getRoutinesByIdEntrenadorAndIdCliente(idEntrenador, idCliente);
-        List<RoutineEntity> routineEntities = routineRepository.getRoutinesByIdEntrenadorDontHaveIdCliente(idEntrenador, idCliente);
-        model.addAttribute("lista", routineEntities);
-        model.addAttribute("listaSinCliente", routineTotalEntities);
+        List<RoutineEntity> routineEntities = routineRepository.getRoutinesByIdEntrenador(idEntrenador);
+        model.addAttribute("listaCompleta", routineEntities);
+        model.addAttribute("lista", routineTotalEntities);
         model.addAttribute("idEntrenador", idEntrenador);
         model.addAttribute("idCliente", idCliente);
         return "routine_client";

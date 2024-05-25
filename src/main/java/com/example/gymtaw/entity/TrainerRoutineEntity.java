@@ -1,22 +1,24 @@
 package com.example.gymtaw.entity;
 
 import jakarta.persistence.*;
-
 import java.util.Objects;
 
 @Entity
-@Table(name = "trainer_routine", schema = "gymtaw", catalog = "")
+@Table(name = "trainer_routine", schema = "gymtaw")
 public class TrainerRoutineEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "iduser_routine", nullable = false)
     private int iduserRoutine;
+
     @Basic
-    @Column(name = "trainer_id", nullable = false)
+    @Column(name = "trainer_id", nullable = false)  // Update the column name
     private int trainerId;
+
     @Basic
     @Column(name = "routine_idroutine", nullable = false)
     private int routineIdroutine;
+
     @Basic
     @Column(name = "user_id", nullable = false)
     private int userId;

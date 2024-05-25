@@ -4,7 +4,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     List<RoutineEntity> lista = (List<RoutineEntity>) request.getAttribute("lista");
-    List<RoutineEntity> listaSinCliente = (List<RoutineEntity>) request.getAttribute("listaSinCliente");
+    List<RoutineEntity> listaCompleta = (List<RoutineEntity>) request.getAttribute("listaCompleta");
     Integer idEntrenador = (Integer) request.getAttribute("idEntrenador");
     Integer idCliente = (Integer) request.getAttribute("idCliente");
     String filtro = request.getParameter("filtro");
@@ -28,10 +28,12 @@
 <form method="post" action="asignar_rutina">
     <select id="rutinas">
         <%
-            for(RoutineEntity rutina: listaSinCliente){
+            for(RoutineEntity rutina: listaCompleta){
+                if(!lista.contains(rutina)){
         %>
         <option value=<%=rutina.getIdroutine()%>><%=rutina.getName()%></option>
         <%
+                }
             }
         %>
     </select>

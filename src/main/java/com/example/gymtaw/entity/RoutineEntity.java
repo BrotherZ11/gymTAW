@@ -57,24 +57,24 @@ public class RoutineEntity {
         this.date = date;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        RoutineEntity that = (RoutineEntity) o;
-        return idroutine == that.idroutine && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(date, that.date);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(idroutine, name, description, date);
-    }
-
     public int getIdTrainer() {
         return idTrainer;
     }
 
     public void setIdTrainer(int idTrainer) {
         this.idTrainer = idTrainer;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RoutineEntity that = (RoutineEntity) o;
+        return idroutine == that.idroutine && idTrainer == that.idTrainer && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(date, that.date);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idroutine, name, description, date, idTrainer);
     }
 }
