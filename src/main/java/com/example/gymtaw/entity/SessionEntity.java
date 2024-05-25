@@ -14,6 +14,9 @@ public class SessionEntity {
     @Basic
     @Column(name = "name", nullable = false, length = 45)
     private String name;
+    @Basic
+    @Column(name = "idTrainer", nullable = false)
+    private int idTrainer;
 
     public int getId() {
         return id;
@@ -42,5 +45,13 @@ public class SessionEntity {
     @Override
     public int hashCode() {
         return Objects.hash(id, name);
+    }
+
+    public int getIdTrainer() {
+        return idTrainer;
+    }
+
+    public void setIdTrainer(int idTrainer) {
+        this.idTrainer = idTrainer;
     }
 }

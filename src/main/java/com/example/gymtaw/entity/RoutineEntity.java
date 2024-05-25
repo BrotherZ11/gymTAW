@@ -21,6 +21,9 @@ public class RoutineEntity {
     @Basic
     @Column(name = "date", nullable = true)
     private Date date;
+    @Basic
+    @Column(name = "idTrainer", nullable = false)
+    private int idTrainer;
 
     public int getIdroutine() {
         return idroutine;
@@ -65,5 +68,13 @@ public class RoutineEntity {
     @Override
     public int hashCode() {
         return Objects.hash(idroutine, name, description, date);
+    }
+
+    public int getIdTrainer() {
+        return idTrainer;
+    }
+
+    public void setIdTrainer(int idTrainer) {
+        this.idTrainer = idTrainer;
     }
 }
