@@ -2,6 +2,7 @@ package com.example.gymtaw.entity;
 
 import jakarta.persistence.*;
 
+import java.util.Collection;
 import java.util.Objects;
 
 @Entity
@@ -10,7 +11,7 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false)
-    private int id;
+    private Integer id;
     @Basic
     @Column(name = "email", nullable = false, length = 250)
     private String email;
@@ -31,19 +32,44 @@ public class UserEntity {
     private String phone;
     @Basic
     @Column(name = "age", nullable = false)
-    private int age;
+    private Integer age;
     @Basic
     @Column(name = "gender", nullable = false, length = 45)
     private String gender;
     @Basic
     @Column(name = "id_rol", nullable = false)
-    private int idRol;
+    private Integer idRol;
+    @OneToMany(mappedBy = "userByUserId")
+    private Collection<ClientExerciseEntity> clientExercisesById;
+    @OneToMany(mappedBy = "userByIdclient")
+    private Collection<RoutineEntity> routinesById;
+    @OneToMany(mappedBy = "userByIdtrainer")
+    private Collection<RoutineEntity> routinesById_0;
+    @OneToMany(mappedBy = "userByIdtrainer")
+    private Collection<SessionEntity> sessionsById;
+    @OneToMany(mappedBy = "userByIdEntrenador")
+    private Collection<TrainerClientEntity> trainerClientsById;
+    @OneToMany(mappedBy = "userByIdCliente")
+    private Collection<TrainerClientEntity> trainerClientsById_0;
+    @OneToMany(mappedBy = "userByTrainerId")
+    private Collection<TrainerRoutineEntity> trainerRoutinesById;
+    @OneToMany(mappedBy = "userByUserId")
+    private Collection<TrainerRoutineEntity> trainerRoutinesById_0;
+    @ManyToOne
+    @JoinColumn(name = "id_rol", referencedColumnName = "id_rol", nullable = false)
+    private RolEntity rolByIdRol;
+    @OneToMany(mappedBy = "userByUserId")
+    private Collection<UserHasTrainerEntity> userHasTrainersById;
+    @OneToMany(mappedBy = "userByTrainerId")
+    private Collection<UserHasTrainerEntity> userHasTrainersById_0;
+    @OneToMany(mappedBy = "userByUserId")
+    private Collection<ValoracionEntity> valoracionsById;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -95,11 +121,11 @@ public class UserEntity {
         this.phone = phone;
     }
 
-    public int getAge() {
+    public Integer getAge() {
         return age;
     }
 
-    public void setAge(int age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
 
@@ -111,11 +137,11 @@ public class UserEntity {
         this.gender = gender;
     }
 
-    public int getIdRol() {
+    public Integer getIdRol() {
         return idRol;
     }
 
-    public void setIdRol(int idRol) {
+    public void setIdRol(Integer idRol) {
         this.idRol = idRol;
     }
 
@@ -124,11 +150,107 @@ public class UserEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserEntity that = (UserEntity) o;
-        return id == that.id && age == that.age && idRol == that.idRol && Objects.equals(email, that.email) && Objects.equals(password, that.password) && Objects.equals(name, that.name) && Objects.equals(surname, that.surname) && Objects.equals(dni, that.dni) && Objects.equals(phone, that.phone) && Objects.equals(gender, that.gender);
+        return Objects.equals(id, that.id) && Objects.equals(email, that.email) && Objects.equals(password, that.password) && Objects.equals(name, that.name) && Objects.equals(surname, that.surname) && Objects.equals(dni, that.dni) && Objects.equals(phone, that.phone) && Objects.equals(age, that.age) && Objects.equals(gender, that.gender) && Objects.equals(idRol, that.idRol);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(id, email, password, name, surname, dni, phone, age, gender, idRol);
+    }
+
+    public Collection<ClientExerciseEntity> getClientExercisesById() {
+        return clientExercisesById;
+    }
+
+    public void setClientExercisesById(Collection<ClientExerciseEntity> clientExercisesById) {
+        this.clientExercisesById = clientExercisesById;
+    }
+
+    public Collection<RoutineEntity> getRoutinesById() {
+        return routinesById;
+    }
+
+    public void setRoutinesById(Collection<RoutineEntity> routinesById) {
+        this.routinesById = routinesById;
+    }
+
+    public Collection<RoutineEntity> getRoutinesById_0() {
+        return routinesById_0;
+    }
+
+    public void setRoutinesById_0(Collection<RoutineEntity> routinesById_0) {
+        this.routinesById_0 = routinesById_0;
+    }
+
+    public Collection<SessionEntity> getSessionsById() {
+        return sessionsById;
+    }
+
+    public void setSessionsById(Collection<SessionEntity> sessionsById) {
+        this.sessionsById = sessionsById;
+    }
+
+    public Collection<TrainerClientEntity> getTrainerClientsById() {
+        return trainerClientsById;
+    }
+
+    public void setTrainerClientsById(Collection<TrainerClientEntity> trainerClientsById) {
+        this.trainerClientsById = trainerClientsById;
+    }
+
+    public Collection<TrainerClientEntity> getTrainerClientsById_0() {
+        return trainerClientsById_0;
+    }
+
+    public void setTrainerClientsById_0(Collection<TrainerClientEntity> trainerClientsById_0) {
+        this.trainerClientsById_0 = trainerClientsById_0;
+    }
+
+    public Collection<TrainerRoutineEntity> getTrainerRoutinesById() {
+        return trainerRoutinesById;
+    }
+
+    public void setTrainerRoutinesById(Collection<TrainerRoutineEntity> trainerRoutinesById) {
+        this.trainerRoutinesById = trainerRoutinesById;
+    }
+
+    public Collection<TrainerRoutineEntity> getTrainerRoutinesById_0() {
+        return trainerRoutinesById_0;
+    }
+
+    public void setTrainerRoutinesById_0(Collection<TrainerRoutineEntity> trainerRoutinesById_0) {
+        this.trainerRoutinesById_0 = trainerRoutinesById_0;
+    }
+
+    public RolEntity getRolByIdRol() {
+        return rolByIdRol;
+    }
+
+    public void setRolByIdRol(RolEntity rolByIdRol) {
+        this.rolByIdRol = rolByIdRol;
+    }
+
+    public Collection<UserHasTrainerEntity> getUserHasTrainersById() {
+        return userHasTrainersById;
+    }
+
+    public void setUserHasTrainersById(Collection<UserHasTrainerEntity> userHasTrainersById) {
+        this.userHasTrainersById = userHasTrainersById;
+    }
+
+    public Collection<UserHasTrainerEntity> getUserHasTrainersById_0() {
+        return userHasTrainersById_0;
+    }
+
+    public void setUserHasTrainersById_0(Collection<UserHasTrainerEntity> userHasTrainersById_0) {
+        this.userHasTrainersById_0 = userHasTrainersById_0;
+    }
+
+    public Collection<ValoracionEntity> getValoracionsById() {
+        return valoracionsById;
+    }
+
+    public void setValoracionsById(Collection<ValoracionEntity> valoracionsById) {
+        this.valoracionsById = valoracionsById;
     }
 }

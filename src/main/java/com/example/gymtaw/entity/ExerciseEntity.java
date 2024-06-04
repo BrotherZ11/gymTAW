@@ -2,6 +2,7 @@ package com.example.gymtaw.entity;
 
 import jakarta.persistence.*;
 
+import java.util.Collection;
 import java.util.Objects;
 
 @Entity
@@ -10,7 +11,7 @@ public class ExerciseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false)
-    private int id;
+    private Integer id;
     @Basic
     @Column(name = "name", nullable = false, length = 45)
     private String name;
@@ -22,13 +23,24 @@ public class ExerciseEntity {
     private String video;
     @Basic
     @Column(name = "type_idtype", nullable = false)
-    private int typeIdtype;
+    private Integer typeIdtype;
+    @OneToMany(mappedBy = "exerciseByExerciseId")
+    private Collection<ClientExerciseEntity> clientExercisesById;
+    @ManyToOne
+    @JoinColumn(name = "type_idtype", referencedColumnName = "idtype", nullable = false)
+    private TypeEntity typeByTypeIdtype;
+    @OneToMany(mappedBy = "exerciseByExerciseId")
+    private Collection<ExerciseHasSessionEntity> exerciseHasSessionsById;
+    @OneToMany(mappedBy = "exerciseByExerciseId")
+    private Collection<ExerciseSessionEntity> exerciseSessionsById;
+    @OneToMany(mappedBy = "exerciseByExerciseId")
+    private Collection<ValoracionEntity> valoracionsById;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -56,11 +68,11 @@ public class ExerciseEntity {
         this.video = video;
     }
 
-    public int getTypeIdtype() {
+    public Integer getTypeIdtype() {
         return typeIdtype;
     }
 
-    public void setTypeIdtype(int typeIdtype) {
+    public void setTypeIdtype(Integer typeIdtype) {
         this.typeIdtype = typeIdtype;
     }
 
@@ -69,11 +81,51 @@ public class ExerciseEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ExerciseEntity that = (ExerciseEntity) o;
-        return id == that.id && typeIdtype == that.typeIdtype && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(video, that.video);
+        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(video, that.video) && Objects.equals(typeIdtype, that.typeIdtype);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(id, name, description, video, typeIdtype);
+    }
+
+    public Collection<ClientExerciseEntity> getClientExercisesById() {
+        return clientExercisesById;
+    }
+
+    public void setClientExercisesById(Collection<ClientExerciseEntity> clientExercisesById) {
+        this.clientExercisesById = clientExercisesById;
+    }
+
+    public TypeEntity getTypeByTypeIdtype() {
+        return typeByTypeIdtype;
+    }
+
+    public void setTypeByTypeIdtype(TypeEntity typeByTypeIdtype) {
+        this.typeByTypeIdtype = typeByTypeIdtype;
+    }
+
+    public Collection<ExerciseHasSessionEntity> getExerciseHasSessionsById() {
+        return exerciseHasSessionsById;
+    }
+
+    public void setExerciseHasSessionsById(Collection<ExerciseHasSessionEntity> exerciseHasSessionsById) {
+        this.exerciseHasSessionsById = exerciseHasSessionsById;
+    }
+
+    public Collection<ExerciseSessionEntity> getExerciseSessionsById() {
+        return exerciseSessionsById;
+    }
+
+    public void setExerciseSessionsById(Collection<ExerciseSessionEntity> exerciseSessionsById) {
+        this.exerciseSessionsById = exerciseSessionsById;
+    }
+
+    public Collection<ValoracionEntity> getValoracionsById() {
+        return valoracionsById;
+    }
+
+    public void setValoracionsById(Collection<ValoracionEntity> valoracionsById) {
+        this.valoracionsById = valoracionsById;
     }
 }

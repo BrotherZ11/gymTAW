@@ -1,57 +1,64 @@
 package com.example.gymtaw.entity;
 
 import jakarta.persistence.*;
+
 import java.util.Objects;
 
 @Entity
-@Table(name = "trainer_routine", schema = "gymtaw")
+@Table(name = "trainer_routine", schema = "gymtaw", catalog = "")
 public class TrainerRoutineEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "iduser_routine", nullable = false)
-    private int iduserRoutine;
-
+    private Integer iduserRoutine;
     @Basic
-    @Column(name = "trainer_id", nullable = false)  // Update the column name
-    private int trainerId;
-
+    @Column(name = "trainer_id", nullable = false)
+    private Integer trainerId;
     @Basic
     @Column(name = "routine_idroutine", nullable = false)
-    private int routineIdroutine;
-
+    private Integer routineIdroutine;
     @Basic
     @Column(name = "user_id", nullable = false)
-    private int userId;
+    private Integer userId;
+    @ManyToOne
+    @JoinColumn(name = "trainer_id", referencedColumnName = "id", nullable = false)
+    private UserEntity userByTrainerId;
+    @ManyToOne
+    @JoinColumn(name = "routine_idroutine", referencedColumnName = "idroutine", nullable = false)
+    private RoutineEntity routineByRoutineIdroutine;
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+    private UserEntity userByUserId;
 
-    public int getIduserRoutine() {
+    public Integer getIduserRoutine() {
         return iduserRoutine;
     }
 
-    public void setIduserRoutine(int iduserRoutine) {
+    public void setIduserRoutine(Integer iduserRoutine) {
         this.iduserRoutine = iduserRoutine;
     }
 
-    public int getTrainerId() {
+    public Integer getTrainerId() {
         return trainerId;
     }
 
-    public void setTrainerId(int trainerId) {
+    public void setTrainerId(Integer trainerId) {
         this.trainerId = trainerId;
     }
 
-    public int getRoutineIdroutine() {
+    public Integer getRoutineIdroutine() {
         return routineIdroutine;
     }
 
-    public void setRoutineIdroutine(int routineIdroutine) {
+    public void setRoutineIdroutine(Integer routineIdroutine) {
         this.routineIdroutine = routineIdroutine;
     }
 
-    public int getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
@@ -60,11 +67,35 @@ public class TrainerRoutineEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TrainerRoutineEntity that = (TrainerRoutineEntity) o;
-        return iduserRoutine == that.iduserRoutine && trainerId == that.trainerId && routineIdroutine == that.routineIdroutine && userId == that.userId;
+        return Objects.equals(iduserRoutine, that.iduserRoutine) && Objects.equals(trainerId, that.trainerId) && Objects.equals(routineIdroutine, that.routineIdroutine) && Objects.equals(userId, that.userId);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(iduserRoutine, trainerId, routineIdroutine, userId);
+    }
+
+    public UserEntity getUserByTrainerId() {
+        return userByTrainerId;
+    }
+
+    public void setUserByTrainerId(UserEntity userByTrainerId) {
+        this.userByTrainerId = userByTrainerId;
+    }
+
+    public RoutineEntity getRoutineByRoutineIdroutine() {
+        return routineByRoutineIdroutine;
+    }
+
+    public void setRoutineByRoutineIdroutine(RoutineEntity routineByRoutineIdroutine) {
+        this.routineByRoutineIdroutine = routineByRoutineIdroutine;
+    }
+
+    public UserEntity getUserByUserId() {
+        return userByUserId;
+    }
+
+    public void setUserByUserId(UserEntity userByUserId) {
+        this.userByUserId = userByUserId;
     }
 }

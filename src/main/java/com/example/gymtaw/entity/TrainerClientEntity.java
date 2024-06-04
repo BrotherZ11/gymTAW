@@ -10,35 +10,41 @@ public class TrainerClientEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "idUser_User", nullable = false)
-    private int idUserUser;
+    private Integer idUserUser;
     @Basic
     @Column(name = "idEntrenador", nullable = false)
-    private int idEntrenador;
+    private Integer idEntrenador;
     @Basic
     @Column(name = "idCliente", nullable = false)
-    private int idCliente;
+    private Integer idCliente;
+    @ManyToOne
+    @JoinColumn(name = "idEntrenador", referencedColumnName = "id", nullable = false)
+    private UserEntity userByIdEntrenador;
+    @ManyToOne
+    @JoinColumn(name = "idCliente", referencedColumnName = "id", nullable = false)
+    private UserEntity userByIdCliente;
 
-    public int getIdUserUser() {
+    public Integer getIdUserUser() {
         return idUserUser;
     }
 
-    public void setIdUserUser(int idUserUser) {
+    public void setIdUserUser(Integer idUserUser) {
         this.idUserUser = idUserUser;
     }
 
-    public int getIdEntrenador() {
+    public Integer getIdEntrenador() {
         return idEntrenador;
     }
 
-    public void setIdEntrenador(int idEntrenador) {
+    public void setIdEntrenador(Integer idEntrenador) {
         this.idEntrenador = idEntrenador;
     }
 
-    public int getIdCliente() {
+    public Integer getIdCliente() {
         return idCliente;
     }
 
-    public void setIdCliente(int idCliente) {
+    public void setIdCliente(Integer idCliente) {
         this.idCliente = idCliente;
     }
 
@@ -47,11 +53,27 @@ public class TrainerClientEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TrainerClientEntity that = (TrainerClientEntity) o;
-        return idUserUser == that.idUserUser && idEntrenador == that.idEntrenador && idCliente == that.idCliente;
+        return Objects.equals(idUserUser, that.idUserUser) && Objects.equals(idEntrenador, that.idEntrenador) && Objects.equals(idCliente, that.idCliente);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(idUserUser, idEntrenador, idCliente);
+    }
+
+    public UserEntity getUserByIdEntrenador() {
+        return userByIdEntrenador;
+    }
+
+    public void setUserByIdEntrenador(UserEntity userByIdEntrenador) {
+        this.userByIdEntrenador = userByIdEntrenador;
+    }
+
+    public UserEntity getUserByIdCliente() {
+        return userByIdCliente;
+    }
+
+    public void setUserByIdCliente(UserEntity userByIdCliente) {
+        this.userByIdCliente = userByIdCliente;
     }
 }

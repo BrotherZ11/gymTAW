@@ -5,20 +5,19 @@ import jakarta.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "exercise_session", schema = "gymtaw", catalog = "")
-public class ExerciseSessionEntity {
+@Table(name = "exercise_has_session", schema = "gymtaw", catalog = "")
+@IdClass(ExerciseHasSessionEntityPK.class)
+public class ExerciseHasSessionEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "exercise_sessioncol", nullable = false)
-    private Integer exerciseSessioncol;
-    @Basic
     @Column(name = "exercise_id", nullable = false)
     private Integer exerciseId;
-    @Basic
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
     @Column(name = "session_id", nullable = false)
     private Integer sessionId;
     @Basic
-    @Column(name = "order", nullable = true)
+    @Column(name = "order", nullable = false)
     private Integer order;
     @ManyToOne
     @JoinColumn(name = "exercise_id", referencedColumnName = "id", nullable = false)
@@ -26,14 +25,6 @@ public class ExerciseSessionEntity {
     @ManyToOne
     @JoinColumn(name = "session_id", referencedColumnName = "id", nullable = false)
     private SessionEntity sessionBySessionId;
-
-    public Integer getExerciseSessioncol() {
-        return exerciseSessioncol;
-    }
-
-    public void setExerciseSessioncol(Integer exerciseSessioncol) {
-        this.exerciseSessioncol = exerciseSessioncol;
-    }
 
     public Integer getExerciseId() {
         return exerciseId;
@@ -63,13 +54,13 @@ public class ExerciseSessionEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ExerciseSessionEntity that = (ExerciseSessionEntity) o;
-        return Objects.equals(exerciseSessioncol, that.exerciseSessioncol) && Objects.equals(exerciseId, that.exerciseId) && Objects.equals(sessionId, that.sessionId) && Objects.equals(order, that.order);
+        ExerciseHasSessionEntity that = (ExerciseHasSessionEntity) o;
+        return Objects.equals(exerciseId, that.exerciseId) && Objects.equals(sessionId, that.sessionId) && Objects.equals(order, that.order);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(exerciseSessioncol, exerciseId, sessionId, order);
+        return Objects.hash(exerciseId, sessionId, order);
     }
 
     public ExerciseEntity getExerciseByExerciseId() {
