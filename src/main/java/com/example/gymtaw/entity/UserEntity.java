@@ -47,14 +47,6 @@ public class UserEntity {
     private Collection<RoutineEntity> routinesById_0;
     @OneToMany(mappedBy = "userByIdtrainer")
     private Collection<SessionEntity> sessionsById;
-    @OneToMany(mappedBy = "userByIdEntrenador")
-    private Collection<TrainerClientEntity> trainerClientsById;
-    @OneToMany(mappedBy = "userByIdCliente")
-    private Collection<TrainerClientEntity> trainerClientsById_0;
-    @OneToMany(mappedBy = "userByTrainerId")
-    private Collection<TrainerRoutineEntity> trainerRoutinesById;
-    @OneToMany(mappedBy = "userByUserId")
-    private Collection<TrainerRoutineEntity> trainerRoutinesById_0;
     @ManyToOne
     @JoinColumn(name = "id_rol", referencedColumnName = "id_rol", nullable = false)
     private RolEntity rolByIdRol;
@@ -188,38 +180,6 @@ public class UserEntity {
 
     public void setSessionsById(Collection<SessionEntity> sessionsById) {
         this.sessionsById = sessionsById;
-    }
-
-    public Collection<TrainerClientEntity> getTrainerClientsById() {
-        return trainerClientsById;
-    }
-
-    public void setTrainerClientsById(Collection<TrainerClientEntity> trainerClientsById) {
-        this.trainerClientsById = trainerClientsById;
-    }
-
-    public Collection<TrainerClientEntity> getTrainerClientsById_0() {
-        return trainerClientsById_0;
-    }
-
-    public void setTrainerClientsById_0(Collection<TrainerClientEntity> trainerClientsById_0) {
-        this.trainerClientsById_0 = trainerClientsById_0;
-    }
-
-    public Collection<TrainerRoutineEntity> getTrainerRoutinesById() {
-        return trainerRoutinesById;
-    }
-
-    public void setTrainerRoutinesById(Collection<TrainerRoutineEntity> trainerRoutinesById) {
-        this.trainerRoutinesById = trainerRoutinesById;
-    }
-
-    public Collection<TrainerRoutineEntity> getTrainerRoutinesById_0() {
-        return trainerRoutinesById_0;
-    }
-
-    public void setTrainerRoutinesById_0(Collection<TrainerRoutineEntity> trainerRoutinesById_0) {
-        this.trainerRoutinesById_0 = trainerRoutinesById_0;
     }
 
     public RolEntity getRolByIdRol() {

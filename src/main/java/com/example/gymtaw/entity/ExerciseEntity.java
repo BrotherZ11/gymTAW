@@ -32,8 +32,6 @@ public class ExerciseEntity {
     @OneToMany(mappedBy = "exerciseByExerciseId")
     private Collection<ExerciseHasSessionEntity> exerciseHasSessionsById;
     @OneToMany(mappedBy = "exerciseByExerciseId")
-    private Collection<ExerciseSessionEntity> exerciseSessionsById;
-    @OneToMany(mappedBy = "exerciseByExerciseId")
     private Collection<ValoracionEntity> valoracionsById;
 
     public Integer getId() {
@@ -111,14 +109,6 @@ public class ExerciseEntity {
 
     public void setExerciseHasSessionsById(Collection<ExerciseHasSessionEntity> exerciseHasSessionsById) {
         this.exerciseHasSessionsById = exerciseHasSessionsById;
-    }
-
-    public Collection<ExerciseSessionEntity> getExerciseSessionsById() {
-        return exerciseSessionsById;
-    }
-
-    public void setExerciseSessionsById(Collection<ExerciseSessionEntity> exerciseSessionsById) {
-        this.exerciseSessionsById = exerciseSessionsById;
     }
 
     public Collection<ValoracionEntity> getValoracionsById() {

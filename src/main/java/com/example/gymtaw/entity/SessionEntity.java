@@ -21,14 +21,10 @@ public class SessionEntity {
     @OneToMany(mappedBy = "sessionBySessionId")
     private Collection<ExerciseHasSessionEntity> exerciseHasSessionsById;
     @OneToMany(mappedBy = "sessionBySessionId")
-    private Collection<ExerciseSessionEntity> exerciseSessionsById;
-    @OneToMany(mappedBy = "sessionBySessionId")
     private Collection<RoutineHasSessionEntity> routineHasSessionsById;
     @ManyToOne
     @JoinColumn(name = "idtrainer", referencedColumnName = "id", nullable = false)
     private UserEntity userByIdtrainer;
-    @OneToMany(mappedBy = "sessionBySessionId")
-    private Collection<SessionRoutineEntity> sessionRoutinesById;
     @OneToMany(mappedBy = "sessionBySessionId")
     private Collection<TypeHasSessionEntity> typeHasSessionsById;
 
@@ -77,14 +73,6 @@ public class SessionEntity {
         this.exerciseHasSessionsById = exerciseHasSessionsById;
     }
 
-    public Collection<ExerciseSessionEntity> getExerciseSessionsById() {
-        return exerciseSessionsById;
-    }
-
-    public void setExerciseSessionsById(Collection<ExerciseSessionEntity> exerciseSessionsById) {
-        this.exerciseSessionsById = exerciseSessionsById;
-    }
-
     public Collection<RoutineHasSessionEntity> getRoutineHasSessionsById() {
         return routineHasSessionsById;
     }
@@ -99,14 +87,6 @@ public class SessionEntity {
 
     public void setUserByIdtrainer(UserEntity userByIdtrainer) {
         this.userByIdtrainer = userByIdtrainer;
-    }
-
-    public Collection<SessionRoutineEntity> getSessionRoutinesById() {
-        return sessionRoutinesById;
-    }
-
-    public void setSessionRoutinesById(Collection<SessionRoutineEntity> sessionRoutinesById) {
-        this.sessionRoutinesById = sessionRoutinesById;
     }
 
     public Collection<TypeHasSessionEntity> getTypeHasSessionsById() {

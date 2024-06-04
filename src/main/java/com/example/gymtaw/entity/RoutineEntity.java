@@ -37,10 +37,6 @@ public class RoutineEntity {
     @OneToMany(mappedBy = "routineByRoutineIdroutine")
     private Collection<RoutineHasSessionEntity> routineHasSessionsByIdroutine;
     @OneToMany(mappedBy = "routineByRoutineIdroutine")
-    private Collection<SessionRoutineEntity> sessionRoutinesByIdroutine;
-    @OneToMany(mappedBy = "routineByRoutineIdroutine")
-    private Collection<TrainerRoutineEntity> trainerRoutinesByIdroutine;
-    @OneToMany(mappedBy = "routineByRoutineIdroutine")
     private Collection<TypeHasRoutineEntity> typeHasRoutinesByIdroutine;
 
     public Integer getIdroutine() {
@@ -126,22 +122,6 @@ public class RoutineEntity {
 
     public void setRoutineHasSessionsByIdroutine(Collection<RoutineHasSessionEntity> routineHasSessionsByIdroutine) {
         this.routineHasSessionsByIdroutine = routineHasSessionsByIdroutine;
-    }
-
-    public Collection<SessionRoutineEntity> getSessionRoutinesByIdroutine() {
-        return sessionRoutinesByIdroutine;
-    }
-
-    public void setSessionRoutinesByIdroutine(Collection<SessionRoutineEntity> sessionRoutinesByIdroutine) {
-        this.sessionRoutinesByIdroutine = sessionRoutinesByIdroutine;
-    }
-
-    public Collection<TrainerRoutineEntity> getTrainerRoutinesByIdroutine() {
-        return trainerRoutinesByIdroutine;
-    }
-
-    public void setTrainerRoutinesByIdroutine(Collection<TrainerRoutineEntity> trainerRoutinesByIdroutine) {
-        this.trainerRoutinesByIdroutine = trainerRoutinesByIdroutine;
     }
 
     public Collection<TypeHasRoutineEntity> getTypeHasRoutinesByIdroutine() {
