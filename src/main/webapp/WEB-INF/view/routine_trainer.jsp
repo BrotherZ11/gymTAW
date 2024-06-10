@@ -39,7 +39,7 @@
         <td><%=r.getName()%></td>
         <td><%=r.getDescription()%></td>
         <td><%=r.getDate()%></td>
-        <td><a href="ver?id=<%= r.getIdroutine()  %>">Ver</a> </td>
+        <td><a href="ver?id=<%= r.getIdroutine()%>&idEntrenador=<%=idEntrenador%>">Ver</a> </td>
         <td><a href="editar?id=<%= r.getIdroutine()%>&idEntrenador=<%=idEntrenador%>">Editar</a> </td>
         <td><a href="borrar?id=<%= r.getIdroutine()%>&idEntrenador=<%=idEntrenador%>">Borrar</a> </td>
         <td><a href="asignar?id=<%= r.getIdroutine()  %>">Asignar</a> </td>

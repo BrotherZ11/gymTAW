@@ -1,11 +1,12 @@
 <%@ page import="java.util.List" %>
 <%@ page import="com.example.gymtaw.entity.SessionEntity" %>
-<%@ page import="com.example.gymtaw.entity.SessionRoutineEntity" %>
+<%@ page import="com.example.gymtaw.entity.RoutineHasSessionEntity" %>
+
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     List<SessionEntity> lista = (List<SessionEntity>) request.getAttribute("lista");
-    List<SessionRoutineEntity> listaSesionRutina = (List<SessionRoutineEntity>) request.getAttribute("listaSesionRutina");
+    List<RoutineHasSessionEntity> listaSesionRutina = (List<RoutineHasSessionEntity>) request.getAttribute("listaSesionRutina");
     List<SessionEntity> listaCompleta = (List<SessionEntity>) request.getAttribute("listaCompleta");
     Integer idRutina = (Integer) request.getAttribute("idRutina");
     Integer idEntrenador = (Integer) request.getAttribute("idEntrenador");

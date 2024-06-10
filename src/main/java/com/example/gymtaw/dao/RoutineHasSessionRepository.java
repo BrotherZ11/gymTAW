@@ -13,10 +13,11 @@ public interface RoutineHasSessionRepository extends JpaRepository<RoutineHasSes
     @Query("SELECT sr FROM RoutineHasSessionEntity sr WHERE sr.routineIdroutine = :routineId")
     List<RoutineHasSessionEntity> findSessionsByRoutineId(Integer routineId);
 
-    @Query(value = "SELECT * FROM session\n" +
+ /*   @Query(value = "SELECT * FROM session\n" +
             "join session_routine\n" +
             "on session.id = session_routine.session_id\n" +
             "where session_routine.routine_idroutine = :idRutina\n" +
-            "order by session_routine.day", nativeQuery = true)
+            "order by session_routine.day", nativeQuery = true)*/
+    @Query("select rs from RoutineHasSessionEntity rs where rs.routineByRoutineIdroutine.idroutine = :idRutina order by rs.day")
     public List<RoutineHasSessionEntity> getSessionsRoutineByIdRoutine(@Param("idRutina") Integer idRutina);
 }

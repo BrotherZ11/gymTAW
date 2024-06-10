@@ -2,9 +2,11 @@ package com.example.gymtaw.controller;
 
 import com.example.gymtaw.dao.RoutineRepository;
 import com.example.gymtaw.dao.RoutineHasSessionRepository;
+import com.example.gymtaw.dao.SessionRepository;
 import com.example.gymtaw.dao.UserRepository;
 import com.example.gymtaw.entity.RoutineEntity;
 import com.example.gymtaw.entity.RoutineHasSessionEntity;
+import com.example.gymtaw.entity.SessionEntity;
 import com.example.gymtaw.entity.UserEntity;
 import com.example.gymtaw.ui.FiltroRutina;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,9 @@ public class RoutineController {
 
     @Autowired
     RoutineHasSessionRepository routineHasSessionRepository;
+
+    @Autowired
+    SessionRepository sessionRepository;
 
     @Autowired
     UserRepository userRepository;
@@ -55,6 +60,19 @@ public class RoutineController {
         }
         this.routineRepository.deleteById(id);
         return "redirect:/home/trainer/rutina?idEntrenador=" + idEntrenador;
+    }
+
+    @GetMapping("/ver")
+    public String doVer (@RequestParam("id") Integer idRutina, @RequestParam("idEntrenador") Integer idEntrenador, Model model) {
+         List<RoutineHasSessionEntity> sessionRoutineEntities = routineHasSessionRepository.getSessionsRoutineByIdRoutine(idRutina);
+        List<SessionEntity> sessionEntities = sessionRepository.getSessionsByIdRoutine(idRutina);
+        List<SessionEntity> sessionCompleteEntities = sessionRepository.getSessionsByIdEntrenador(idEntrenador);
+        model.addAttribute("lista", sessionEntities);
+        model.addAttribute("listaSesionRutina", sessionRoutineEntities);
+        model.addAttribute("listaCompleta", sessionCompleteEntities);
+        model.addAttribute("idRutina", idRutina);
+        model.addAttribute("idEntrenador", idEntrenador);
+        return "session_client";
     }
 
     @GetMapping("/crear")

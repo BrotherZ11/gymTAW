@@ -33,7 +33,7 @@ public class ClientController {
 
     @GetMapping("/clients")
     public String doListar (@RequestParam("idEntrenador") Integer idEntrenador, Model model) {
-        List<UserEntity> clients = clientRepository.getClientesByIdEntrenador(idEntrenador);
+        List<UserEntity> clients = clientRepository.getClientesByEntrenador(idEntrenador);
         model.addAttribute("lista", clients);
         model.addAttribute("idEntrenador", idEntrenador);
         return "clients";
