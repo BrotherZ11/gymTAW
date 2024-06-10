@@ -10,6 +10,7 @@
 <%
     List<RoutineEntity> lista = (List<RoutineEntity>) request.getAttribute("lista");
     String filtro = request.getParameter("filtro");
+    Integer idEntrenador = (Integer) request.getAttribute("idEntrenador");
     if (filtro == null) filtro = "";
 %>
 <html>
@@ -19,11 +20,11 @@
 <body>
 <h1> Rutinas </h1>
 <h2> TAW </h2>
-<form:form method="post" action="/rutina_bodybuilding/filtrar" modelAttribute="filtro">
-    Nombre de la rutina: <form:input path="titulo" />
+<form:form method="post" action="/filtrar" modelAttribute="filtro">
+    Nombre de la rutina: <form:input path="nombre" />
     <form:button>Filtrar</form:button>
-    <a href="/crear">Nueva rutina ... </a>
 </form:form>
+<a href="crear?idEntrenador=<%=idEntrenador%>">Nueva rutina ... </a>
 <table border="1 ">
 
     <tr>
@@ -38,10 +39,10 @@
         <td><%=r.getName()%></td>
         <td><%=r.getDescription()%></td>
         <td><%=r.getDate()%></td>
-        <td><a href="/rutina_bodybuilding/ver?id=<%= r.getIdroutine()  %>">Ver</a> </td>
-        <td><a href="/editar?id=<%= r.getIdroutine()  %>">Editar</a> </td>
-        <td><a href="/borrar?id=<%= r.getIdroutine()  %>">Borrar</a> </td>
-        <td><a href="/rutina_bodybuilding/asignar?id=<%= r.getIdroutine()  %>">Asignar</a> </td>
+        <td><a href="ver?id=<%= r.getIdroutine()  %>">Ver</a> </td>
+        <td><a href="editar?id=<%= r.getIdroutine()%>&idEntrenador=<%=idEntrenador%>">Editar</a> </td>
+        <td><a href="borrar?id=<%= r.getIdroutine()%>&idEntrenador=<%=idEntrenador%>">Borrar</a> </td>
+        <td><a href="asignar?id=<%= r.getIdroutine()  %>">Asignar</a> </td>
     </tr>
     <%
         }

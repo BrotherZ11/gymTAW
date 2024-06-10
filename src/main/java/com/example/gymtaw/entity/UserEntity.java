@@ -37,7 +37,7 @@ public class UserEntity {
     @Column(name = "gender", nullable = false, length = 45)
     private String gender;
     @Basic
-    @Column(name = "id_rol", nullable = false)
+    @Column(name = "id_rol", nullable = false, insertable=false, updatable=false)
     private Integer idRol;
     @OneToMany(mappedBy = "userByUserId")
     private Collection<ClientExerciseEntity> clientExercisesById;

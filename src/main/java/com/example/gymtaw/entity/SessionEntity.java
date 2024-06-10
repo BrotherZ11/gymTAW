@@ -16,7 +16,7 @@ public class SessionEntity {
     @Column(name = "name", nullable = false, length = 45)
     private String name;
     @Basic
-    @Column(name = "idtrainer", nullable = false)
+    @Column(name = "idtrainer", nullable = false, insertable=false, updatable=false)
     private Integer idtrainer;
     @OneToMany(mappedBy = "sessionBySessionId")
     private Collection<ExerciseHasSessionEntity> exerciseHasSessionsById;

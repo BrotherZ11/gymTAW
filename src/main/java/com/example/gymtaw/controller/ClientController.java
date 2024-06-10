@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -30,10 +29,7 @@ public class ClientController {
     ExerciseRepository exerciseRepository;
 
     @Autowired
-    TrainerRoutineRepository trainerRoutineRepository;
-
-    @Autowired
-    SessionRoutineRepository sessionRoutineRepository;
+    RoutineHasSessionRepository routineHasSessionRepository;
 
     @GetMapping("/clients")
     public String doListar (@RequestParam("idEntrenador") Integer idEntrenador, Model model) {
@@ -49,7 +45,7 @@ public class ClientController {
                                    @RequestParam("idCliente") Integer idCliente,
                                    Model model) {
         List<RoutineEntity> routineTotalEntities = routineRepository.getRoutinesByIdEntrenadorAndIdCliente(idEntrenador, idCliente);
-        List<RoutineEntity> routineEntities = routineRepository.getRoutinesByIdEntrenador(idEntrenador);
+        List<RoutineEntity> routineEntities = routineRepository.getRoutinesbyEntrenador(idEntrenador);
         model.addAttribute("listaCompleta", routineEntities);
         model.addAttribute("lista", routineTotalEntities);
         model.addAttribute("idEntrenador", idEntrenador);
@@ -57,7 +53,7 @@ public class ClientController {
         return "routine_client";
     }
 
-    @GetMapping("/quitar_rutina")
+/*    @GetMapping("/quitar_rutina")
     public String doQuitarRutina (@RequestParam("idRutina") Integer idRutina,
                                   @RequestParam("idEntrenador") Integer idEntrenador,
                                   @RequestParam("idCliente") Integer idCliente,
@@ -72,9 +68,9 @@ public class ClientController {
         model.addAttribute("idEntrenador", idEntrenador);
         model.addAttribute("idCliente", idCliente);
         return "routine_client";
-    }
+    }*/
 
-    @PostMapping("/asignar_rutina")
+/*    @PostMapping("/asignar_rutina")
     public String doAsignarRutina (@RequestParam("idRutina") int idRutina,
                                     @RequestParam("idEntrenador") int idEntrenador,
                                     @RequestParam("idCliente") int idCliente,
@@ -93,7 +89,7 @@ public class ClientController {
         model.addAttribute("idEntrenador", idEntrenador);
         model.addAttribute("idCliente", idCliente);
         return "routine_client";
-    }
+    }*/
 
     //Redirecciones pestaña de sesiones
 
@@ -101,7 +97,7 @@ public class ClientController {
     public String doSessionClient (@RequestParam("idRutina") Integer idRutina,
                                    @RequestParam("idEntrenador") Integer idEntrenador,
                                    Model model) {
-        List<SessionRoutineEntity> sessionRoutineEntities = sessionRoutineRepository.getSessionsRoutineByIdRoutine(idRutina);
+        List<RoutineHasSessionEntity> sessionRoutineEntities = routineHasSessionRepository.getSessionsRoutineByIdRoutine(idRutina);
         List<SessionEntity> sessionEntities = sessionRepository.getSessionsByIdRoutine(idRutina);
         List<SessionEntity> sessionCompleteEntities = sessionRepository.getSessionsByIdEntrenador(idEntrenador);
         model.addAttribute("lista", sessionEntities);
@@ -123,9 +119,9 @@ public class ClientController {
                                     @RequestParam("idSesion6") Integer idSesion6,
                                     @RequestParam("idSesion7") Integer idSesion7,
                                    Model model) {
-        List<SessionRoutineEntity> sesionesABorrar = sessionRoutineRepository.getSessionsRoutineByIdRoutine(idRutina);
+        List<RoutineHasSessionEntity> sesionesABorrar = routineHasSessionRepository.getSessionsRoutineByIdRoutine(idRutina);
 
-        sessionRoutineRepository.deleteAll(sesionesABorrar);
+        routineHasSessionRepository.deleteAll(sesionesABorrar);
 
         for(int i = 1; i <= 7; i++){
             Integer idSesion;
@@ -154,16 +150,16 @@ public class ClientController {
                 default:
                     idSesion = -1;
             }
-            SessionRoutineEntity sessionRoutineEntity = new SessionRoutineEntity();
+            RoutineHasSessionEntity sessionRoutineEntity = new RoutineHasSessionEntity();
             if(idSesion != -1){
                 sessionRoutineEntity.setDay(i);
                 sessionRoutineEntity.setRoutineIdroutine(idRutina);
                 sessionRoutineEntity.setSessionId(idSesion);
-                sessionRoutineRepository.save(sessionRoutineEntity);
+                routineHasSessionRepository.save(sessionRoutineEntity);
             }
         }
 
-        List<SessionRoutineEntity> sessionRoutineEntities = sessionRoutineRepository.getSessionsRoutineByIdRoutine(idRutina);
+        List<RoutineHasSessionEntity> sessionRoutineEntities = routineHasSessionRepository.getSessionsRoutineByIdRoutine(idRutina);
         List<SessionEntity> sessionEntities = sessionRepository.getSessionsByIdRoutine(idRutina);
         List<SessionEntity> sessionCompleteEntities = sessionRepository.getSessionsByIdEntrenador(idEntrenador);
         model.addAttribute("lista", sessionEntities);

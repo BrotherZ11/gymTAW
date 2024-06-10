@@ -23,10 +23,10 @@ public class RoutineEntity {
     @Column(name = "date", nullable = true)
     private Date date;
     @Basic
-    @Column(name = "idclient", nullable = true)
+    @Column(name = "idclient", nullable = true, insertable=false, updatable=false)
     private Integer idclient;
     @Basic
-    @Column(name = "idtrainer", nullable = false)
+    @Column(name = "idtrainer", nullable = false, insertable=false, updatable=false)
     private Integer idtrainer;
     @ManyToOne
     @JoinColumn(name = "idclient", referencedColumnName = "id")

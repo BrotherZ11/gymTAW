@@ -27,9 +27,15 @@ public interface RoutineRepository extends JpaRepository<RoutineEntity, Integer>
     public List<RoutineEntity> getRoutinesByIdEntrenadorDontHaveIdCliente(@Param("idEntrenador") Integer idEntrenador,
                                                                           @Param("idCliente") Integer idCliente);
 
-    @Query(value = "SELECT  routine.idroutine as idroutine, routine.name as name, routine.description as description, routine.date as date, routine.idTrainer as id_trainer " +
+/*    @Query(value = "SELECT  routine.idroutine as idroutine, routine.name as name, routine.description as description, routine.date as date, routine.idTrainer as id_trainer " +
             " FROM routine " +
             "WHERE routine.idTrainer = :idEntrenador",
             nativeQuery = true)
-    public List<RoutineEntity> getRoutinesByIdEntrenador(@Param("idEntrenador") Integer idEntrenador);
+    public List<RoutineEntity> getRoutinesByIdEntrenador(@Param("idEntrenador") Integer idEntrenador);*/
+
+    @Query("select r from RoutineEntity r where r.idtrainer = :idEntrenador")
+    public List<RoutineEntity> getRoutinesbyEntrenador(@Param("idEntrenador") Integer idEntrenador);
+
+    @Query("select r from RoutineEntity r where r.name like concat('%', :filtro, '%') ")
+    public List<RoutineEntity> findByFiltro(@Param("filtro") String filtro);
 }

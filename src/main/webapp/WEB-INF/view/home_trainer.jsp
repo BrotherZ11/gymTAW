@@ -9,12 +9,12 @@
 <%Integer idEntrenador = (Integer) request.getAttribute("idEntrenador");%>
 <html>
 <head>
-    <title>Title</title>
+    <title>Home Trainer</title>
 </head>
 <body>
     <div>
         <a href="trainer/clients?idEntrenador=<%=idEntrenador%>">Clientes</a>
-        <a href="trainer/rutina">Rutinas</a>
+        <a href="trainer/rutina?idEntrenador=<%=idEntrenador%>">Rutinas</a>
         <a>Entrenamientos</a>
     </div>
 </body>

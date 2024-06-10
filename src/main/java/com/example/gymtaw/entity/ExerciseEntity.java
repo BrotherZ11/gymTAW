@@ -22,7 +22,7 @@ public class ExerciseEntity {
     @Column(name = "video", nullable = false, length = 250)
     private String video;
     @Basic
-    @Column(name = "type_idtype", nullable = false)
+    @Column(name = "type_idtype", nullable = false, insertable=false, updatable=false)
     private Integer typeIdtype;
     @OneToMany(mappedBy = "exerciseByExerciseId")
     private Collection<ClientExerciseEntity> clientExercisesById;
