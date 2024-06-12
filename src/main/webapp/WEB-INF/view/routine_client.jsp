@@ -4,6 +4,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     List<RoutineEntity> lista = (List<RoutineEntity>) request.getAttribute("lista");
+    List<RoutineEntity> listaCompleta = (List<RoutineEntity>) request.getAttribute("listaCompleta");
+    Integer idEntrenador = (Integer) request.getAttribute("idEntrenador");
+    Integer idCliente = (Integer) request.getAttribute("idCliente");
     String filtro = request.getParameter("filtro");
     if (filtro == null) filtro = "";
 %>
@@ -18,6 +21,35 @@
     Nombre de la rutina: <form:input path="titulo" />
     <form:button>Filtrar</form:button>
 </form:form>
+
+<%
+    if(listaCompleta.size() > lista.size()){
+%>
+<form method="post" action="asignar_rutina">
+    <label>Selecciona una rutina: </label>
+    <select id="rutinas" name="idRutina">
+        <%
+            for(RoutineEntity rutina: listaCompleta){
+                if(!lista.contains(rutina)){
+        %>
+        <option value=<%=rutina.getIdroutine()%>><%=rutina.getName()%></option>
+        <%
+                }
+            }
+        %>
+    </select>
+    <input type="hidden" name="idEntrenador" value="<%= idEntrenador %>">
+    <input type="hidden" name="idCliente" value="<%= idCliente %>">
+    <button type="submit">Asignar rutina al cliente</button>
+</form>
+<%
+    }else{
+%>
+    <p>Todas las rutinas estan ya asignadas al cliente</p>
+<%
+    }
+%>
+
 <table border="1 ">
 
     <tr>
@@ -41,10 +73,8 @@
         <td><%=r.getName()%></td>
         <td><%=r.getDescription()%></td>
         <td><%=r.getDate()%></td>
-        <td><a href="session_client?idRutina=<%= r.getIdroutine()  %>">Ver</a> </td>
-        <td><a href="/editar?id=<%= r.getIdroutine()  %>">Editar</a> </td>
-        <td><a href="/borrar?id=<%= r.getIdroutine()  %>">Borrar</a> </td>
-        <td><a href="/rutina_bodybuilding/asignar?id=<%= r.getIdroutine()  %>">Asignar</a> </td>
+        <td><a href="session_client?idRutina=<%= r.getIdroutine()  %>&idEntrenador=<%=idEntrenador%>">Ver</a> </td>
+        <td><a href="quitar_rutina?idRutina=<%= r.getIdroutine()  %>&idEntrenador=<%= idEntrenador %>&idCliente=<%= idCliente %>">Quitar rutina</a> </td>
     </tr>
     <%
         }

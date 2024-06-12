@@ -6,11 +6,16 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "valoracion", schema = "gymtaw", catalog = "")
+@IdClass(ValoracionEntityPK.class)
 public class ValoracionEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "idValoracion", nullable = false)
-    private int idValoracion;
+    @Column(name = "user_id", nullable = false)
+    private Integer userId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @Column(name = "exercise_id", nullable = false)
+    private Integer exerciseId;
     @Basic
     @Column(name = "review", nullable = true, length = 5000)
     private String review;
@@ -18,18 +23,29 @@ public class ValoracionEntity {
     @Column(name = "stars", nullable = true)
     private Integer stars;
     @Basic
-    @Column(name = "user_id", nullable = false)
-    private int userId;
-    @Basic
-    @Column(name = "exercise_id", nullable = false)
-    private int exerciseId;
+    @Column(name = "done", nullable = false)
+    private Byte done;
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+    private UserEntity userByUserId;
+    @ManyToOne
+    @JoinColumn(name = "exercise_id", referencedColumnName = "id", nullable = false)
+    private ExerciseEntity exerciseByExerciseId;
 
-    public int getIdValoracion() {
-        return idValoracion;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setIdValoracion(int idValoracion) {
-        this.idValoracion = idValoracion;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    public Integer getExerciseId() {
+        return exerciseId;
+    }
+
+    public void setExerciseId(Integer exerciseId) {
+        this.exerciseId = exerciseId;
     }
 
     public String getReview() {
@@ -48,20 +64,12 @@ public class ValoracionEntity {
         this.stars = stars;
     }
 
-    public int getUserId() {
-        return userId;
+    public Byte getDone() {
+        return done;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
-    public int getExerciseId() {
-        return exerciseId;
-    }
-
-    public void setExerciseId(int exerciseId) {
-        this.exerciseId = exerciseId;
+    public void setDone(Byte done) {
+        this.done = done;
     }
 
     @Override
@@ -69,11 +77,27 @@ public class ValoracionEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ValoracionEntity that = (ValoracionEntity) o;
-        return idValoracion == that.idValoracion && userId == that.userId && exerciseId == that.exerciseId && Objects.equals(review, that.review) && Objects.equals(stars, that.stars);
+        return Objects.equals(userId, that.userId) && Objects.equals(exerciseId, that.exerciseId) && Objects.equals(review, that.review) && Objects.equals(stars, that.stars) && Objects.equals(done, that.done);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idValoracion, review, stars, userId, exerciseId);
+        return Objects.hash(userId, exerciseId, review, stars, done);
+    }
+
+    public UserEntity getUserByUserId() {
+        return userByUserId;
+    }
+
+    public void setUserByUserId(UserEntity userByUserId) {
+        this.userByUserId = userByUserId;
+    }
+
+    public ExerciseEntity getExerciseByExerciseId() {
+        return exerciseByExerciseId;
+    }
+
+    public void setExerciseByExerciseId(ExerciseEntity exerciseByExerciseId) {
+        this.exerciseByExerciseId = exerciseByExerciseId;
     }
 }

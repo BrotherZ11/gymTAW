@@ -42,14 +42,14 @@
         </tr>
         <%
         }else{
-            for (UserEntity usuario: lista) {
+            for (UserEntity cliente: lista) {
         %>
         <tr>
-            <td><%= usuario.getDni() %></td>
-            <td><%= usuario.getName() %></td>
-            <td><%= usuario.getSurname() %></td>
-            <td><a href="routine_client?idEntrenador=<%= idEntrenador %>&idCliente=<%= usuario.getId() %>">Rutina</a> </td>
-            <td><a href="/users/editarUsuario?id=<%= usuario.getId() %>">Valoración</a> </td>
+            <td><%= cliente.getDni() %></td>
+            <td><%= cliente.getName() %></td>
+            <td><%= cliente.getSurname() %></td>
+            <td><a href="routine_client?idEntrenador=<%= idEntrenador %>&idCliente=<%= cliente.getId() %>">Rutina</a> </td>
+            <td><a href="/users/editarUsuario?id=<%= cliente.getId() %>">Valoración</a> </td>
         </tr>
         <%
             }
