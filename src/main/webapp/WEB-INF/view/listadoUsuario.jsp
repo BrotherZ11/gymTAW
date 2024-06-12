@@ -1,3 +1,4 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="com.example.gymtaw.entity.User" %>
 <%@ page import="java.util.List" %><%--
   Created by IntelliJ IDEA.
@@ -16,9 +17,11 @@
     <title>Listado de los usuarios de la Aplicación</title>
 </head>
 <body>
+
+<form:form method="post" action="/filtrar" modelAttribute="filtro">
+    <form:select path="nombreRol" itemValue=""></form:select>
+</form:form>
 <form>
-    <a href="/salir">Salir</a>
-    <ahrefg></ahrefg>
     <table border="1 ">
 
         <tr>
@@ -45,6 +48,7 @@
         %>
     </table>
     <a href="/users/crearUsuario">Crear nuevo usuario</a>
+    <a href="/salir">Salir</a>
 </form>
 </body>
 

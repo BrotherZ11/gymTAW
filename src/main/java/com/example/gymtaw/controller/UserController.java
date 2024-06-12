@@ -4,7 +4,7 @@ import com.example.gymtaw.dao.RolRepository;
 import com.example.gymtaw.dao.UserRepository;
 import com.example.gymtaw.entity.Rol;
 import com.example.gymtaw.entity.User;
-import com.example.gymtaw.ui.Usuario;
+import com.example.gymtaw.ui.Filtro;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -32,8 +33,22 @@ public class UserController extends BaseController{
         } else {
             List<User> usuarios = userRepository.findAll();
             model.addAttribute("usuarios", usuarios);
+            List<String> listaRoles = new ArrayList<>();
+
         }
 
+        return strTo;
+    }
+
+    @GetMapping("/filtrar")
+    public String doFiltrarUsuarios (Model model, HttpSession session, @RequestParam("nombreRol")String rol){
+        String strTo = "listadoUsuario";
+        if(!estaAutenticado(session)){
+            strTo = "redirect:/";
+        } else {
+            List<User> usuarios = rolRepository.findByRol(rol);
+            model.addAttribute("usuarios", usuarios);
+        }
         return strTo;
     }
 
