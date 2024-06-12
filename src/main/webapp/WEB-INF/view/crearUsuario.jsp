@@ -1,4 +1,5 @@
-<%@ page import="com.example.gymtaw.entity.User" %><%--
+<%@ page import="com.example.gymtaw.entity.UserEntity" %>
+<%@ page import="com.example.gymtaw.entity.UserEntity" %><%--
   Created by IntelliJ IDEA.
   User: Usuario
   Date: 05/05/2024
@@ -7,7 +8,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    User user = (User) request.getAttribute("usuario");
+    UserEntity userEntity = (UserEntity) request.getAttribute("usuario");
 %>
 <html>
 <head>
@@ -16,7 +17,7 @@
 <body>
 <h1>Datos del nuevo usuario</h1>
 <form method="post" action="/users/guardarCreacion">
-    <input type="hidden" name="id" value="<%=user.getId()%>">
+    <input type="hidden" name="id" value="<%=userEntity.getId()%>">
     <table border="0">
         <tr>
             <td>Gmail:</td>
@@ -54,10 +55,10 @@
             <td>Rol:</td>
             <td><label for="rol">Elige un rol:</label>
                 <select name="rol" id="rol">
-                    <option value="admin">Admin</option>
-                    <option value="cliente">Cliente</option>
-                    <option value="bodybuilding">Bodybuilding</option>
-                    <option value="cross-training">Cross-training</option>
+                    <option value="3">Admin</option>
+                    <option value="4">Cliente</option>
+                    <option value="1">Bodybuilding</option>
+                    <option value="2">Cross-training</option>
                 </select></td>
         </tr>
         <tr>

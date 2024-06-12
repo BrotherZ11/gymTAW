@@ -2,17 +2,14 @@ package com.example.gymtaw.controller;
 
 import com.example.gymtaw.dao.RolRepository;
 import com.example.gymtaw.dao.UserRepository;
-import com.example.gymtaw.entity.Rol;
-import com.example.gymtaw.entity.User;
+import com.example.gymtaw.entity.UserEntity;
 import com.example.gymtaw.ui.Filtro;
+import com.example.gymtaw.ui.Usuario;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,10 +28,11 @@ public class UserController extends BaseController{
         if(!estaAutenticado(session)){
             strTo = "redirect:/";
         } else {
-            List<User> usuarios = userRepository.findAll();
+            List<UserEntity> usuarios = userRepository.findAll();
             model.addAttribute("usuarios", usuarios);
             List<String> listaRoles = new ArrayList<>();
 
+            model.addAttribute("filtro", new Filtro());
         }
 
         return strTo;
@@ -68,7 +66,7 @@ public class UserController extends BaseController{
         if(!estaAutenticado(session)){
             strTo = "redirect:/";
         } else {
-            User usuario = userRepository.findById(id).get();
+            UserEntity usuario = userRepository.findById(id).get();
             model.addAttribute("usuario", usuario);
         }
         return strTo;
@@ -80,9 +78,9 @@ public class UserController extends BaseController{
         if(!estaAutenticado(session)){
             strTo = "redirect:/";
         }
-        User user = new User();
-        user.setId(-1);
-        model.addAttribute("usuario", user);
+        UserEntity userEntity = new UserEntity();
+        userEntity.setId(-1);
+        model.addAttribute("usuario", userEntity);
         return strTo;
     }
 
@@ -99,7 +97,7 @@ public class UserController extends BaseController{
         if (!estaAutenticado(session)) {
             strTo = "redirect:/";
         } else {
-            User usuario = this.userRepository.findById(id).orElse(new User());
+            UserEntity usuario = this.userRepository.findById(id).orElse(new UserEntity());
             usuario.setName(nombre);
             usuario.setSurname(apellido);
             usuario.setAge(edad);
@@ -120,14 +118,14 @@ public class UserController extends BaseController{
                              @RequestParam("genero") String genero,
                              @RequestParam("contrasena") String contrasena,
                              @RequestParam("dni") String dni,
-                             @RequestParam("rol") String rol,
+                             @RequestParam("rol") int rol,
                              HttpSession session) {
 
         String strTo = "redirect:/users/";
         if (!estaAutenticado(session)) {
             strTo = "redirect:/";
         } else {
-            User usuario = userRepository.findById(id).orElse(new User());
+            UserEntity usuario = userRepository.findById(id).orElse(new UserEntity());
             usuario.setEmail(gmail);
             usuario.setName(nombre);
             usuario.setSurname(apellido);
@@ -136,14 +134,9 @@ public class UserController extends BaseController{
             usuario.setGender(genero);
             usuario.setPassword(contrasena);
             usuario.setDni(dni);
-
-            Rol rolUsuario = new Rol();
-            rolUsuario.setUser(usuario);
-            rolUsuario.setId(usuario.getId());
-            rolUsuario.setType(rol);
+            usuario.setIdRol(rol);
 
             this.userRepository.save(usuario);
-            this.rolRepository.save(rolUsuario);
         }
         return strTo;
     }
