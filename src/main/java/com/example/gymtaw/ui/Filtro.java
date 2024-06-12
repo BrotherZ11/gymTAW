@@ -1,26 +1,17 @@
 package com.example.gymtaw.ui;
 
-import java.util.List;
-
 public class Filtro {
-    private String nombreRol;
-    private List<String> roles;
+    private int idRol;
 
-    public Filtro(){}
+    public Filtro(){
 
-    public String getNombreRol() {
-        return nombreRol;
     }
 
-    public void setNombreRol(String nombreRol) {
-        this.nombreRol = nombreRol;
+    public int getIdRol() {
+        return idRol;
     }
 
-    public List<String> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<String> roles) {
-        this.roles = roles;
+    public void setIdRol(int nombreRol) {
+        this.idRol = nombreRol;
     }
 }

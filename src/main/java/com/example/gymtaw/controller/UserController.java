@@ -11,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -30,23 +29,22 @@ public class UserController extends BaseController{
         } else {
             List<UserEntity> usuarios = userRepository.findAll();
             model.addAttribute("usuarios", usuarios);
-            List<String> listaRoles = new ArrayList<>();
-
             model.addAttribute("filtro", new Filtro());
         }
 
         return strTo;
     }
 
-    @GetMapping("/filtrar")
-    public String doFiltrarUsuarios (Model model, HttpSession session, @RequestParam("nombreRol")String rol){
+    @PostMapping("/filtrar")
+    public String filtrarUsuarios(@ModelAttribute("filtro") Filtro filtro, HttpSession session, Model model){
         String strTo = "listadoUsuario";
         if(!estaAutenticado(session)){
             strTo = "redirect:/";
-        } else {
-            List<UserEntity> usuarios = userRepository.findAll();
-            model.addAttribute("usuarios", usuarios);
         }
+        List<UserEntity> usuarios = userRepository.findUserEntitiesByIdRol(filtro.getIdRol());
+        model.addAttribute("usuarios", usuarios);
+        model.addAttribute("filtro", new Filtro());
+
         return strTo;
     }
 
