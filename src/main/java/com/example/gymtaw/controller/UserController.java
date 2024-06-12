@@ -44,7 +44,7 @@ public class UserController extends BaseController{
         if(!estaAutenticado(session)){
             strTo = "redirect:/";
         } else {
-            List<User> usuarios = rolRepository.findByRol(rol);
+            List<UserEntity> usuarios = userRepository.findAll();
             model.addAttribute("usuarios", usuarios);
         }
         return strTo;
