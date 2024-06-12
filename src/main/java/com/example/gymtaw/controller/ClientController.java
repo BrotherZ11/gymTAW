@@ -40,7 +40,7 @@ public class ClientController {
     }
 
     @GetMapping("/entrenamiento")
-    public String entrenamientoUsuario(Model model){
+    public String entrenamientoUsuario(@RequestParam("idCliente") Integer idCliente,Model model){
         List<Routine> lista =this.routineRepository.findAll();
         model.addAttribute("rutinas",lista);
         return "clientTraining";
