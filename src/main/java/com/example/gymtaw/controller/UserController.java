@@ -2,6 +2,7 @@ package com.example.gymtaw.controller;
 
 import com.example.gymtaw.dao.RolRepository;
 import com.example.gymtaw.dao.UserRepository;
+import com.example.gymtaw.entity.RolEntity;
 import com.example.gymtaw.entity.UserEntity;
 import com.example.gymtaw.ui.Filtro;
 import com.example.gymtaw.ui.Usuario;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -28,8 +30,10 @@ public class UserController extends BaseController{
             strTo = "redirect:/";
         } else {
             List<UserEntity> usuarios = userRepository.findAll();
+            List<RolEntity> rols = rolRepository.findAll();
             model.addAttribute("usuarios", usuarios);
             model.addAttribute("filtro", new Filtro());
+            model.addAttribute("rols", rols);
         }
 
         return strTo;
@@ -41,9 +45,20 @@ public class UserController extends BaseController{
         if(!estaAutenticado(session)){
             strTo = "redirect:/";
         }
-        List<UserEntity> usuarios = userRepository.findUserEntitiesByIdRol(filtro.getIdRol());
+        List<UserEntity> usuarios = new ArrayList<>();
+        if(filtro.noFilter()){
+            usuarios = userRepository.findAll();
+        } else {
+            if(filtro.getIdRol() != 0){
+                usuarios = userRepository.findUserEntitiesByIdRol(filtro.getIdRol());
+            } else {
+                usuarios = userRepository.findUserEntitiesByNameSurnameDni(filtro.getNombre(), filtro.getApellido(), filtro.getDni());
+            }
+        }
+        List<RolEntity> rols = rolRepository.findAll();
         model.addAttribute("usuarios", usuarios);
-        model.addAttribute("filtro", new Filtro());
+        model.addAttribute("filtro", filtro);
+        model.addAttribute("rols", rols);
 
         return strTo;
     }

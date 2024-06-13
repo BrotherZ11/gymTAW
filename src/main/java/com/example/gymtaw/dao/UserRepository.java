@@ -14,4 +14,8 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
 
     @Query("select u from UserEntity u where u.idRol = :rol")
     List<UserEntity> findUserEntitiesByIdRol(@Param("rol") int rol);
+
+    @Query("select u from UserEntity u where u.name like concat('%', :nombre, '%') and u.surname like concat('%', :apellido, '%') and u.dni like concat('%', :dni, '%')")
+    List<UserEntity> findUserEntitiesByNameSurnameDni(@Param("nombre") String nombre, @Param("apellido") String apellido, @Param("dni") String dni);
+
 }

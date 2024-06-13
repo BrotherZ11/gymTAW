@@ -18,14 +18,16 @@
 </head>
 <body>
 <form:form method="post" action="/users/filtrar" modelAttribute="filtro">
-    <form:select path="idRol">
-        <form:option value="3">Admin</form:option>
-        <form:option value="1">Bodybuilding</form:option>
-        <form:option value="2">Cross-training</form:option>
-        <form:option value="4">Cliente</form:option>
-    </form:select>
+    <form:radiobuttons path="idRol" items="${rols}" itemLabel="type" itemValue="idRol"/>
     <form:button>Filtrar</form:button>
 </form:form>
+
+<form:form method="post" action="/users/filtrar" modelAttribute="filtro">
+    Nombre:<form:input path="nombre" size="50"></form:input>
+    Apellido:<form:input path="apellido" size="50"></form:input>
+    DNI:<form:input path="dni" size="9"></form:input>
+    <form:button>Filtrar</form:button>
+</form:form> <br>
 <form method="get" action="/users/">
     <button>Limpiar filtros</button>
 </form>
