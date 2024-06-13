@@ -9,7 +9,7 @@
 <a href="/logout">Cerrar sesion</a> <!-- Corrected link to logout -->
 <div>
     <a href="/home/client/entrenamientos?idCliente=<%=idCliente%>">Entrenamientos</a>
-    <a href="/home/client/rutina/idCliente=<%=idCliente%>">Rutinas</a> <!-- Corrected link to routines -->
+    <a href="/home/client/valoraciones?idCliente=<%=idCliente%>">Valoraciones</a> <!-- Corrected link to routines -->
 </div>
 </body>
 </html>
