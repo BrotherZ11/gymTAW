@@ -1,5 +1,5 @@
 <%@ page import="java.util.List" %>
-<%@ page import="com.example.gymtaw.entity.Routine" %><%--
+<%@ page import="com.example.gymtaw.entity.RoutineEntity" %><%--
   Created by IntelliJ IDEA.
   User: marta
   Date: 06/05/2024
@@ -7,7 +7,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<% List<Routine> rutinas = (List<Routine>) request.getAttribute("rutinas"); %>
+<% List<RoutineEntity> rutinas = (List<RoutineEntity>) request.getAttribute("rutinas"); %>
 <html>
 <head>
     <title>Title</title>
@@ -25,7 +25,7 @@
 </div>
 <% } else { %>
 <select>
-    <% for (Routine r : rutinas) { %>
+    <% for (RoutineEntity r : rutinas) { %>
     <option><%= r.getName() %></option>
     <% } %>
 </select>

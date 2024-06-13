@@ -1,4 +1,5 @@
-<%@ page import="com.example.gymtaw.entity.User" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ page import="com.example.gymtaw.entity.UserEntity" %>
 <%@ page import="java.util.List" %><%--
   Created by IntelliJ IDEA.
   User: gonla
@@ -9,13 +10,25 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
-    List<User> listaUsuarios =(List<User>)request.getAttribute("usuarios");
+    List<UserEntity> listaUsuarios =(List<UserEntity>)request.getAttribute("usuarios");
 %>
 <html>
 <head>
     <title>Listado de los usuarios de la Aplicación</title>
 </head>
 <body>
+<form:form method="post" action="/users/filtrar" modelAttribute="filtro">
+    <form:select path="idRol">
+        <form:option value="3">Admin</form:option>
+        <form:option value="1">Bodybuilding</form:option>
+        <form:option value="2">Cross-training</form:option>
+        <form:option value="4">Cliente</form:option>
+    </form:select>
+    <form:button>Filtrar</form:button>
+</form:form>
+<form method="get" action="/users/">
+    <button>Limpiar filtros</button>
+</form>
 <form>
     <table border="1 ">
 
@@ -25,10 +38,11 @@
             <th>APELLIDOS</th>
             <th></th>
             <th></th>
+            <th></th>
         </tr>
 
         <%
-            for (User usuario: listaUsuarios) {
+            for (UserEntity usuario: listaUsuarios) {
         %>
         <tr>
             <td><%= usuario.getDni() %></td>
@@ -42,6 +56,7 @@
         %>
     </table>
     <a href="/users/crearUsuario">Crear nuevo usuario</a>
+    <a href="/salir">Salir</a>
 </form>
 </body>
 

@@ -7,11 +7,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
 @Controller
-@RequestMapping("/client")
+@RequestMapping("/home/client")
 public class ClienteController {
 
     @Autowired
@@ -21,9 +22,10 @@ public class ClienteController {
     RoutineRepository sessionRoutineRepository;
 
     @GetMapping("/entrenamientos")
-    public String doListar(Model model) {
+    public String doListar(@RequestParam("idCliente") Integer idCliente, Model model) {
         List<RoutineEntity> rutinas = routineRepository.findAll();
         model.addAttribute("rutinas", rutinas); // Make sure this name matches the JSP
+        model.addAttribute("idCliente", idCliente);
         return "clientTraining";
     }
 }

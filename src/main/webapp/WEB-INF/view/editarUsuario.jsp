@@ -1,4 +1,5 @@
-<%@ page import="com.example.gymtaw.entity.User" %><%--
+<%@ page import="com.example.gymtaw.entity.UserEntity" %>
+<%@ page import="com.example.gymtaw.entity.UserEntity" %><%--
   Created by IntelliJ IDEA.
   User: Usuario
   Date: 05/05/2024
@@ -7,7 +8,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    User usuario = (User) request.getAttribute("usuario");
+    UserEntity usuario = (UserEntity) request.getAttribute("usuario");
     String nombre = usuario.getName();
     String apellido = usuario.getSurname();
     String dni = usuario.getDni();

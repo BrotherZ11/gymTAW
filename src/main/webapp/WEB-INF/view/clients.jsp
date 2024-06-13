@@ -1,9 +1,10 @@
 <%@ page import="java.util.List" %>
-<%@ page import="com.example.gymtaw.entity.User" %>
+<%@ page import="com.example.gymtaw.entity.UserEntity" %>
+<%@ page import="com.example.gymtaw.entity.UserEntity" %>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    List<User> lista = (List<User>) request.getAttribute("lista");
+    List<UserEntity> lista = (List<UserEntity>) request.getAttribute("lista");
     Integer idEntrenador = (Integer) request.getAttribute("idEntrenador");
     String filtro = request.getParameter("filtro");
     if (filtro == null) filtro = "";
@@ -20,9 +21,40 @@
     <form:button>Filtrar</form:button>
 </form:form>
 <div>
-    <a href="home/crosstraining/clients?idEntrenador=<%=idEntrenador%>">Clientes</a><br>
-    <a href="home/crosstraining/clients">Rutinas</a><br>
-    <a>Entrenamiento</a>
+    <table border="1 ">
+
+        <tr>
+            <th>DNI</th>
+            <th>NOMBRE</th>
+            <th>APELLIDOS</th>
+            <th></th>
+            <th></th>
+        </tr>
+        <%
+        if(lista.isEmpty()){
+        %>
+        <tr>
+            <td>No tienes usuarios</td>
+            <td> - </td>
+            <td> - </td>
+            <td> - </td>
+            <td> - </td>
+        </tr>
+        <%
+        }else{
+            for (UserEntity cliente: lista) {
+        %>
+        <tr>
+            <td><%= cliente.getDni() %></td>
+            <td><%= cliente.getName() %></td>
+            <td><%= cliente.getSurname() %></td>
+            <td><a href="routine_client?idEntrenador=<%= idEntrenador %>&idCliente=<%= cliente.getId() %>">Rutina</a> </td>
+            <td><a href="/users/editarUsuario?id=<%= cliente.getId() %>">Valoración</a> </td>
+        </tr>
+        <%
+            }
+        }
+        %>
 </div>
 </body>
 </html>
