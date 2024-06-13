@@ -19,14 +19,16 @@
     cuando cambias en el select la rutina, automaticamente cambia lo de debajo a la seleccionada
     salen las sesiones y debajo los ejercicios de cada una,
     con posibilidad de marcarlas como hechas y ver el video de cada ej--%>
-<% if (rutinas.isEmpty()){%>
-<div align="center"> <h1>NO TIENES RUTINAS</h1></div>
-<%}else{%>
+<% if (rutinas.isEmpty()) {%>
+<div align="center">
+    <h1>NO TIENES RUTINAS</h1>
+</div>
+<% } else { %>
 <select>
-    <% for (Routine r : rutinas){%>
-    <option><%=r.getName()%></option>
-    <%}%>
+    <% for (Routine r : rutinas) { %>
+    <option><%= r.getName() %></option>
+    <% } %>
 </select>
-<%}%>
+<% } %>
 </body>
 </html>

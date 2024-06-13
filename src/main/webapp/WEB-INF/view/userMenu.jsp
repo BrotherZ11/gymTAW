@@ -6,10 +6,10 @@
 </head>
 <body>
 <h1 align="center">TAW</h1>
-<a>Cerrar sesion</a> <!-- Corrected link to logout -->
+<a href="/logout">Cerrar sesion</a> <!-- Corrected link to logout -->
 <div>
-    <a href="/entrenamientos">Entrenamientos</a>
-    <a href="/rutina">Rutinas</a> <!-- Corrected link to routines -->
+    <a href="/client/entrenamientos?idCliente=<%=idCliente%>">Entrenamientos</a>
+    <a href="/rutina/idCliente=<%=idCliente%>">Rutinas</a> <!-- Corrected link to routines -->
 </div>
 </body>
 </html>
