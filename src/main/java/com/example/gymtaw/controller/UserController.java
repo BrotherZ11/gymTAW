@@ -153,4 +153,18 @@ public class UserController extends BaseController{
         }
         return strTo;
     }
+
+    @GetMapping("/asignar")
+    public String doAsignar(@RequestParam("id") int idUsuario, Model model, HttpSession session){
+        UserEntity usuario = userRepository.findById(idUsuario).get();
+        List<UserEntity> usuarios;
+        if(usuario.getIdRol() == 4){
+            usuarios = userRepository.findTrainers();
+        } else {
+            usuarios = userRepository.findClients();
+        }
+        model.addAttribute("usuario", usuario);
+        model.addAttribute("usuariosAsignacion", usuarios);
+        return "asignarView";
+    }
 }
