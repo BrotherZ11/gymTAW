@@ -13,22 +13,37 @@
     <title>Title</title>
 </head>
 <body>
-<%-- si no tiene Rutinas, pone No tienes rutinas en la pagina
-    si tiene rutinas, las pone en un select
-    cargando automaticamente la que menor id tenga (la primera que pille)
-    cuando cambias en el select la rutina, automaticamente cambia lo de debajo a la seleccionada
-    salen las sesiones y debajo los ejercicios de cada una,
-    con posibilidad de marcarlas como hechas y ver el video de cada ej--%>
+
 <% if (rutinas.isEmpty()) {%>
 <div align="center">
     <h1>NO TIENES RUTINAS</h1>
 </div>
 <% } else { %>
-<select>
+
+<h2>Rutinas del Cliente</h2>
+<table border="1">
+    <thead>
+    <tr>
+        <th>Nombre</th>
+        <th>Descripción</th>
+        <th>Fecha</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
     <% for (RoutineEntity r : rutinas) { %>
-    <option><%= r.getName() %></option>
+        <td><%=r.getName()%></td>
+        <td><%=r.getDescription()%></td>
+        <td><%=r.getDate()%></td>
+        <td><a href="/home/cliente/sesiones?idRutina=<%=r.getIdroutine()%>">Más detalles</a></td>
     <% } %>
-</select>
+        <tr>
+
+        </tr>
+    </tbody>
+</table>
+
+
 <% } %>
 </body>
 </html>

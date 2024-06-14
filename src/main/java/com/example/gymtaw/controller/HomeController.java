@@ -19,7 +19,7 @@ public class HomeController {
     @GetMapping("/client")
     public String doHomeCliente (@RequestParam("idCliente") Integer idCliente, Model model) {
         model.addAttribute("idCliente", idCliente);
-        return "userMenu";
+        return "home_client";
     }
 
 }

@@ -40,6 +40,7 @@ public interface RoutineRepository extends JpaRepository<RoutineEntity, Integer>
     @Query("select r from RoutineEntity r where r.name like concat('%', :filtro, '%') ")
     public List<RoutineEntity> findByFiltro(@Param("filtro") String filtro);
 
-    @Query("select r from RoutineEntity r where r.idclient = :idCliente")
-    public List<RoutineEntity> getRoutinesbyClient(@Param("idCliente") Integer idCliente);
+    @Query("SELECT r FROM RoutineEntity r WHERE r.idclient = :idCliente")
+    List<RoutineEntity> getRoutinesByClient(@Param("idCliente") Integer idCliente);
+
 }

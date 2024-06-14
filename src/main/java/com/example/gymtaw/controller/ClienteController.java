@@ -23,9 +23,9 @@ public class ClienteController {
 
     @GetMapping("/entrenamientos")
     public String doListar(@RequestParam("idCliente") Integer idCliente, Model model) {
-        List<RoutineEntity> rutinas = routineRepository.getRoutinesbyClient(idCliente);
+        List<RoutineEntity> rutinas = routineRepository.getRoutinesByClient(idCliente);
         model.addAttribute("rutinas", rutinas); // Make sure this name matches the JSP
         model.addAttribute("idCliente", idCliente);
-        return "clientTraining";
+        return "entrenamiento_rutina_cliente";
     }
 }
