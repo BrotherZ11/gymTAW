@@ -8,15 +8,12 @@ import java.util.Objects;
 @Table(name = "routine_has_session", schema = "gymtaw", catalog = "")
 @IdClass(RoutineHasSessionEntityPK.class)
 public class RoutineHasSessionEntity {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "routine_idroutine", nullable = false)
     private Integer routineIdroutine;
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "session_id", nullable = false)
     private Integer sessionId;
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "day", nullable = false)
     private Integer day;

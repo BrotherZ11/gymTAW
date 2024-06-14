@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/home/trainer")
@@ -55,7 +56,6 @@ public class RoutineController {
     public String doBorrar (@RequestParam("id") Integer id, @RequestParam("idEntrenador") Integer idEntrenador) {
         List<RoutineHasSessionEntity> sessions = routineHasSessionRepository.findSessionsByRoutineId(id);
         if (!sessions.isEmpty()) {
-            // Si hay sesiones asociadas a esta rutina, elimínalas primero
             routineHasSessionRepository.deleteAll(sessions);
         }
         this.routineRepository.deleteById(id);
@@ -64,7 +64,7 @@ public class RoutineController {
 
     @GetMapping("/ver")
     public String doVer (@RequestParam("id") Integer idRutina, @RequestParam("idEntrenador") Integer idEntrenador, Model model) {
-         List<RoutineHasSessionEntity> sessionRoutineEntities = routineHasSessionRepository.getSessionsRoutineByIdRoutine(idRutina);
+        List<RoutineHasSessionEntity> sessionRoutineEntities = routineHasSessionRepository.getSessionsRoutineByIdRoutine(idRutina);
         List<SessionEntity> sessionEntities = sessionRepository.getSessionsByIdRoutine(idRutina);
         List<SessionEntity> sessionCompleteEntities = sessionRepository.getSessionsByIdEntrenador(idEntrenador);
         model.addAttribute("lista", sessionEntities);
@@ -72,7 +72,42 @@ public class RoutineController {
         model.addAttribute("listaCompleta", sessionCompleteEntities);
         model.addAttribute("idRutina", idRutina);
         model.addAttribute("idEntrenador", idEntrenador);
-        return "session_client";
+        return "entrenamiento";
+    }
+
+    @PostMapping("/guardar_sesiones")
+    public String doGuardarRutinas (@RequestParam("idRutina") Integer idRutina,
+                                    @RequestParam("idEntrenador") Integer idEntrenador,
+                                    @RequestParam Map<String, String> allParams,
+                                    Model model) {
+        List<RoutineHasSessionEntity> sesionesABorrar = routineHasSessionRepository.getSessionsRoutineByIdRoutine(idRutina);
+
+        routineHasSessionRepository.deleteAll(sesionesABorrar);
+
+        // Guardar las nuevas sesiones
+        for (int i = 1; i <= 7; i++) {
+            String sessionIdParam = allParams.get("idSesion" + i);
+            if (sessionIdParam != null && !sessionIdParam.equals("-1")) {
+                Integer idSesion = Integer.parseInt(sessionIdParam);
+                RoutineHasSessionEntity sessionRoutineEntity = new RoutineHasSessionEntity();
+                sessionRoutineEntity.setDay(i);
+                sessionRoutineEntity.setRoutineIdroutine(idRutina);
+                sessionRoutineEntity.setSessionId(idSesion);
+                sessionRoutineEntity.setRoutineByRoutineIdroutine(routineRepository.findById(idRutina).orElse(null));
+                sessionRoutineEntity.setSessionBySessionId(sessionRepository.findById(idSesion).orElse(null));
+                routineHasSessionRepository.save(sessionRoutineEntity);
+            }
+        }
+        // Recargar los datos para mostrarlos nuevamente en la vista
+        List<RoutineHasSessionEntity> sessionRoutineEntities = routineHasSessionRepository.findSessionsByRoutineId(idRutina);
+        List<SessionEntity> sessionEntities = sessionRepository.getSessionsByIdRoutine(idRutina);
+        List<SessionEntity> sessionCompleteEntities = sessionRepository.getSessionsByIdEntrenador(idEntrenador);
+        model.addAttribute("lista", sessionEntities);
+        model.addAttribute("listaSesionRutina", sessionRoutineEntities);
+        model.addAttribute("listaCompleta", sessionCompleteEntities);
+        model.addAttribute("idRutina", idRutina);
+        model.addAttribute("idEntrenador", idEntrenador);
+        return "entrenamiento";
     }
 
     @GetMapping("/crear")

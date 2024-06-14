@@ -108,7 +108,7 @@ public class ClientController {
         return "session_client";
     }
 
-    @PostMapping("/guardar_sesiones")
+    /*@PostMapping("/guardar_sesiones")
     public String doGuardarRutinas (@RequestParam("idRutina") Integer idRutina,
                                     @RequestParam("idEntrenador") Integer idEntrenador,
                                     @RequestParam("idSesion1") Integer idSesion1,
@@ -168,7 +168,7 @@ public class ClientController {
         model.addAttribute("idRutina", idRutina);
         model.addAttribute("idEntrenador", idEntrenador);
         return "session_client";
-    }
+    }*/
 
     //Redirecciones pestaña de ejercicios
 

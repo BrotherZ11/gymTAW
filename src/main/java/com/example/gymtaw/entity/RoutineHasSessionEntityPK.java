@@ -11,15 +11,12 @@ import java.util.Objects;
 public class RoutineHasSessionEntityPK implements Serializable {
     @Column(name = "routine_idroutine", nullable = false)
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer routineIdroutine;
     @Column(name = "session_id", nullable = false)
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer sessionId;
     @Column(name = "day", nullable = false)
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer day;
 
     public Integer getRoutineIdroutine() {
