@@ -30,7 +30,7 @@ public class RoutineController {
     UserRepository userRepository;
 
     @Autowired
-    ExerciseRepository exerciseRepository;
+    ExerciseSessionRepository exerciseRepository;
 
     @GetMapping("/trainer/rutina")
     public String doListar (Model model, @RequestParam("idEntrenador") Integer idEntrenador) {
