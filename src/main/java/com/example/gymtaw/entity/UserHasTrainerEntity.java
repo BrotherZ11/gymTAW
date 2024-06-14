@@ -8,20 +8,23 @@ import java.util.Objects;
 @Table(name = "user_has_trainer", schema = "gymtaw", catalog = "")
 @IdClass(UserHasTrainerEntityPK.class)
 public class UserHasTrainerEntity {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "user_id", nullable = false)
+    @Column(name = "user_id", nullable = false, insertable = false, updatable = false)
     private Integer userId;
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     @Id
-    @Column(name = "trainer_id", nullable = false)
+    @Column(name = "trainer_id", nullable = false, insertable = false, updatable = false)
     private Integer trainerId;
+
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private UserEntity userByUserId;
+
     @ManyToOne
     @JoinColumn(name = "trainer_id", referencedColumnName = "id", nullable = false)
     private UserEntity userByTrainerId;
+
+    // Getters and setters
 
     public Integer getUserId() {
         return userId;
@@ -39,19 +42,6 @@ public class UserHasTrainerEntity {
         this.trainerId = trainerId;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        UserHasTrainerEntity that = (UserHasTrainerEntity) o;
-        return Objects.equals(userId, that.userId) && Objects.equals(trainerId, that.trainerId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(userId, trainerId);
-    }
-
     public UserEntity getUserByUserId() {
         return userByUserId;
     }
@@ -66,5 +56,20 @@ public class UserHasTrainerEntity {
 
     public void setUserByTrainerId(UserEntity userByTrainerId) {
         this.userByTrainerId = userByTrainerId;
+    }
+
+    // equals and hashCode methods
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserHasTrainerEntity that = (UserHasTrainerEntity) o;
+        return Objects.equals(userId, that.userId) && Objects.equals(trainerId, that.trainerId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId, trainerId);
     }
 }

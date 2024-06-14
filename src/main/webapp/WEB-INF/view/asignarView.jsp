@@ -21,7 +21,8 @@
         Asignar clientes a <%=usuario.getName() + " " + usuario.getSurname()%>
     <%}%>
 </h2>
-<form method="post" action="/realizarAsignacion">
+<form method="post" action="/users/realizarAsignacion">
+    <input type="hidden" name="idUsuario" value="<%=usuario.getId()%>"/>
     <table border="1">
         <tr>
             <td><%if(usuario.getIdRol() == 4){%>
@@ -30,13 +31,14 @@
                     Clientes:
                 <%}%>
             </td>
-            <td><select multiple>
+            <td><select name="idsUsuariosAsignar" multiple>
                 <%for(UserEntity user: usuariosAsignar){%>
                 <option value="<%=user.getId()%>" ><%=user.getName() + " " + user.getSurname()%></option>
                 <%}%>
             </select></td>
         </tr>
     </table>
+    <button>Asignar</button>
 </form>
 </body>
 </html>

@@ -1,9 +1,11 @@
 package com.example.gymtaw.controller;
 
 import com.example.gymtaw.dao.RolRepository;
+import com.example.gymtaw.dao.UserHasTrainerRepository;
 import com.example.gymtaw.dao.UserRepository;
 import com.example.gymtaw.entity.RolEntity;
 import com.example.gymtaw.entity.UserEntity;
+import com.example.gymtaw.entity.UserHasTrainerEntity;
 import com.example.gymtaw.ui.Filtro;
 import com.example.gymtaw.ui.Usuario;
 import jakarta.servlet.http.HttpSession;
@@ -22,6 +24,8 @@ public class UserController extends BaseController{
     UserRepository userRepository;
     @Autowired
     RolRepository rolRepository;
+    @Autowired
+    UserHasTrainerRepository userTrainerRepository;
 
     @GetMapping("/")
     public String doListarUsuarios (Model model, HttpSession session) {
@@ -157,6 +161,9 @@ public class UserController extends BaseController{
     @GetMapping("/asignar")
     public String doAsignar(@RequestParam("id") int idUsuario, Model model, HttpSession session){
         UserEntity usuario = userRepository.findById(idUsuario).get();
+        if(!estaAutenticado(session)){
+            return "redirect:/";
+        }
         List<UserEntity> usuarios;
         if(usuario.getIdRol() == 4){
             usuarios = userRepository.findTrainers();
@@ -167,4 +174,36 @@ public class UserController extends BaseController{
         model.addAttribute("usuariosAsignacion", usuarios);
         return "asignarView";
     }
+
+    @PostMapping("/realizarAsignacion")
+    public String doAsignacion (@RequestParam("idUsuario") Integer idUsuario, @RequestParam("idsUsuariosAsignar") List<Integer> usuariosAsignar, Model model, HttpSession session){
+        UserEntity usuario = userRepository.findById(idUsuario).get();
+        if(!estaAutenticado(session)){
+            return "redirect:/";
+        }
+
+        List<UserEntity> usuarios = userRepository.findAllById(usuariosAsignar);
+        if(usuario.getIdRol() == 4){
+            for(UserEntity u : usuarios){
+                UserHasTrainerEntity ut = new UserHasTrainerEntity();
+                ut.setUserId(usuario.getId());
+                ut.setTrainerId(u.getId());
+                ut.setUserByUserId(usuario);
+                ut.setUserByTrainerId(u);
+                this.userTrainerRepository.save(ut);
+            }
+        } else {
+            for(UserEntity u : usuarios){
+                UserHasTrainerEntity ut = new UserHasTrainerEntity();
+                ut.setUserId(u.getId());
+                ut.setTrainerId(usuario.getId());
+                ut.setUserByUserId(u);
+                ut.setUserByTrainerId(usuario);
+                this.userTrainerRepository.save(ut);
+            }
+        }
+
+        return "redirect:/users/";
+    }
+
 }

@@ -1,22 +1,27 @@
 package com.example.gymtaw.entity;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.Embeddable;
 
 import java.io.Serializable;
 import java.util.Objects;
 
+@Embeddable
 public class UserHasTrainerEntityPK implements Serializable {
     @Column(name = "user_id", nullable = false)
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer userId;
+
     @Column(name = "trainer_id", nullable = false)
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer trainerId;
+
+    public UserHasTrainerEntityPK() {}
+
+    public UserHasTrainerEntityPK(Integer userId, Integer trainerId) {
+        this.userId = userId;
+        this.trainerId = trainerId;
+    }
+
+    // Getters, setters, equals, and hashCode methods
 
     public Integer getUserId() {
         return userId;
