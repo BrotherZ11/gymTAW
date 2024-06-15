@@ -30,7 +30,13 @@ public class RoutineController {
     UserRepository userRepository;
 
     @Autowired
-    ExerciseSessionRepository exerciseRepository;
+    ExerciseSessionRepository exerciseSessionRepository;
+
+    @Autowired
+    ExerciseRepository exerciseRepository;
+
+    @Autowired
+    ValoracionRepository valoracionRepository;
 
     @GetMapping("/trainer/rutina")
     public String doListar (Model model, @RequestParam("idEntrenador") Integer idEntrenador) {
@@ -159,10 +165,22 @@ public class RoutineController {
 
     @GetMapping("/cliente/ejercicios")
     public String getEjerciciosForClient(@RequestParam("id") Integer id, Model model) {
-       List<ExerciseEntity> ejercicios = exerciseRepository.getExercisesByIdSession(id);
+        List<ExerciseEntity> ejercicios = exerciseSessionRepository.getExercisesByIdSession(id);
         model.addAttribute("ejercicios", ejercicios);
         return "entrenamiento_ejercicios_cliente";
     }
+
+//    @GetMapping("/valoraciones")
+//    public String getValoracionesForClient(@RequestParam("idExercise") Integer idExercise, Model model) {
+//        List<ValoracionEntity> valoraciones = valoracionRepository.findByExerciseId(idExercise);
+//        model.addAttribute("valoraciones", valoraciones);
+//        model.addAttribute("idExercise", idExercise);
+//        return "valoraciones";
+//    }
+
+
+
+
 
 
 
