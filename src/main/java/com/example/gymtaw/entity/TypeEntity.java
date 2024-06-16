@@ -23,10 +23,10 @@ public class TypeEntity {
     @OneToMany(mappedBy = "typeIdtype")
     private Set<ExerciseEntity> exercises = new LinkedHashSet<>();
 
-    @ManyToMany(mappedBy = "types")
+    @ManyToMany(mappedBy = "typeIdtype")
     private Set<RoutineEntity> routines = new LinkedHashSet<>();
 
-    @ManyToMany(mappedBy = "types")
+    @ManyToMany(mappedBy = "typeIdtype")
     private Set<SessionEntity> sessions = new LinkedHashSet<>();
 
 }

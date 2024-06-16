@@ -33,8 +33,4 @@ public class ValoracionEntity {
     @Column(name = "done", nullable = false)
     private Byte done;
 
-    @ManyToOne
-    @JoinColumn(name = "userentity_id")
-    private UserEntity userEntity;
-
 }

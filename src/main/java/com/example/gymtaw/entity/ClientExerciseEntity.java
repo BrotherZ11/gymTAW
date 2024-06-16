@@ -37,8 +37,4 @@ public class ClientExerciseEntity {
     @Column(name = "distance")
     private Double distance;
 
-    @ManyToOne
-    @JoinColumn(name = "userentity_id")
-    private UserEntity userEntity;
-
 }

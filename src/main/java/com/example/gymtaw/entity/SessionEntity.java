@@ -24,16 +24,13 @@ public class SessionEntity {
     @JoinColumn(name = "idtrainer", nullable = false)
     private UserEntity idtrainer;
 
-    @OneToMany(mappedBy = "sessionEntity")
+    @OneToMany(mappedBy = "session")
     private Set<ExerciseHasSessionEntity> exerciseHasSessions = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "sessionEntity")
+    @OneToMany(mappedBy = "session")
     private Set<RoutineHasSessionEntity> routineHasSessions = new LinkedHashSet<>();
 
-    @ManyToMany
-    @JoinTable(name = "type_has_session",
-            joinColumns = @JoinColumn(name = "session_id"),
-            inverseJoinColumns = @JoinColumn(name = "type_idtype"))
+    @ManyToMany(mappedBy = "session")
     private Set<TypeEntity> types = new LinkedHashSet<>();
 
 }

@@ -22,11 +22,4 @@ public class ExerciseHasSessionEntity {
     @JoinColumn(name = "session_id", nullable = false)
     private SessionEntity session;
 
-    @Column(name = "`order`", nullable = false)
-    private Integer order;
-
-    @ManyToOne
-    @JoinColumn(name = "sessionentity_id")
-    private SessionEntity sessionEntity;
-
 }

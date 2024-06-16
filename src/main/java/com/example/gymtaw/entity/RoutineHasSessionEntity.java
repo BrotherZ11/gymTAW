@@ -12,18 +12,14 @@ public class RoutineHasSessionEntity {
     @EmbeddedId
     private RoutineHasSessionEntityId id;
 
-    @MapsId("routineIdroutine")
+    @MapsId("routineId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "routine_idroutine", nullable = false)
-    private RoutineEntity routineIdroutine;
+    @JoinColumn(name = "routine_id", nullable = false)
+    private RoutineEntity routine;
 
     @MapsId("sessionId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "session_id", nullable = false)
     private SessionEntity session;
-
-    @ManyToOne
-    @JoinColumn(name = "sessionentity_id")
-    private SessionEntity sessionEntity;
 
 }

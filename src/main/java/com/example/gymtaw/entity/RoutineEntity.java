@@ -35,7 +35,7 @@ public class RoutineEntity {
     @JoinColumn(name = "idtrainer", nullable = false)
     private UserEntity idtrainer;
 
-    @OneToMany(mappedBy = "routineIdroutine")
+    @OneToMany(mappedBy = "routine")
     private Set<RoutineHasSessionEntity> routineHasSessions = new LinkedHashSet<>();
 
     @ManyToMany

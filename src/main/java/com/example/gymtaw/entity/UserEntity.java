@@ -45,7 +45,7 @@ public class UserEntity {
     @JoinColumn(name = "id_rol", nullable = false)
     private RolEntity idRol;
 
-    @OneToMany(mappedBy = "userEntity")
+    @OneToMany(mappedBy = "user")
     private Set<ClientExerciseEntity> clientExercises = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "idclient")
@@ -57,13 +57,13 @@ public class UserEntity {
     @OneToMany(mappedBy = "idtrainer")
     private Set<SessionEntity> sessions = new LinkedHashSet<>();
 
+    @ManyToMany(mappedBy = "user")
+    private Set<UserEntity> usersClient = new LinkedHashSet<>();
+
+    @ManyToMany(mappedBy = "user")
+    private Set<UserEntity> usersTrainer = new LinkedHashSet<>();
+
     @OneToMany(mappedBy = "user")
-    private Set<UserHasTrainerEntity> userHasTrainersClient = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "trainer")
-    private Set<UserHasTrainerEntity> userHasTrainersTrainer = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "userEntity")
     private Set<ValoracionEntity> valoracions = new LinkedHashSet<>();
 
 }
