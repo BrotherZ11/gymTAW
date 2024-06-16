@@ -10,10 +10,10 @@
 <% List<RoutineEntity> rutinas = (List<RoutineEntity>) request.getAttribute("rutinas"); %>
 <html>
 <head>
-    <title>Title</title>
+    <title>Rutinas</title>
 </head>
 <body>
-
+<input type="button" onclick="history.back()" name="Volver atrás" value="Volver atrás">
 <% if (rutinas.isEmpty()) {%>
 <div align="center">
     <h1>NO TIENES RUTINAS</h1>

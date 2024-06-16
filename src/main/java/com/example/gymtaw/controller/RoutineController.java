@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -37,6 +38,8 @@ public class RoutineController {
 
     @Autowired
     ValoracionRepository valoracionRepository;
+
+
 
     @GetMapping("/trainer/rutina")
     public String doListar (Model model, @RequestParam("idEntrenador") Integer idEntrenador) {
@@ -153,6 +156,7 @@ public class RoutineController {
     public String getRoutinesForClient(@RequestParam("idCliente") Integer idCliente, Model model) {
         List<RoutineEntity> rutinas = routineRepository.getRoutinesByClient(idCliente);
         model.addAttribute("rutinas", rutinas);
+        model.addAttribute("idCliente", idCliente);
         return "entrenamiento_rutina_cliente";
     }
 
@@ -160,15 +164,60 @@ public class RoutineController {
     public String getSesionesForClient(@RequestParam("idRutina") Integer idRutina, Model model) {
         List<SessionEntity> sesiones = sessionRepository.getSessionsByIdRoutine(idRutina);
         model.addAttribute("sesiones", sesiones);
+        List<ExerciseEntity> ejercicios = new ArrayList<>();
+
+        for(SessionEntity s : sesiones){
+            ejercicios = exerciseRepository.getExercisesByIdSession(s.getId());
+
+        }
+        model.addAttribute("ejercicios",ejercicios);
         return "entrenamiento_sesion_cliente";
     }
 
-    @GetMapping("/cliente/ejercicios")
-    public String getEjerciciosForClient(@RequestParam("id") Integer id, Model model) {
-        List<ExerciseEntity> ejercicios = exerciseSessionRepository.getExercisesByIdSession(id);
-        model.addAttribute("ejercicios", ejercicios);
-        return "entrenamiento_ejercicios_cliente";
+    @GetMapping("/client/valorar")
+    public String getValoraciones(@RequestParam("idCliente") Integer idCliente, Model model) {
+        List<RoutineEntity> rutinas = routineRepository.getRoutinesByClient(idCliente);
+        List<SessionEntity> sesiones = new ArrayList<>();
+        List<ExerciseEntity> ejercicios = new ArrayList<>();
+        for(RoutineEntity r : rutinas){
+            sesiones = sessionRepository.getSessionsByIdRoutine(r.getIdroutine());
+        }
+        for(SessionEntity s : sesiones){
+            ejercicios = exerciseRepository.getExercisesByIdSession(s.getId());
+        }
+        model.addAttribute("rutinas",rutinas);
+        model.addAttribute("sesiones",sesiones);
+        model.addAttribute("ejercicios",ejercicios);
+
+        List<ValoracionEntity> valoraciones = new ArrayList<>();
+        for(ExerciseEntity e : ejercicios){
+            valoraciones = (List<ValoracionEntity>) e.getValoracionsById();
+        }
+        model.addAttribute("valoraciones", valoraciones);
+
+
+        return "valoracion";
     }
+
+    @PostMapping("/guardarValoracion")
+    public String doGuardarValoracion(@RequestParam("estrellas") Integer estrellas,
+                                      @RequestParam("idCliente") Integer idCliente,
+                                      @RequestParam("idEjercicio") Integer idEjercicio){
+        ValoracionEntity valoracion = valoracionRepository.getValoracionByExercise(idEjercicio);
+        valoracion.setStars(estrellas);
+        valoracionRepository.save(valoracion);
+        return "redirect:/home/client/valorar?idCliente=" + idCliente;
+
+    }
+
+    @GetMapping("/cliente/ejercicio")
+    public String getEjercicioCliente(@RequestParam("idEjercicio") Integer idEjercicio, Model model) {
+        ExerciseEntity ejercicio = exerciseRepository.getExerciseByExerciseId(idEjercicio);
+        model.addAttribute("ejercicio",ejercicio);
+        return "entrenamiento_ejercicio_cliente";
+    }
+
+
 
 //    @GetMapping("/valoraciones")
 //    public String getValoracionesForClient(@RequestParam("idExercise") Integer idExercise, Model model) {
