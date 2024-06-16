@@ -7,7 +7,6 @@ import com.example.gymtaw.entity.RolEntity;
 import com.example.gymtaw.entity.UserEntity;
 import com.example.gymtaw.entity.UserHasTrainerEntity;
 import com.example.gymtaw.ui.Filtro;
-import com.example.gymtaw.ui.Usuario;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -151,7 +150,8 @@ public class UserController extends BaseController{
             usuario.setGender(genero);
             usuario.setPassword(contrasena);
             usuario.setDni(dni);
-            usuario.setIdRol(rol);
+            RolEntity rolEntity = rolRepository.findById(rol).orElse(new RolEntity());
+            usuario.setIdRol(rolEntity);
 
             this.userRepository.save(usuario);
         }
@@ -165,7 +165,7 @@ public class UserController extends BaseController{
             return "redirect:/";
         }
         List<UserEntity> usuarios;
-        if(usuario.getIdRol() == 4){
+        if(usuario.getIdRol().getId() == 4){
             usuarios = userRepository.findTrainers();
         } else {
             usuarios = userRepository.findClients();
@@ -183,22 +183,18 @@ public class UserController extends BaseController{
         }
 
         List<UserEntity> usuarios = userRepository.findAllById(usuariosAsignar);
-        if(usuario.getIdRol() == 4){
+        if(usuario.getIdRol().getId() == 4){
             for(UserEntity u : usuarios){
                 UserHasTrainerEntity ut = new UserHasTrainerEntity();
-                ut.setUserId(usuario.getId());
-                ut.setTrainerId(u.getId());
-                ut.setUserByUserId(usuario);
-                ut.setUserByTrainerId(u);
+                ut.setUser(usuario);
+                ut.setTrainer(u);
                 this.userTrainerRepository.save(ut);
             }
         } else {
             for(UserEntity u : usuarios){
                 UserHasTrainerEntity ut = new UserHasTrainerEntity();
-                ut.setUserId(u.getId());
-                ut.setTrainerId(usuario.getId());
-                ut.setUserByUserId(u);
-                ut.setUserByTrainerId(usuario);
+                ut.setUser(u);
+                ut.setTrainer(usuario);
                 this.userTrainerRepository.save(ut);
             }
         }

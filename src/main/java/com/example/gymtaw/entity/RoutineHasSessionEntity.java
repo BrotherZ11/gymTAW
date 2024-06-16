@@ -1,82 +1,29 @@
 package com.example.gymtaw.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.util.Objects;
-
+@Getter
+@Setter
 @Entity
-@Table(name = "routine_has_session", schema = "gymtaw", catalog = "")
-@IdClass(RoutineHasSessionEntityPK.class)
+@Table(name = "routine_has_session")
 public class RoutineHasSessionEntity {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id
-    @Column(name = "routine_idroutine", nullable = false)
-    private Integer routineIdroutine;
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id
-    @Column(name = "session_id", nullable = false)
-    private Integer sessionId;
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id
-    @Column(name = "day", nullable = false)
-    private Integer day;
+    @EmbeddedId
+    private RoutineHasSessionEntityId id;
+
+    @MapsId("routineIdroutine")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "routine_idroutine", nullable = false)
+    private RoutineEntity routineIdroutine;
+
+    @MapsId("sessionId")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "session_id", nullable = false)
+    private SessionEntity session;
+
     @ManyToOne
-    @JoinColumn(name = "routine_idroutine", referencedColumnName = "idroutine", nullable = false)
-    private RoutineEntity routineByRoutineIdroutine;
-    @ManyToOne
-    @JoinColumn(name = "session_id", referencedColumnName = "id", nullable = false)
-    private SessionEntity sessionBySessionId;
+    @JoinColumn(name = "sessionentity_id")
+    private SessionEntity sessionEntity;
 
-    public Integer getRoutineIdroutine() {
-        return routineIdroutine;
-    }
-
-    public void setRoutineIdroutine(Integer routineIdroutine) {
-        this.routineIdroutine = routineIdroutine;
-    }
-
-    public Integer getSessionId() {
-        return sessionId;
-    }
-
-    public void setSessionId(Integer sessionId) {
-        this.sessionId = sessionId;
-    }
-
-    public Integer getDay() {
-        return day;
-    }
-
-    public void setDay(Integer day) {
-        this.day = day;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        RoutineHasSessionEntity that = (RoutineHasSessionEntity) o;
-        return Objects.equals(routineIdroutine, that.routineIdroutine) && Objects.equals(sessionId, that.sessionId) && Objects.equals(day, that.day);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(routineIdroutine, sessionId, day);
-    }
-
-    public RoutineEntity getRoutineByRoutineIdroutine() {
-        return routineByRoutineIdroutine;
-    }
-
-    public void setRoutineByRoutineIdroutine(RoutineEntity routineByRoutineIdroutine) {
-        this.routineByRoutineIdroutine = routineByRoutineIdroutine;
-    }
-
-    public SessionEntity getSessionBySessionId() {
-        return sessionBySessionId;
-    }
-
-    public void setSessionBySessionId(SessionEntity sessionBySessionId) {
-        this.sessionBySessionId = sessionBySessionId;
-    }
 }

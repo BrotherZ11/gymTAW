@@ -1,103 +1,40 @@
 package com.example.gymtaw.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
-import java.util.Objects;
-
+@Getter
+@Setter
 @Entity
-@Table(name = "valoracion", schema = "gymtaw", catalog = "")
-@IdClass(ValoracionEntityPK.class)
+@Table(name = "valoracion")
 public class ValoracionEntity {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id
-    @Column(name = "user_id", nullable = false)
-    private Integer userId;
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id
-    @Column(name = "exercise_id", nullable = false)
-    private Integer exerciseId;
-    @Basic
-    @Column(name = "review", nullable = true, length = 5000)
+    @EmbeddedId
+    private ValoracionEntityId id;
+
+    @MapsId("userId")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    private UserEntity user;
+
+    @MapsId("exerciseId")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "exercise_id", nullable = false)
+    private ExerciseEntity exercise;
+
+    @Column(name = "review", length = 5000)
     private String review;
-    @Basic
-    @Column(name = "stars", nullable = true)
+
+    @Column(name = "stars")
     private Integer stars;
-    @Basic
+
+    @ColumnDefault("0")
     @Column(name = "done", nullable = false)
     private Byte done;
+
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
-    private UserEntity userByUserId;
-    @ManyToOne
-    @JoinColumn(name = "exercise_id", referencedColumnName = "id", nullable = false)
-    private ExerciseEntity exerciseByExerciseId;
+    @JoinColumn(name = "userentity_id")
+    private UserEntity userEntity;
 
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
-    public Integer getExerciseId() {
-        return exerciseId;
-    }
-
-    public void setExerciseId(Integer exerciseId) {
-        this.exerciseId = exerciseId;
-    }
-
-    public String getReview() {
-        return review;
-    }
-
-    public void setReview(String review) {
-        this.review = review;
-    }
-
-    public Integer getStars() {
-        return stars;
-    }
-
-    public void setStars(Integer stars) {
-        this.stars = stars;
-    }
-
-    public Byte getDone() {
-        return done;
-    }
-
-    public void setDone(Byte done) {
-        this.done = done;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ValoracionEntity that = (ValoracionEntity) o;
-        return Objects.equals(userId, that.userId) && Objects.equals(exerciseId, that.exerciseId) && Objects.equals(review, that.review) && Objects.equals(stars, that.stars) && Objects.equals(done, that.done);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(userId, exerciseId, review, stars, done);
-    }
-
-    public UserEntity getUserByUserId() {
-        return userByUserId;
-    }
-
-    public void setUserByUserId(UserEntity userByUserId) {
-        this.userByUserId = userByUserId;
-    }
-
-    public ExerciseEntity getExerciseByExerciseId() {
-        return exerciseByExerciseId;
-    }
-
-    public void setExerciseByExerciseId(ExerciseEntity exerciseByExerciseId) {
-        this.exerciseByExerciseId = exerciseByExerciseId;
-    }
 }

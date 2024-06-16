@@ -1,99 +1,39 @@
 package com.example.gymtaw.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.util.Collection;
-import java.util.Objects;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
+@Getter
+@Setter
 @Entity
-@Table(name = "session", schema = "gymtaw", catalog = "")
+@Table(name = "session")
 public class SessionEntity {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
-    @Basic
+
     @Column(name = "name", nullable = false, length = 45)
     private String name;
-    @Basic
-    @Column(name = "idtrainer", nullable = false, insertable=false, updatable=false)
-    private Integer idtrainer;
-    @OneToMany(mappedBy = "sessionBySessionId")
-    private Collection<ExerciseHasSessionEntity> exerciseHasSessionsById;
-    @OneToMany(mappedBy = "sessionBySessionId")
-    private Collection<RoutineHasSessionEntity> routineHasSessionsById;
-    @ManyToOne
-    @JoinColumn(name = "idtrainer", referencedColumnName = "id", nullable = false)
-    private UserEntity userByIdtrainer;
-    @OneToMany(mappedBy = "sessionBySessionId")
-    private Collection<TypeHasSessionEntity> typeHasSessionsById;
 
-    public Integer getId() {
-        return id;
-    }
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "idtrainer", nullable = false)
+    private UserEntity idtrainer;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    @OneToMany(mappedBy = "sessionEntity")
+    private Set<ExerciseHasSessionEntity> exerciseHasSessions = new LinkedHashSet<>();
 
-    public String getName() {
-        return name;
-    }
+    @OneToMany(mappedBy = "sessionEntity")
+    private Set<RoutineHasSessionEntity> routineHasSessions = new LinkedHashSet<>();
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    @ManyToMany
+    @JoinTable(name = "type_has_session",
+            joinColumns = @JoinColumn(name = "session_id"),
+            inverseJoinColumns = @JoinColumn(name = "type_idtype"))
+    private Set<TypeEntity> types = new LinkedHashSet<>();
 
-    public Integer getIdtrainer() {
-        return idtrainer;
-    }
-
-    public void setIdtrainer(Integer idtrainer) {
-        this.idtrainer = idtrainer;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        SessionEntity that = (SessionEntity) o;
-        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(idtrainer, that.idtrainer);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, idtrainer);
-    }
-
-    public Collection<ExerciseHasSessionEntity> getExerciseHasSessionsById() {
-        return exerciseHasSessionsById;
-    }
-
-    public void setExerciseHasSessionsById(Collection<ExerciseHasSessionEntity> exerciseHasSessionsById) {
-        this.exerciseHasSessionsById = exerciseHasSessionsById;
-    }
-
-    public Collection<RoutineHasSessionEntity> getRoutineHasSessionsById() {
-        return routineHasSessionsById;
-    }
-
-    public void setRoutineHasSessionsById(Collection<RoutineHasSessionEntity> routineHasSessionsById) {
-        this.routineHasSessionsById = routineHasSessionsById;
-    }
-
-    public UserEntity getUserByIdtrainer() {
-        return userByIdtrainer;
-    }
-
-    public void setUserByIdtrainer(UserEntity userByIdtrainer) {
-        this.userByIdtrainer = userByIdtrainer;
-    }
-
-    public Collection<TypeHasSessionEntity> getTypeHasSessionsById() {
-        return typeHasSessionsById;
-    }
-
-    public void setTypeHasSessionsById(Collection<TypeHasSessionEntity> typeHasSessionsById) {
-        this.typeHasSessionsById = typeHasSessionsById;
-    }
 }

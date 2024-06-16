@@ -152,9 +152,10 @@ public class ClientController {
             }
             RoutineHasSessionEntity sessionRoutineEntity = new RoutineHasSessionEntity();
             if(idSesion != -1){
-                sessionRoutineEntity.setDay(i);
-                sessionRoutineEntity.setRoutineIdroutine(idRutina);
-                sessionRoutineEntity.setSessionId(idSesion);
+                SessionEntity sesion = sessionRepository.findById(idSesion).get();
+                sessionRoutineEntity.setSession(sesion);
+                RoutineEntity routineEntity = routineRepository.findById(idRutina).get();
+                sessionRoutineEntity.setRoutineIdroutine(routineEntity);
                 routineHasSessionRepository.save(sessionRoutineEntity);
             }
         }

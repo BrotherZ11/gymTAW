@@ -18,7 +18,7 @@
 </head>
 <body>
 <form:form method="post" action="/users/filtrar" modelAttribute="filtro">
-    <form:radiobuttons path="idRol" items="${rols}" itemLabel="type" itemValue="idRol"/>
+    <form:radiobuttons path="idRol" items="${rols}" itemLabel="type" itemValue="id"/>
     <form:button>Filtrar</form:button>
 </form:form>
 
@@ -52,9 +52,9 @@
             <td><%= usuario.getSurname() %></td>
             <td><a href="/users/borrar?id=<%= usuario.getId() %>">Borrar</a> </td>
             <td><a href="/users/editarUsuario?id=<%= usuario.getId() %>">Editar</a> </td>
-            <%if(usuario.getIdRol() == 3){%>
+            <%if(usuario.getIdRol().getId() == 3){%>
                 <td>Administrador</td>
-            <%}else if(usuario.getIdRol() == 4){%>
+            <%}else if(usuario.getIdRol().getId() == 4){%>
                 <td><a href="/users/asignar?id=<%=usuario.getId()%>">Asignar entrenadores</a></td>
             <%}else{%>
                 <td><a href="/users/asignar?id=<%=usuario.getId()%>">Asignar clientes</a></td>

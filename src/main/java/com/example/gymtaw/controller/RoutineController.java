@@ -78,7 +78,7 @@ public class RoutineController {
     @GetMapping("/crear")
     public String doNuevo (Model model, @RequestParam("idEntrenador") Integer idEntrenador) {
             RoutineEntity rutina = new RoutineEntity();
-            rutina.setIdroutine(-1);
+            rutina.setId(-1);
             model.addAttribute("rutina", rutina);
             model.addAttribute("idEntrenador", idEntrenador);
         return "routine";
@@ -103,8 +103,8 @@ public class RoutineController {
         RoutineEntity rutina = this.routineRepository.findById(id).orElse(new RoutineEntity());
         rutina.setName(nombre);
         rutina.setDescription(descripcion);
-        rutina.setDate(Date.valueOf(fecha));
-        rutina.setUserByIdtrainer(entrenador);
+        rutina.setDate(Date.valueOf(fecha).toLocalDate());
+        rutina.setIdtrainer(entrenador);
         this.routineRepository.save(rutina);
 
         return "redirect:/home/trainer/rutina?idEntrenador=" + idEntrenador;
