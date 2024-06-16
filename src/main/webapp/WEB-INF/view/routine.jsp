@@ -11,14 +11,14 @@
 <%
     RoutineEntity rutina = (RoutineEntity) request.getAttribute("rutina");
     Integer idEntrenador = (Integer) request.getAttribute("idEntrenador");
-    boolean esEditar = (rutina.getIdroutine() != -1);
+    boolean esEditar = (rutina.getId() != -1);
     String nombre = "", descripcion = "";
     LocalDate fecha = LocalDate.now();
 
     if (esEditar) {
         nombre = rutina.getName();
         descripcion = rutina.getDescription() + "";
-        fecha = rutina.getDate().toLocalDate();
+        fecha = rutina.getDate().atStartOfDay().toLocalDate();
     }
 %>
 <html>
@@ -28,7 +28,7 @@
 <body>
 <h1>Datos de la rutina</h1>
 <form method="post" action="guardar">
-    <input type="hidden" name="id" value="<%= rutina.getIdroutine() %>">
+    <input type="hidden" name="id" value="<%= rutina.getId() %>">
     <input type="hidden" name="idEntrenador" value="<%= idEntrenador %>">
     <table border="0">
         <tr>

@@ -15,7 +15,7 @@ public interface SessionRepository extends JpaRepository<SessionEntity, Integer>
             "on session.id = session_routine.session_id\n" +
             "where session_routine.routine_idroutine = :idRutina\n" +
             "order by session_routine.day", nativeQuery = true)*/
-   @Query("select s from SessionEntity s join RoutineHasSessionEntity rs on s.id = rs.sessionId where rs.routineIdroutine = :idRutina order by rs.day")
+   @Query("select s from SessionEntity s join RoutineHasSessionEntity rs on s.id = rs.sessionEntity.id where rs.routineEntity.id = :idRutina order by rs.id.day")
     public List<SessionEntity> getSessionsByIdRoutine(@Param("idRutina") Integer idRutina);
     @Query(value = "SELECT * FROM session\n" +
             "where session.idTrainer = :idEntrenador", nativeQuery = true)

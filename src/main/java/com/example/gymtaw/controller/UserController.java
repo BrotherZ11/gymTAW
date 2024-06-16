@@ -2,9 +2,9 @@ package com.example.gymtaw.controller;
 
 import com.example.gymtaw.dao.RolRepository;
 import com.example.gymtaw.dao.UserRepository;
+import com.example.gymtaw.entity.RolEntity;
 import com.example.gymtaw.entity.UserEntity;
 import com.example.gymtaw.ui.Filtro;
-import com.example.gymtaw.ui.Usuario;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -108,16 +108,16 @@ public class UserController extends BaseController{
 
     @PostMapping("/guardarCreacion")
     public String doGuardarCreacion (@RequestParam("id") Integer id,
-                             @RequestParam("gmail") String gmail,
-                             @RequestParam("nombre") String nombre,
-                             @RequestParam("apellido") String apellido,
-                             @RequestParam("edad") Integer edad,
-                             @RequestParam("telefono") String telefono,
-                             @RequestParam("genero") String genero,
-                             @RequestParam("contrasena") String contrasena,
-                             @RequestParam("dni") String dni,
-                             @RequestParam("rol") int rol,
-                             HttpSession session) {
+                                     @RequestParam("gmail") String gmail,
+                                     @RequestParam("nombre") String nombre,
+                                     @RequestParam("apellido") String apellido,
+                                     @RequestParam("edad") Integer edad,
+                                     @RequestParam("telefono") String telefono,
+                                     @RequestParam("genero") String genero,
+                                     @RequestParam("contrasena") String contrasena,
+                                     @RequestParam("dni") String dni,
+                                     @RequestParam("rol") int rol,
+                                     HttpSession session) {
 
         String strTo = "redirect:/users/";
         if (!estaAutenticado(session)) {
@@ -132,7 +132,8 @@ public class UserController extends BaseController{
             usuario.setGender(genero);
             usuario.setPassword(contrasena);
             usuario.setDni(dni);
-            usuario.setIdRol(rol);
+            RolEntity rolEntity = rolRepository.findById(rol).orElse(new RolEntity());
+            usuario.setIdRolEntity(rolEntity);
 
             this.userRepository.save(usuario);
         }

@@ -54,10 +54,6 @@ public class RoutineController {
 
     @GetMapping("/borrar")
     public String doBorrar (@RequestParam("id") Integer id, @RequestParam("idEntrenador") Integer idEntrenador) {
-        List<RoutineHasSessionEntity> sessions = routineHasSessionRepository.findSessionsByRoutineId(id);
-        if (!sessions.isEmpty()) {
-            routineHasSessionRepository.deleteAll(sessions);
-        }
         this.routineRepository.deleteById(id);
         return "redirect:/home/trainer/rutina?idEntrenador=" + idEntrenador;
     }
@@ -75,7 +71,7 @@ public class RoutineController {
         return "entrenamiento";
     }
 
-    @PostMapping("/guardar_sesiones")
+   /* @PostMapping("/guardar_sesiones")
     public String doGuardarRutinas (@RequestParam("idRutina") Integer idRutina,
                                     @RequestParam("idEntrenador") Integer idEntrenador,
                                     @RequestParam Map<String, String> allParams,
@@ -91,7 +87,7 @@ public class RoutineController {
                 Integer idSesion = Integer.parseInt(sessionIdParam);
                 RoutineHasSessionEntity sessionRoutineEntity = new RoutineHasSessionEntity();
                 sessionRoutineEntity.setDay(i);
-                sessionRoutineEntity.setRoutineIdroutine(idRutina);
+                sessionRoutineEntity.setRoutineEntityIdroutine(idRutina);
                 sessionRoutineEntity.setSessionId(idSesion);
                 sessionRoutineEntity.setRoutineByRoutineIdroutine(routineRepository.findById(idRutina).orElse(null));
                 sessionRoutineEntity.setSessionBySessionId(sessionRepository.findById(idSesion).orElse(null));
@@ -108,12 +104,12 @@ public class RoutineController {
         model.addAttribute("idRutina", idRutina);
         model.addAttribute("idEntrenador", idEntrenador);
         return "entrenamiento";
-    }
+    }*/
 
     @GetMapping("/crear")
     public String doNuevo (Model model, @RequestParam("idEntrenador") Integer idEntrenador) {
             RoutineEntity rutina = new RoutineEntity();
-            rutina.setIdroutine(-1);
+            rutina.setId(-1);
             model.addAttribute("rutina", rutina);
             model.addAttribute("idEntrenador", idEntrenador);
         return "routine";
@@ -138,8 +134,8 @@ public class RoutineController {
         RoutineEntity rutina = this.routineRepository.findById(id).orElse(new RoutineEntity());
         rutina.setName(nombre);
         rutina.setDescription(descripcion);
-        rutina.setDate(Date.valueOf(fecha));
-        rutina.setUserByIdtrainer(entrenador);
+        rutina.setDate(Date.valueOf(fecha).toLocalDate());
+        rutina.setIdtrainer(entrenador);
         this.routineRepository.save(rutina);
 
         return "redirect:/home/trainer/rutina?idEntrenador=" + idEntrenador;

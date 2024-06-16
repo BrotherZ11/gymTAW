@@ -7,19 +7,21 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "type_has_session")
-public class TypeHasSessionEntity {
-    @EmbeddedId
-    private TypeHasSessionEntityId id;
+@Table(name = "exercise_session")
+public class ExerciseSessionEntity {
+    @Id
+    @Column(name = "exercise_sessioncol", nullable = false)
+    private Integer id;
 
-    @MapsId("typeIdtype")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "type_idtype", nullable = false)
-    private TypeEntity typeEntityIdtype;
+    @JoinColumn(name = "exercise_id", nullable = false)
+    private ExerciseEntity exerciseEntity;
 
-    @MapsId("sessionId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "session_id", nullable = false)
     private SessionEntity sessionEntity;
+
+    @Column(name = "`order`")
+    private Integer order;
 
 }

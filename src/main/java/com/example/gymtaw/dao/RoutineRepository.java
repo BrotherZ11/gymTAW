@@ -34,7 +34,7 @@ public interface RoutineRepository extends JpaRepository<RoutineEntity, Integer>
             nativeQuery = true)
     public List<RoutineEntity> getRoutinesByIdEntrenador(@Param("idEntrenador") Integer idEntrenador);*/
 
-    @Query("select r from RoutineEntity r where r.idtrainer = :idEntrenador")
+    @Query("select r from RoutineEntity r where r.idtrainer.id = :idEntrenador")
     public List<RoutineEntity> getRoutinesbyEntrenador(@Param("idEntrenador") Integer idEntrenador);
 
     @Query("select r from RoutineEntity r where r.name like concat('%', :filtro, '%') ")

@@ -44,7 +44,7 @@ public class SessionController {
         return "session";
     }
 
-    @PostMapping("/guardar_sesion")
+/*    @PostMapping("/guardar_sesion")
     public String doGuardar (@RequestParam("id") Integer id,
                              @RequestParam("nombre") String nombre,
                              @RequestParam("idEntrenador") Integer idEntrenador,
@@ -66,5 +66,5 @@ public class SessionController {
             }
         }
         return "redirect:/home/trainer/";
-    }
+    }*/
 }

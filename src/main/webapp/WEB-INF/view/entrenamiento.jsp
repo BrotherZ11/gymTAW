@@ -36,7 +36,7 @@
             <%
                 int index = 0;
                 for(int i = 1; i <= 7; i++){
-                    if(!lista.isEmpty() && index < lista.size() && listaSesionRutina.get(index).getDay() == i){
+                    if(!lista.isEmpty() && index < lista.size() && listaSesionRutina.get(index).getId().getDay() == i){
             %>
             <td>
                 <select id="sesiones<%=i%>" name="idSesion<%=i%>">
@@ -82,7 +82,7 @@
             <%
                 index = 0;
                 for(int i = 1; i <= 7; i++){
-                    if(!lista.isEmpty() && index < lista.size() && listaSesionRutina.get(index).getDay() == i){
+                    if(!lista.isEmpty() && index < lista.size() && listaSesionRutina.get(index).getId().getDay() == i){
             %>
             <td><a href="exercise_client?idSesion=<%=lista.get(index++).getId()%>">Ver</a></td>
             <%

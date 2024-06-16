@@ -7,19 +7,21 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "type_has_routine")
-public class TypeHasRoutineEntity {
-    @EmbeddedId
-    private TypeHasRoutineEntityId id;
+@Table(name = "session_routine")
+public class SessionRoutineEntity {
+    @Id
+    @Column(name = "idsession_routine", nullable = false)
+    private Integer id;
 
-    @MapsId("typeIdtype")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "type_idtype", nullable = false)
-    private TypeEntity typeEntityIdtype;
+    @JoinColumn(name = "session_id", nullable = false)
+    private SessionEntity sessionEntity;
 
-    @MapsId("routineIdroutine")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "routine_idroutine", nullable = false)
     private RoutineEntity routineEntityIdroutine;
+
+    @Column(name = "day")
+    private Integer day;
 
 }
