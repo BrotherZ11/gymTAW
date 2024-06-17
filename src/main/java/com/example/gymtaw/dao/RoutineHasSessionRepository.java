@@ -11,11 +11,6 @@ import java.util.List;
 
 public interface RoutineHasSessionRepository extends JpaRepository<RoutineHasSessionEntity,Integer> {
 
- /*   @Query(value = "SELECT * FROM session\n" +
-            "join session_routine\n" +
-            "on session.id = session_routine.session_id\n" +
-            "where session_routine.routine_idroutine = :idRutina\n" +
-            "order by session_routine.day", nativeQuery = true)*/
-    @Query("select rs from RoutineHasSessionEntity rs where rs.id.routineId = :idRutina order by rs.id.day")
+    @Query("select rs from RoutineHasSessionEntity rs where rs.routineEntity.id = :idRutina order by rs.id.day")
     public List<RoutineHasSessionEntity> getSessionsRoutineByIdRoutine(@Param("idRutina") Integer idRutina);
 }

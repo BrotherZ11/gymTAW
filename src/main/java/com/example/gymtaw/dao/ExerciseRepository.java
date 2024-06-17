@@ -9,10 +9,7 @@ import java.util.List;
 
 public interface ExerciseRepository extends JpaRepository<ExerciseEntity, Integer> {
 
-    @Query(value = "SELECT * FROM exercise\n" +
-            "join exercise_session\n" +
-            "on exercise.id = exercise_session.exercise_id\n" +
-            "where exercise_session.session_id = :idSesion", nativeQuery = true)
+    @Query(value = "select e from ExerciseEntity e join ExerciseHasSessionEntity es on e.id = es.exerciseEntity.id where es.sessionEntity.id = :idSesion order by es.order")
     public List<ExerciseEntity> getExercisesByIdSession(@Param("idSesion") Integer idSesion);
 
 }
