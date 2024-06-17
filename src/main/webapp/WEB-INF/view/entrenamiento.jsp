@@ -20,7 +20,7 @@
 <h1>Entrenamiento de la rutina: </h1>
 <a href="crearsesion?idEntrenador=<%=idEntrenador%>">Nueva sesion ... </a>
 <form method="post" action="guardar_sesiones">
-    <table border="1 ">
+    <table border="1">
         <tr>
             <th>DIA</th>
             <td>Lunes</td>
@@ -34,9 +34,12 @@
         <tr>
             <th>NOMBRE</th>
             <%
-                int index = 0;
+                //int index = 0;
                 for(int i = 1; i <= 7; i++){
-                    if(!lista.isEmpty() && index < lista.size() && listaSesionRutina.get(index).getId().getDay() == i){
+                    boolean found = false;
+                    for (RoutineHasSessionEntity sesionRutina : listaSesionRutina) {
+                        if (sesionRutina.getId().getDay() == i) {
+                            found = true;
             %>
             <td>
                 <select id="sesiones<%=i%>" name="idSesion<%=i%>">
@@ -44,19 +47,21 @@
                     <%
                         for(SessionEntity sesion: listaCompleta){
                             String isSelected = "";
-                            if(index < lista.size() && sesion.equals(lista.get(index))){
+                            if (sesionRutina.getSessionEntity().getId().equals(sesion.getId())) {
                                 isSelected = "selected";
                             }
                     %>
-                    <option value=<%=sesion.getId()%> <%=isSelected%>><%=sesion.getName()%></option>
+                    <option value="<%=sesion.getId()%>" <%=isSelected%>><%=sesion.getName()%></option>
                     <%
                         }
-                        index++;
                     %>
                 </select>
             </td>
             <%
-            }else{
+                        break;
+                    }
+                }
+                if (!found) {
             %>
             <td>
                 <select id="sesiones<%=i%>" name="idSesion<%=i%>">
@@ -64,10 +69,9 @@
                     <%
                         for(SessionEntity sesion: listaCompleta){
                     %>
-                    <option value=<%=sesion.getId()%>><%=sesion.getName()%></option>
+                    <option value="<%=sesion.getId()%>"><%=sesion.getName()%></option>
                     <%
                         }
-                        index++;
                     %>
                 </select>
             </td>
@@ -80,13 +84,18 @@
         <tr>
             <th></th>
             <%
-                index = 0;
                 for(int i = 1; i <= 7; i++){
-                    if(!lista.isEmpty() && index < lista.size() && listaSesionRutina.get(index).getId().getDay() == i){
+                    boolean found = false;
+                    for (RoutineHasSessionEntity sesionRutina : listaSesionRutina) {
+                        if (sesionRutina.getId().getDay() == i) {
+                            found = true;
             %>
-            <td><a href="exercise_client?idSesion=<%=lista.get(index++).getId()%>">Ver</a></td>
+            <td><a href="exercise_client?idSesion=<%=sesionRutina.getSessionEntity().getId()%>">Ver</a></td>
             <%
-            }else{
+                        break;
+                    }
+                }
+                if (!found) {
             %>
             <td> - </td>
             <%

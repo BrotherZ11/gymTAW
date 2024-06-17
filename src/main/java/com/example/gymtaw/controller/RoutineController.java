@@ -4,10 +4,7 @@ import com.example.gymtaw.dao.RoutineRepository;
 import com.example.gymtaw.dao.RoutineHasSessionRepository;
 import com.example.gymtaw.dao.SessionRepository;
 import com.example.gymtaw.dao.UserRepository;
-import com.example.gymtaw.entity.RoutineEntity;
-import com.example.gymtaw.entity.RoutineHasSessionEntity;
-import com.example.gymtaw.entity.SessionEntity;
-import com.example.gymtaw.entity.UserEntity;
+import com.example.gymtaw.entity.*;
 import com.example.gymtaw.ui.FiltroRutina;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -71,7 +68,7 @@ public class RoutineController {
         return "entrenamiento";
     }
 
-   /* @PostMapping("/guardar_sesiones")
+    @PostMapping("/guardar_sesiones")
     public String doGuardarRutinas (@RequestParam("idRutina") Integer idRutina,
                                     @RequestParam("idEntrenador") Integer idEntrenador,
                                     @RequestParam Map<String, String> allParams,
@@ -85,26 +82,22 @@ public class RoutineController {
             String sessionIdParam = allParams.get("idSesion" + i);
             if (sessionIdParam != null && !sessionIdParam.equals("-1")) {
                 Integer idSesion = Integer.parseInt(sessionIdParam);
+                RoutineHasSessionEntityId routineHasSessionId = new RoutineHasSessionEntityId();
+                routineHasSessionId.setDay(i);
+                routineHasSessionId.setSessionId(idSesion);
+                routineHasSessionId.setRoutineId(idRutina);
+
                 RoutineHasSessionEntity sessionRoutineEntity = new RoutineHasSessionEntity();
-                sessionRoutineEntity.setDay(i);
-                sessionRoutineEntity.setRoutineEntityIdroutine(idRutina);
-                sessionRoutineEntity.setSessionId(idSesion);
-                sessionRoutineEntity.setRoutineByRoutineIdroutine(routineRepository.findById(idRutina).orElse(null));
-                sessionRoutineEntity.setSessionBySessionId(sessionRepository.findById(idSesion).orElse(null));
+                sessionRoutineEntity.setId(routineHasSessionId);
+                sessionRoutineEntity.setRoutineEntity(routineRepository.findById(idRutina).orElse(null));
+                sessionRoutineEntity.setSessionEntity(sessionRepository.findById(idSesion).orElse(null));
                 routineHasSessionRepository.save(sessionRoutineEntity);
             }
         }
-        // Recargar los datos para mostrarlos nuevamente en la vista
-        List<RoutineHasSessionEntity> sessionRoutineEntities = routineHasSessionRepository.findSessionsByRoutineId(idRutina);
-        List<SessionEntity> sessionEntities = sessionRepository.getSessionsByIdRoutine(idRutina);
-        List<SessionEntity> sessionCompleteEntities = sessionRepository.getSessionsByIdEntrenador(idEntrenador);
-        model.addAttribute("lista", sessionEntities);
-        model.addAttribute("listaSesionRutina", sessionRoutineEntities);
-        model.addAttribute("listaCompleta", sessionCompleteEntities);
-        model.addAttribute("idRutina", idRutina);
-        model.addAttribute("idEntrenador", idEntrenador);
-        return "entrenamiento";
-    }*/
+
+        // Redirigir a la página de visualización de la rutina
+        return "redirect:/home/trainer/ver?id=" + idRutina + "&idEntrenador=" + idEntrenador;
+    }
 
     @GetMapping("/crear")
     public String doNuevo (Model model, @RequestParam("idEntrenador") Integer idEntrenador) {
