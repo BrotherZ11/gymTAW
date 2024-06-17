@@ -46,30 +46,44 @@ public class SessionController {
     }
 
     @PostMapping("/guardar_sesion")
-    public String doGuardar (@RequestParam("id") Integer id,
-                             @RequestParam("nombre") String nombre,
-                             @RequestParam("idEntrenador") Integer idEntrenador,
-                             @RequestParam(value = "ejercicioId", required = false) List<Integer> ejercicioIds,
-                             @RequestParam Map<String, String> requestParams){
+    public String doGuardar(@RequestParam("id") Integer id,
+                            @RequestParam("nombre") String nombre,
+                            @RequestParam("idEntrenador") Integer idEntrenador,
+                            @RequestParam(value = "ejercicioId", required = false) List<Integer> ejercicioIds,
+                            @RequestParam Map<String, String> requestParams) {
+
         UserEntity entrenador = userRepository.findById(idEntrenador).orElse(null);
-        SessionEntity sesion = this.sessionRepository.findById(id).orElse(new SessionEntity());
+        SessionEntity sesion = this.sessionRepository.findById(id).orElse(null);
+
+        if (sesion == null) {
+            sesion = new SessionEntity();
+        }
+
         sesion.setName(nombre);
         sesion.setIdtrainer(entrenador);
-        this.sessionRepository.save(sesion);
+
+        sesion = this.sessionRepository.save(sesion);
+
         if (ejercicioIds != null) {
             for (Integer ejercicioId : ejercicioIds) {
                 Integer orden = Integer.parseInt(requestParams.get("orden_" + ejercicioId));
                 ExerciseHasSessionEntityId exerciseHasSessionId = new ExerciseHasSessionEntityId();
                 exerciseHasSessionId.setSessionId(sesion.getId());
                 exerciseHasSessionId.setExerciseId(ejercicioId);
-                ExerciseHasSessionEntity exerciseHasSession = new ExerciseHasSessionEntity();
-                exerciseHasSession.setId(exerciseHasSessionId);
-                exerciseHasSession.setExerciseEntity(exerciseRepository.findById(ejercicioId).orElse(null));
-                exerciseHasSession.setSessionEntity(sesion);
-                exerciseHasSession.setOrder(orden);
-                this.exerciseHasSessionRepository.save(exerciseHasSession);
+                exerciseHasSessionId.setOrder(orden);
+
+                if (!this.exerciseHasSessionRepository.existsById(exerciseHasSessionId.getExerciseId())) {
+                    ExerciseHasSessionEntity exerciseHasSession = new ExerciseHasSessionEntity();
+                    exerciseHasSession.setId(exerciseHasSessionId);
+                    exerciseHasSession.setExerciseEntity(exerciseRepository.findById(ejercicioId).orElse(null));
+                    exerciseHasSession.setSessionEntity(sesion);
+                    this.exerciseHasSessionRepository.save(exerciseHasSession);
+                } else {
+                    throw new IllegalArgumentException("Ya existe una entrada con el mismo ID.");
+                }
             }
         }
+
         return "redirect:/home/trainer/ver?id=" + sesion.getId() + "&idEntrenador=" + idEntrenador;
     }
 }

@@ -12,7 +12,7 @@ import java.util.Objects;
 @Setter
 @Embeddable
 public class RoutineHasSessionEntityId implements java.io.Serializable {
-    private static final long serialVersionUID = 1196882357906763959L;
+    private static final long serialVersionUID = 77386757019376885L;
     @Column(name = "routine_id", nullable = false)
     private Integer routineId;
 
@@ -27,14 +27,14 @@ public class RoutineHasSessionEntityId implements java.io.Serializable {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
         RoutineHasSessionEntityId entity = (RoutineHasSessionEntityId) o;
-        return Objects.equals(this.routineId, entity.routineId) &&
-                Objects.equals(this.sessionId, entity.sessionId) &&
+        return Objects.equals(this.sessionId, entity.sessionId) &&
+                Objects.equals(this.routineId, entity.routineId) &&
                 Objects.equals(this.day, entity.day);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(routineId, sessionId, day);
+        return Objects.hash(sessionId, routineId, day);
     }
 
 }

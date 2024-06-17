@@ -12,12 +12,15 @@ import java.util.Objects;
 @Setter
 @Embeddable
 public class ExerciseHasSessionEntityId implements java.io.Serializable {
-    private static final long serialVersionUID = 2761221926982042939L;
+    private static final long serialVersionUID = -6353819351898563205L;
     @Column(name = "exercise_id", nullable = false)
     private Integer exerciseId;
 
     @Column(name = "session_id", nullable = false)
     private Integer sessionId;
+
+    @Column(name = "`order`", nullable = false)
+    private Integer order;
 
     @Override
     public boolean equals(Object o) {
@@ -25,12 +28,13 @@ public class ExerciseHasSessionEntityId implements java.io.Serializable {
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
         ExerciseHasSessionEntityId entity = (ExerciseHasSessionEntityId) o;
         return Objects.equals(this.exerciseId, entity.exerciseId) &&
-                Objects.equals(this.sessionId, entity.sessionId);
+                Objects.equals(this.sessionId, entity.sessionId) &&
+                Objects.equals(this.order, entity.order);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(exerciseId, sessionId);
+        return Objects.hash(exerciseId, sessionId, order);
     }
 
 }

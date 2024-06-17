@@ -3,6 +3,8 @@ package com.example.gymtaw.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Getter
 @Setter
@@ -14,15 +16,14 @@ public class ExerciseHasSessionEntity {
 
     @MapsId("exerciseId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "exercise_id", nullable = false)
     private ExerciseEntity exerciseEntity;
 
     @MapsId("sessionId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "session_id", nullable = false)
     private SessionEntity sessionEntity;
-
-    @Column(name = "`order`", nullable = false)
-    private Integer order;
 
 }
