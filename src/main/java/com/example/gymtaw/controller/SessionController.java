@@ -33,6 +33,7 @@ public class SessionController {
     @Autowired
     ExerciseHasSessionRepository exerciseHasSessionRepository;
 
+
     @GetMapping("/crearsesion")
     public String doNueva(Model model, @RequestParam("idEntrenador") Integer idEntrenador) {
         SessionEntity sesion = new SessionEntity();
@@ -44,7 +45,7 @@ public class SessionController {
         return "session";
     }
 
-/*    @PostMapping("/guardar_sesion")
+    @PostMapping("/guardar_sesion")
     public String doGuardar (@RequestParam("id") Integer id,
                              @RequestParam("nombre") String nombre,
                              @RequestParam("idEntrenador") Integer idEntrenador,
@@ -53,18 +54,22 @@ public class SessionController {
         UserEntity entrenador = userRepository.findById(idEntrenador).orElse(null);
         SessionEntity sesion = this.sessionRepository.findById(id).orElse(new SessionEntity());
         sesion.setName(nombre);
-        sesion.setUserByIdtrainer(entrenador);
+        sesion.setIdtrainer(entrenador);
         this.sessionRepository.save(sesion);
         if (ejercicioIds != null) {
             for (Integer ejercicioId : ejercicioIds) {
                 Integer orden = Integer.parseInt(requestParams.get("orden_" + ejercicioId));
+                ExerciseHasSessionEntityId exerciseHasSessionId = new ExerciseHasSessionEntityId();
+                exerciseHasSessionId.setSessionId(sesion.getId());
+                exerciseHasSessionId.setExerciseId(ejercicioId);
                 ExerciseHasSessionEntity exerciseHasSession = new ExerciseHasSessionEntity();
-                exerciseHasSession.setExerciseId(ejercicioId);
-                exerciseHasSession.setSessionId(sesion.getId());
+                exerciseHasSession.setId(exerciseHasSessionId);
+                exerciseHasSession.setExerciseEntity(exerciseRepository.findById(ejercicioId).orElse(null));
+                exerciseHasSession.setSessionEntity(sesion);
                 exerciseHasSession.setOrder(orden);
                 this.exerciseHasSessionRepository.save(exerciseHasSession);
             }
         }
-        return "redirect:/home/trainer/";
-    }*/
+        return "redirect:/home/trainer/ver?id=" + sesion.getId() + "&idEntrenador=" + idEntrenador;
+    }
 }
