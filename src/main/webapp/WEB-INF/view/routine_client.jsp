@@ -32,7 +32,7 @@
             for(RoutineEntity rutina: listaCompleta){
                 if(!lista.contains(rutina)){
         %>
-        <option value=<%=rutina.getIdroutine()%>><%=rutina.getName()%></option>
+        <option value=<%=rutina.getId()%>><%=rutina.getName()%></option>
         <%
                 }
             }
@@ -73,8 +73,8 @@
         <td><%=r.getName()%></td>
         <td><%=r.getDescription()%></td>
         <td><%=r.getDate()%></td>
-        <td><a href="session_client?idRutina=<%= r.getIdroutine()  %>&idEntrenador=<%=idEntrenador%>">Ver</a> </td>
-        <td><a href="quitar_rutina?idRutina=<%= r.getIdroutine()  %>&idEntrenador=<%= idEntrenador %>&idCliente=<%= idCliente %>">Quitar rutina</a> </td>
+        <td><a href="session_client?idRutina=<%= r.getId()  %>&idEntrenador=<%=idEntrenador%>">Ver</a> </td>
+        <td><a href="quitar_rutina?idRutina=<%= r.getId()  %>&idEntrenador=<%= idEntrenador %>&idCliente=<%= idCliente %>">Quitar rutina</a> </td>
     </tr>
     <%
         }

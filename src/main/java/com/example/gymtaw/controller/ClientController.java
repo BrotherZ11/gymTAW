@@ -108,7 +108,7 @@ public class ClientController {
         return "session_client";
     }
 
-    /*@PostMapping("/guardar_sesiones")
+    @PostMapping("/guardar_sesiones")
     public String doGuardarRutinas (@RequestParam("idRutina") Integer idRutina,
                                     @RequestParam("idEntrenador") Integer idEntrenador,
                                     @RequestParam("idSesion1") Integer idSesion1,
@@ -152,9 +152,10 @@ public class ClientController {
             }
             RoutineHasSessionEntity sessionRoutineEntity = new RoutineHasSessionEntity();
             if(idSesion != -1){
-                sessionRoutineEntity.setDay(i);
-                sessionRoutineEntity.setRoutineIdroutine(idRutina);
-                sessionRoutineEntity.setSessionId(idSesion);
+                SessionEntity sesion = sessionRepository.findById(idSesion).get();
+                sessionRoutineEntity.setSession(sesion);
+                RoutineEntity routineEntity = routineRepository.findById(idRutina).get();
+                sessionRoutineEntity.setRoutineIdroutine(routineEntity);
                 routineHasSessionRepository.save(sessionRoutineEntity);
             }
         }
@@ -168,7 +169,7 @@ public class ClientController {
         model.addAttribute("idRutina", idRutina);
         model.addAttribute("idEntrenador", idEntrenador);
         return "session_client";
-    }*/
+    }
 
     //Redirecciones pestaña de ejercicios
 

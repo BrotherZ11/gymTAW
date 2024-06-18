@@ -1,70 +1,25 @@
 package com.example.gymtaw.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.util.Objects;
-
+@Getter
+@Setter
 @Entity
-@Table(name = "user_has_trainer", schema = "gymtaw", catalog = "")
-@IdClass(UserHasTrainerEntityPK.class)
+@Table(name = "user_has_trainer")
 public class UserHasTrainerEntity {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id
-    @Column(name = "user_id", nullable = false)
-    private Integer userId;
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id
-    @Column(name = "trainer_id", nullable = false)
-    private Integer trainerId;
-    @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
-    private UserEntity userByUserId;
-    @ManyToOne
-    @JoinColumn(name = "trainer_id", referencedColumnName = "id", nullable = false)
-    private UserEntity userByTrainerId;
+    @EmbeddedId
+    private UserHasTrainerEntityId id;
 
-    public Integer getUserId() {
-        return userId;
-    }
+    @MapsId("userId")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    private UserEntity user;
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
+    @MapsId("trainerId")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "trainer_id", nullable = false)
+    private UserEntity trainer;
 
-    public Integer getTrainerId() {
-        return trainerId;
-    }
-
-    public void setTrainerId(Integer trainerId) {
-        this.trainerId = trainerId;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        UserHasTrainerEntity that = (UserHasTrainerEntity) o;
-        return Objects.equals(userId, that.userId) && Objects.equals(trainerId, that.trainerId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(userId, trainerId);
-    }
-
-    public UserEntity getUserByUserId() {
-        return userByUserId;
-    }
-
-    public void setUserByUserId(UserEntity userByUserId) {
-        this.userByUserId = userByUserId;
-    }
-
-    public UserEntity getUserByTrainerId() {
-        return userByTrainerId;
-    }
-
-    public void setUserByTrainerId(UserEntity userByTrainerId) {
-        this.userByTrainerId = userByTrainerId;
-    }
 }

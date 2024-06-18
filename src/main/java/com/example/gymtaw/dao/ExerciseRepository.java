@@ -15,7 +15,4 @@ public interface ExerciseRepository extends JpaRepository<ExerciseEntity, Intege
             "where exercise_session.session_id = :idSesion", nativeQuery = true)
     public List<ExerciseEntity> getExercisesByIdSession(@Param("idSesion") Integer idSesion);
 
-    @Query(value="SELECT * from exercise e where e.id = :idEjercicio", nativeQuery = true)
-    public ExerciseEntity getExerciseByExerciseId(@Param("idEjercicio") Integer idEjercicio);
-
 }
