@@ -29,7 +29,7 @@ public class LoginController extends BaseController {
         String strTo = "login";
         if (estaAutenticado(session)) {
             UserEntity usuario = (UserEntity) session.getAttribute("usuario");
-            RolEntity rol = this.rolRepository.findById(usuario.getIdRol()).get();
+            RolEntity rol = this.rolRepository.findById(usuario.getId()).get();
             if(rol.getType().equals("admin")){
                 strTo = "redirect:/users/";
             } else if(rol.getType().equals("cross-training") || rol.getType().equals("bodybuilding")){
@@ -57,7 +57,7 @@ public class LoginController extends BaseController {
             model.addAttribute("error", "Usuario o contraseña incorrectos");
             strTo = this.doLogin(model, session);
         } else {
-            RolEntity rol = this.rolRepository.findById(user.getIdRol()).get();
+            RolEntity rol = this.rolRepository.findById(user.getId()).get();
             session.setAttribute("usuario", user);
              if(rol.getType().equals("admin")){
                 strTo = "redirect:/users/";

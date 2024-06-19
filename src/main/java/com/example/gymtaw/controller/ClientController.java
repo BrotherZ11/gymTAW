@@ -155,7 +155,7 @@ public class ClientController {
                 SessionEntity sesion = sessionRepository.findById(idSesion).get();
                 sessionRoutineEntity.setSession(sesion);
                 RoutineEntity routineEntity = routineRepository.findById(idRutina).get();
-                sessionRoutineEntity.setRoutineIdroutine(routineEntity);
+                sessionRoutineEntity.setRoutine(routineEntity);
                 routineHasSessionRepository.save(sessionRoutineEntity);
             }
         }
