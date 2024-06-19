@@ -1,15 +1,10 @@
 <%@ page import="java.util.List" %>
-<%@ page import="com.example.gymtaw.entity.*" %><%--
-  Created by IntelliJ IDEA.
-  User: marta
-  Date: 06/05/2024
-  Time: 18:18
-  To change this template use File | Settings | File Templates.
---%>
+<%@ page import="com.example.gymtaw.entity.*" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     List<SessionEntity> sesiones = (List<SessionEntity>) request.getAttribute("sesiones");
     List<ExerciseEntity> ejercicios = (List<ExerciseEntity>) request.getAttribute("ejercicios");
+    Integer idSesion = (Integer) request.getAttribute("idSesion");
 %>
 <html>
 <head>
@@ -21,52 +16,78 @@
 <h1>Sesiones del Cliente</h1>
 
 <% if (sesiones != null) { %>
-<% for(SessionEntity s : sesiones) { %>
+<% for (SessionEntity s : sesiones) { %>
 <h2><%= s.getName() %></h2>
-<%
-    if (ejercicios != null) {
-        for(ExerciseEntity e : ejercicios) {
-%>
+<% if (ejercicios != null) { %>
 <table border="1">
     <tr>
         <th>Nombre ejercicio</th>
         <th>Descripcion</th>
         <th>Video</th>
+        <th>Completado</th>
         <th>Valoración</th>
     </tr>
+    <% for (ExerciseEntity e : ejercicios) { %>
     <tr>
         <td><a href="/home/cliente/ejercicioIndividual?idEjercicio=<%= e.getId() %>"><%= e.getName() %></a></td>
         <td><%= e.getDescription() != null ? e.getDescription() : "N/A" %></td>
         <td><%= e.getVideo() != null ? e.getVideo() : "N/A" %></td>
+        <td align="center">
+            <%
+                boolean isDone = false;
+                List<ValoracionEntity> val = e.getValoracions();
+                if (val != null) {
+                    for (ValoracionEntity v : val) {
+                        if (v.getDone() == 1) {
+                            isDone = true;
+                            break;
+                        }
+                    }
+                }
+            %>
+            <form action="/home/cliente/guardarCompletado" method="post">
+                <input type="hidden" name="idEjercicio" value="<%= e.getId() %>" />
+                <input type="hidden" name="idSesion" value="<%= idSesion %>" />
+                <input type="hidden" name="idCliente" value="<%= s.getIdtrainer().getId() %>" />
+                <input type="checkbox" name="done" value="1" <% if (isDone) { %>checked disabled<% } else { %> onchange="this.form.submit()"<% } %> />
+            </form>
+        </td>
         <%
-            List<ValoracionEntity> val = e.getValoracions();
             boolean valorado = false;
             if (val != null) {
                 for (ValoracionEntity v : val) {
                     if (v.getDone() == 1) {
-                        valorado = true;
+                        if (v.getStars() != null) {
+                            valorado = true;
         %>
         <td align="center"><%= v.getStars() %></td>
         <%
+        } else {
+        %>
+
+        <%
+                        }
                         break;
                     }
                 }
             }
-            if (!valorado) {
+            if (!isDone) {
         %>
-        <td align="center"><a href="valorar?idEjercicio=<%= e.getId() %>">Valorar</a></td>
+        <td align="center">Completar para valorar</td>
+        <%
+        } else if (!valorado) {
+        %>
+        <td align="center"><a href="valorarEjercicio?idEjercicio=<%= e.getId() %>&idCliente=<%= s.getIdtrainer().getId() %>">Valorar</a></td>
         <%
             }
         %>
     </tr>
+    <% } %>
 </table>
 <br>
-<%
-        }
-    } else {
-        out.println("No hay ejercicios para esta sesión.");
-    }
-%>
+<% } else { %>
+No hay ejercicios para esta sesión.
+<% } %>
 <% } %>
 <% } else { %>
 <p>No hay sesiones disponibles.</p>

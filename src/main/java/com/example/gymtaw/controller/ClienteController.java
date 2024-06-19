@@ -10,9 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/home/cliente")
@@ -37,21 +35,24 @@ public class ClienteController {
     ClientExerciseRepository clientExerciseRepository;
 
     @Autowired
+    UserRepository userRepository;
+
+    @Autowired
     ValoracionRepository valoracionRepository;
 
     @GetMapping("/entrenamientos")
     public String doListar(@RequestParam("idCliente") Integer idCliente, Model model) {
         List<RoutineEntity> rutinas = routineRepository.getRoutinesByClient(idCliente);
-        model.addAttribute("rutinas", rutinas); // Make sure this name matches the JSP
+        model.addAttribute("rutinas", rutinas);
         model.addAttribute("idCliente", idCliente);
         return "entrenamiento_rutina_cliente";
     }
 
     @GetMapping("/sesionesSemanales")
     public String getSesionesSemanales(@RequestParam("idRutina") Integer idRutina, Model model) {
-        List<SessionEntity> sesiones = this.sessionRepository.getSessionsByIdRoutine(idRutina);
+        List<SessionEntity> sesiones = sessionRepository.getSessionsByIdRoutine(idRutina);
         model.addAttribute("sesiones", sesiones);
-        List<RoutineHasSessionEntity> sesionRutina = this.routineHasSessionRepository.findSessionsByRoutineId(idRutina);
+        List<RoutineHasSessionEntity> sesionRutina = routineHasSessionRepository.findSessionsByRoutineId(idRutina);
         model.addAttribute("sesionRutina", sesionRutina);
         return "cliente_sesiones_semanales";
     }
@@ -60,30 +61,103 @@ public class ClienteController {
     public String getSesion(@RequestParam("idSesion") Integer idSesion, Model model) {
         List<SessionEntity> sesiones = sessionRepository.findSessionBySessionId(idSesion);
         model.addAttribute("sesiones", sesiones);
-        List<ExerciseEntity> ejercicios = this.exerciseHasSessionRepository.getExercisesByIdSession(idSesion);
+        List<ExerciseEntity> ejercicios = exerciseHasSessionRepository.getExercisesByIdSession(idSesion);
         model.addAttribute("ejercicios", ejercicios);
+        model.addAttribute("idSesion", idSesion);
         return "entrenamiento_sesion_cliente";
-
     }
+
+    @PostMapping("/guardarCompletado")
+    public String guardarComplecion(@RequestParam("idSesion") Integer idSesion,
+                                    @RequestParam("idEjercicio") Integer idEjercicio,
+                                    @RequestParam("idCliente") Integer idCliente,
+                                    @RequestParam(value = "done", required = false) String done,
+                                    Model model) {
+        // Find the exercise by id
+        ExerciseEntity exercise = exerciseRepository.findById(idEjercicio).orElseThrow(() -> new IllegalArgumentException("Invalid exercise Id:" + idEjercicio));
+
+        // Find or create the valoracion entity for this exercise
+        List<ValoracionEntity> val = exercise.getValoracions();
+        boolean valoracionExists = false;
+        if (val != null) {
+            for (ValoracionEntity v : val) {
+                if (v.getUser().getId().equals(idCliente)) {
+                    if ("1".equals(done)) {
+                        v.setDone((byte) 1); // Marking as done
+                    } else {
+                        v.setDone((byte) 0); // Marking as not done
+                    }
+                    valoracionRepository.save(v);
+                    valoracionExists = true;
+                    break;
+                }
+            }
+        }
+
+        if (!valoracionExists && "1".equals(done)) {
+            ValoracionEntity newValoracion = new ValoracionEntity();
+            ValoracionEntityId valoracionId = new ValoracionEntityId();
+            valoracionId.setUserId(idCliente);
+            valoracionId.setExerciseId(idEjercicio);
+            newValoracion.setId(valoracionId);
+            newValoracion.setUser(userRepository.findById(idCliente).orElseThrow(() -> new IllegalArgumentException("Invalid user Id")));
+            newValoracion.setExercise(exercise);
+            newValoracion.setDone((byte) 1);
+            valoracionRepository.save(newValoracion);
+        }
+
+        // Redirect back to the session page
+        return "redirect:/home/cliente/ejercicio?idSesion=" + idSesion;
+    }
+
 
 
     @GetMapping("/ejercicioIndividual")
     public String getEjercicioCliente(@RequestParam("idEjercicio") Integer idEjercicio, Model model) {
-        ExerciseEntity ejercicio = this.exerciseRepository.getExercisesByIdEjercicio(idEjercicio);
+        ExerciseEntity ejercicio = exerciseRepository.getExercisesByIdEjercicio(idEjercicio);
         model.addAttribute("ejercicio", ejercicio);
-        List<ClientExerciseEntity> clientExercise = this.clientExerciseRepository.getClientExercisesByIdEjercicio(idEjercicio);
+        List<ClientExerciseEntity> clientExercise = clientExerciseRepository.getClientExercisesByIdEjercicio(idEjercicio);
         model.addAttribute("clientExercise", clientExercise);
-
         return "entrenamiento_ejercicio_cliente";
     }
 
-    @GetMapping("/valorar")
-    public String valorarDesdeEjercicio(@RequestParam("idEjercicio") Integer idEjercicio, Model model) {
-        ExerciseEntity ejercicio = this.exerciseRepository.getExercisesByIdEjercicio(idEjercicio);
+    @GetMapping("/valorarEjercicio")
+    public String valorarDesdeEjercicio(@RequestParam("idEjercicio") Integer idEjercicio, @RequestParam("idCliente") Integer idCliente, Model model) {
+        ExerciseEntity ejercicio = exerciseRepository.getExercisesByIdEjercicio(idEjercicio);
         model.addAttribute("ejercicio", ejercicio);
-
+        ValoracionEntity nuevaValoracion = new ValoracionEntity();
+        ValoracionEntityId nuevaValoracionId = new ValoracionEntityId();
+        nuevaValoracion.setId(nuevaValoracionId);
+        model.addAttribute("nuevaValoracion", nuevaValoracion);
+        model.addAttribute("idCliente", idCliente);
         return "valorarUnEjercicio";
     }
 
+    @PostMapping("/guardar")
+    public String guardarValoracion(@RequestParam("stars") Integer stars, @RequestParam("idCliente") Integer userId, @RequestParam("exerciseId") Integer exerciseId, Model model) {
+        UserEntity user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + userId));
+        ExerciseEntity exercise = exerciseRepository.findById(exerciseId).orElseThrow(() -> new IllegalArgumentException("Invalid exercise Id:" + exerciseId));
+
+        // Find the current session
+        SessionEntity sesionActual = sessionRepository.getSessionsByIdEjercicio(exerciseId);
+
+        ValoracionEntity nuevaValoracion = new ValoracionEntity();
+        ValoracionEntityId valoracionEntityId = new ValoracionEntityId();
+        valoracionEntityId.setUserId(userId);
+        valoracionEntityId.setExerciseId(exerciseId);
+
+        nuevaValoracion.setId(valoracionEntityId);
+        nuevaValoracion.setUser(user);
+        nuevaValoracion.setExercise(exercise);
+        nuevaValoracion.setStars(stars);
+        nuevaValoracion.setDone((byte) 1); // Marking the rating as done
+
+        valoracionRepository.save(nuevaValoracion);
+
+        model.addAttribute("ejercicio", exercise);
+        model.addAttribute("nuevaValoracion", nuevaValoracion);
+
+        return "redirect:/home/cliente/ejercicio?idSesion=" + sesionActual.getId();
+    }
 
 }
