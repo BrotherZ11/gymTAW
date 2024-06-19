@@ -14,6 +14,7 @@
     <title>Sesiones de Cliente</title>
 </head>
 <body>
+<input type="button" onclick="history.back()" name="Volver atrás" value="Volver atrás">
 <h1> Sesiones del Cliente </h1>
 <h2> TAW </h2>
 

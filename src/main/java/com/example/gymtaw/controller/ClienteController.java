@@ -77,5 +77,13 @@ public class ClienteController {
         return "entrenamiento_ejercicio_cliente";
     }
 
+    @GetMapping("/valorar")
+    public String valorarDesdeEjercicio(@RequestParam("idEjercicio") Integer idEjercicio, Model model) {
+        ExerciseEntity ejercicio = this.exerciseRepository.getExercisesByIdEjercicio(idEjercicio);
+        model.addAttribute("ejercicio", ejercicio);
+
+        return "valorarUnEjercicio";
+    }
+
 
 }

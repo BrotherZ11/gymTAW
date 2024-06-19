@@ -7,9 +7,9 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<% List<SessionEntity> sesiones = (List<SessionEntity>) request.getAttribute("sesiones");
-List<ExerciseEntity> ejercicios = (List<ExerciseEntity>) request.getAttribute("ejercicios");
-SessionEntity sessionActual = (SessionEntity) request.getAttribute("sessionActual");
+<%
+    List<SessionEntity> sesiones = (List<SessionEntity>) request.getAttribute("sesiones");
+    List<ExerciseEntity> ejercicios = (List<ExerciseEntity>) request.getAttribute("ejercicios");
 %>
 <html>
 <head>
@@ -18,14 +18,14 @@ SessionEntity sessionActual = (SessionEntity) request.getAttribute("sessionActua
 <body>
 <input type="button" onclick="history.back()" name="Volver atrás" value="Volver atrás">
 
-
 <h1>Sesiones del Cliente</h1>
 
-<%for(SessionEntity s : sesiones){%>
-<h2><%=s.getName()%></h2>
+<% if (sesiones != null) { %>
+<% for(SessionEntity s : sesiones) { %>
+<h2><%= s.getName() %></h2>
 <%
-for(ExerciseEntity e : ejercicios){
-
+    if (ejercicios != null) {
+        for(ExerciseEntity e : ejercicios) {
 %>
 <table border="1">
     <tr>
@@ -35,30 +35,41 @@ for(ExerciseEntity e : ejercicios){
         <th>Valoración</th>
     </tr>
     <tr>
-        <td><a href="/home/cliente/ejercicioIndividual?idEjercicio=<%=e.getId()%>"><%=e.getName()%></a></td>
-        <td><%=e.getDescription()%></td>
-        <td><%=e.getVideo()%></td>
+        <td><a href="/home/cliente/ejercicioIndividual?idEjercicio=<%= e.getId() %>"><%= e.getName() %></a></td>
+        <td><%= e.getDescription() != null ? e.getDescription() : "N/A" %></td>
+        <td><%= e.getVideo() != null ? e.getVideo() : "N/A" %></td>
         <%
-            List<ValoracionEntity> val = (List<ValoracionEntity>) e.getValoracions();
-            for(ValoracionEntity v : val){
-                boolean done = false;
-                if(v.getDone() == 1) done = true;
-                if(done){
+            List<ValoracionEntity> val = e.getValoracions();
+            boolean valorado = false;
+            if (val != null) {
+                for (ValoracionEntity v : val) {
+                    if (v.getDone() == 1) {
+                        valorado = true;
         %>
-        <td align="center"><%=v.getStars()%></td>
-        <%}else{%>
-        <td align="center"><a href="valorar?idSesion=<%=s.getId()%>">Valorar</a></td>
+        <td align="center"><%= v.getStars() %></td>
         <%
+                        break;
+                    }
                 }
+            }
+            if (!valorado) {
+        %>
+        <td align="center"><a href="valorar?idEjercicio=<%= e.getId() %>">Valorar</a></td>
+        <%
             }
         %>
     </tr>
-
 </table>
-</br>
-<%}%>
-
-
-<%}%>
+<br>
+<%
+        }
+    } else {
+        out.println("No hay ejercicios para esta sesión.");
+    }
+%>
+<% } %>
+<% } else { %>
+<p>No hay sesiones disponibles.</p>
+<% } %>
 </body>
 </html>
