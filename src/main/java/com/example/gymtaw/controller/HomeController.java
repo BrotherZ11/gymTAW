@@ -16,7 +16,7 @@ public class HomeController {
         return "home_trainer";
     }
 
-    @GetMapping("/client")
+    @GetMapping("/cliente")
     public String doHomeCliente (@RequestParam("idCliente") Integer idCliente, Model model) {
         model.addAttribute("idCliente", idCliente);
         return "home_client";

@@ -22,4 +22,7 @@ public class RoutineHasSessionEntity {
     @JoinColumn(name = "session_id", nullable = false)
     private SessionEntity session;
 
+    public int getDay() {
+        return id.getDay();
+    }
 }

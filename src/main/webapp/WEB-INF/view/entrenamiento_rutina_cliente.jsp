@@ -26,7 +26,6 @@
     <tr>
         <th>Nombre</th>
         <th>Descripción</th>
-        <th>Fecha</th>
         <th></th>
     </tr>
     </thead>
@@ -34,8 +33,7 @@
     <% for (RoutineEntity r : rutinas) { %>
         <td><%=r.getName()%></td>
         <td><%=r.getDescription()%></td>
-        <td><%=r.getDate()%></td>
-        <td><a href="/home/cliente/sesiones?idRutina=<%=r.getIdroutine()%>">Más detalles</a></td>
+        <td><a href="/home/cliente/sesionesSemanales?idRutina=<%=r.getId()%>">Más detalles</a></td>
     <% } %>
         <tr>
 

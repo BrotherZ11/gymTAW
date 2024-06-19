@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -31,12 +33,12 @@ public class ExerciseEntity {
     private TypeEntity typeIdtype;
 
     @OneToMany(mappedBy = "exercise")
-    private Set<ClientExerciseEntity> clientExercises = new LinkedHashSet<>();
+    private List<ClientExerciseEntity> clientExercises = new ArrayList<>();
 
     @OneToMany(mappedBy = "exercise")
-    private Set<ExerciseHasSessionEntity> exerciseHasSessions = new LinkedHashSet<>();
+    private List<ExerciseHasSessionEntity> exerciseHasSessions = new ArrayList<>();
 
     @OneToMany(mappedBy = "exercise")
-    private Set<ValoracionEntity> valoracions = new LinkedHashSet<>();
+    private List<ValoracionEntity> valoracions = new ArrayList<>();
 
 }

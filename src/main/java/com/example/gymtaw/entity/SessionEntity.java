@@ -30,7 +30,7 @@ public class SessionEntity {
     @OneToMany(mappedBy = "session")
     private Set<RoutineHasSessionEntity> routineHasSessions = new LinkedHashSet<>();
 
-    @ManyToMany(mappedBy = "session")
+    @ManyToMany(mappedBy = "sessions")
     private Set<TypeEntity> types = new LinkedHashSet<>();
 
 }

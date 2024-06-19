@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface RoutineHasSessionRepository extends JpaRepository<RoutineHasSessionEntity,Integer> {
-    @Query("SELECT sr FROM RoutineHasSessionEntity sr WHERE sr.routineIdroutine = :routineId")
+    @Query("SELECT sr FROM RoutineHasSessionEntity sr WHERE sr.id.routineId = :routineId")
     List<RoutineHasSessionEntity> findSessionsByRoutineId(Integer routineId);
 
  /*   @Query(value = "SELECT * FROM session\n" +
@@ -18,6 +18,6 @@ public interface RoutineHasSessionRepository extends JpaRepository<RoutineHasSes
             "on session.id = session_routine.session_id\n" +
             "where session_routine.routine_idroutine = :idRutina\n" +
             "order by session_routine.day", nativeQuery = true)*/
-    @Query("select rs from RoutineHasSessionEntity rs where rs.routineIdroutine.id = :idRutina order by rs.session.id")
+    @Query("select rs from RoutineHasSessionEntity rs where rs.id.routineId = :idRutina order by rs.session.id")
     public List<RoutineHasSessionEntity> getSessionsRoutineByIdRoutine(@Param("idRutina") Integer idRutina);
 }

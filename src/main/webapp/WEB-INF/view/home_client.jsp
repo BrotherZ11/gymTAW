@@ -10,8 +10,8 @@
 <h1 align="center">TAW</h1>
 <a href="/logout">Cerrar sesion</a> <!-- Corrected link to logout -->
 <div>
-    <a href="/home/client/entrenamientos?idCliente=<%=idCliente%>">Entrenamientos</a>
-    <a href="/home/client/valorar?idCliente=<%=idCliente%>">Valoraciones</a> <!-- Corrected link to routines -->
+    <a href="/home/cliente/entrenamientos?idCliente=<%=idCliente%>">Entrenamientos</a>
+    <a href="/home/cliente/valorar?idCliente=<%=idCliente%>">Valoraciones</a> <!-- Corrected link to routines -->
 </div>
 </body>
 </html>

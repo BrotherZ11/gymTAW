@@ -35,7 +35,7 @@ public class LoginController extends BaseController {
             } else if(rol.getType().equals("cross-training") || rol.getType().equals("bodybuilding")){
                 strTo = "redirect:/home/trainer?idEntrenador="+usuario.getId();
             }else if(rol.getType().equals("client")) {
-                strTo = "redirect:/home/client?idCliente=" + usuario.getId();
+                strTo = "redirect:/home/cliente?idCliente=" + usuario.getId();
             /*else if(usuario.getPermiso() == ...){
                 strTo = "redirect:";
             } else {
@@ -63,7 +63,10 @@ public class LoginController extends BaseController {
                 strTo = "redirect:/users/";
             } else if(rol.getType().equals("cross-training")){
                 strTo = "redirect:/home/trainer?idEntrenador="+ user.getId();
-            } /*else if(usuario.getPermiso() == ...){
+            }
+             else if(rol.getType().equals("client")) {
+                 strTo = "redirect:/home/cliente?idCliente=" + user.getId();
+             }/*else if(usuario.getPermiso() == ...){
                 strTo = "redirect:";
             } else {
                 strTo = "redirect:";

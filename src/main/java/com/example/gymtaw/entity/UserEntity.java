@@ -57,13 +57,22 @@ public class UserEntity {
     @OneToMany(mappedBy = "idtrainer")
     private Set<SessionEntity> sessions = new LinkedHashSet<>();
 
-    @ManyToMany(mappedBy = "user")
-    private Set<UserEntity> usersClient = new LinkedHashSet<>();
+    @ManyToMany
+    @JoinTable(
+            name = "user_client_trainer",
+            joinColumns = @JoinColumn(name = "client_id"),
+            inverseJoinColumns = @JoinColumn(name = "trainer_id")
+    )
+    private Set<UserEntity> trainers = new LinkedHashSet<>();
 
-    @ManyToMany(mappedBy = "user")
-    private Set<UserEntity> usersTrainer = new LinkedHashSet<>();
+    @ManyToMany
+    @JoinTable(
+            name = "user_client_trainer",
+            joinColumns = @JoinColumn(name = "trainer_id"),
+            inverseJoinColumns = @JoinColumn(name = "client_id")
+    )
+    private Set<UserEntity> clients = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "user")
     private Set<ValoracionEntity> valoracions = new LinkedHashSet<>();
-
 }

@@ -9,6 +9,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <% List<SessionEntity> sesiones = (List<SessionEntity>) request.getAttribute("sesiones");
 List<ExerciseEntity> ejercicios = (List<ExerciseEntity>) request.getAttribute("ejercicios");
+SessionEntity sessionActual = (SessionEntity) request.getAttribute("sessionActual");
 %>
 <html>
 <head>
@@ -23,9 +24,7 @@ List<ExerciseEntity> ejercicios = (List<ExerciseEntity>) request.getAttribute("e
 <%for(SessionEntity s : sesiones){%>
 <h2><%=s.getName()%></h2>
 <%
-
 for(ExerciseEntity e : ejercicios){
-
 
 %>
 <table border="1">
@@ -36,11 +35,11 @@ for(ExerciseEntity e : ejercicios){
         <th>Valoración</th>
     </tr>
     <tr>
-        <td><a href="/home/cliente/ejercicio?idEjercicio=<%=e.getId()%>"><%=e.getName()%></a></td>
+        <td><a href="/home/cliente/ejercicioIndividual?idEjercicio=<%=e.getId()%>"><%=e.getName()%></a></td>
         <td><%=e.getDescription()%></td>
         <td><%=e.getVideo()%></td>
         <%
-            List<ValoracionEntity> val = (List<ValoracionEntity>) e.getValoracionsById();
+            List<ValoracionEntity> val = (List<ValoracionEntity>) e.getValoracions();
             for(ValoracionEntity v : val){
                 boolean done = false;
                 if(v.getDone() == 1) done = true;
