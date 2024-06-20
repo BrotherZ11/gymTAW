@@ -11,16 +11,19 @@
     ExerciseEntity ejercicio = (ExerciseEntity) request.getAttribute("ejercicio");
     ValoracionEntity nuevaValoracion = (ValoracionEntity) request.getAttribute("nuevaValoracion");
     Integer idCliente = (Integer) request.getAttribute("idCliente");
+    Integer idSesion = (Integer) request.getAttribute("idSesion");
 %>
 <html>
 <head>
     <title><%=ejercicio.getName()%></title>
 </head>
 <body>
+<input type="button" onclick="history.back()" name="Volver atrás" value="Volver atrás">
 <h1>Valorar "<%=ejercicio.getName()%>"</h1>
-<form method="post" action="/guardar">
+<form method="post" action="/home/cliente/guardar">
     <input type="hidden" name="exerciseId" value="<%=ejercicio.getId()%>">
     <input type="hidden" name="idCliente" value="<%=idCliente%>">
+    <input type="hidden" name="idSesion" value="<%=idSesion%>">
     <p>Por favor, selecciona una calificación:</p>
     <label>
         <input type="radio" name="stars" value="1"> 1

@@ -122,7 +122,7 @@ public class ClienteController {
     }
 
     @GetMapping("/valorarEjercicio")
-    public String valorarDesdeEjercicio(@RequestParam("idEjercicio") Integer idEjercicio, @RequestParam("idCliente") Integer idCliente, Model model) {
+    public String valorarDesdeEjercicio(@RequestParam("idEjercicio") Integer idEjercicio, @RequestParam("idCliente") Integer idCliente, @RequestParam("idSesion") Integer idSesion, Model model) {
         ExerciseEntity ejercicio = exerciseRepository.getExercisesByIdEjercicio(idEjercicio);
         model.addAttribute("ejercicio", ejercicio);
         ValoracionEntity nuevaValoracion = new ValoracionEntity();
@@ -130,34 +130,57 @@ public class ClienteController {
         nuevaValoracion.setId(nuevaValoracionId);
         model.addAttribute("nuevaValoracion", nuevaValoracion);
         model.addAttribute("idCliente", idCliente);
+        model.addAttribute("idSesion", idSesion); // Add idSesion to the model
         return "valorarUnEjercicio";
     }
 
+
     @PostMapping("/guardar")
-    public String guardarValoracion(@RequestParam("stars") Integer stars, @RequestParam("idCliente") Integer userId, @RequestParam("exerciseId") Integer exerciseId, Model model) {
-        UserEntity user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + userId));
-        ExerciseEntity exercise = exerciseRepository.findById(exerciseId).orElseThrow(() -> new IllegalArgumentException("Invalid exercise Id:" + exerciseId));
+    public String guardarValoracion(@RequestParam("stars") Integer stars,
+                                    @RequestParam("idCliente") Integer userId,
+                                    @RequestParam("exerciseId") Integer exerciseId,
+                                    @RequestParam("idSesion") Integer idSesion, // Ensure this parameter is here
+                                    Model model) {
+        UserEntity user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + userId));
+        ExerciseEntity exercise = exerciseRepository.findById(exerciseId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid exercise Id:" + exerciseId));
 
-        // Find the current session
-        SessionEntity sesionActual = sessionRepository.getSessionsByIdEjercicio(exerciseId);
+        // Find or create the valoracion entity for this exercise
+        List<ValoracionEntity> val = exercise.getValoracions();
+        boolean valoracionExists = false;
+        if (val != null) {
+            for (ValoracionEntity v : val) {
+                if (v.getUser().getId().equals(userId)) {
+                    v.setStars(stars);  // Set the rating
+                    valoracionRepository.save(v);
+                    valoracionExists = true;
+                    break;
+                }
+            }
+        }
 
-        ValoracionEntity nuevaValoracion = new ValoracionEntity();
-        ValoracionEntityId valoracionEntityId = new ValoracionEntityId();
-        valoracionEntityId.setUserId(userId);
-        valoracionEntityId.setExerciseId(exerciseId);
+        if (!valoracionExists) {
+            ValoracionEntity nuevaValoracion = new ValoracionEntity();
+            ValoracionEntityId valoracionEntityId = new ValoracionEntityId();
+            valoracionEntityId.setUserId(userId);
+            valoracionEntityId.setExerciseId(exerciseId);
 
-        nuevaValoracion.setId(valoracionEntityId);
-        nuevaValoracion.setUser(user);
-        nuevaValoracion.setExercise(exercise);
-        nuevaValoracion.setStars(stars);
-        nuevaValoracion.setDone((byte) 1); // Marking the rating as done
+            nuevaValoracion.setId(valoracionEntityId);
+            nuevaValoracion.setUser(user);
+            nuevaValoracion.setExercise(exercise);
+            nuevaValoracion.setStars(stars);
+            nuevaValoracion.setDone((byte) 1); // Marking the rating as done
 
-        valoracionRepository.save(nuevaValoracion);
+            valoracionRepository.save(nuevaValoracion);
+        }
 
-        model.addAttribute("ejercicio", exercise);
-        model.addAttribute("nuevaValoracion", nuevaValoracion);
-
-        return "redirect:/home/cliente/ejercicio?idSesion=" + sesionActual.getId();
+        // Redirect back to the session page
+        return "redirect:/home/cliente/ejercicio?idSesion=" + idSesion;
     }
+
+
+
+
 
 }

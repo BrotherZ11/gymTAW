@@ -77,7 +77,7 @@
         <%
         } else if (!valorado) {
         %>
-        <td align="center"><a href="valorarEjercicio?idEjercicio=<%= e.getId() %>&idCliente=<%= s.getIdtrainer().getId() %>">Valorar</a></td>
+        <td align="center"><a href="valorarEjercicio?idEjercicio=<%= e.getId() %>&idCliente=<%= s.getIdtrainer().getId() %>&idSesion=<%=s.getId()%>">Valorar</a></td>
         <%
             }
         %>
