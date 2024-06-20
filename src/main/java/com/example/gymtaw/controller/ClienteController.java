@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -64,6 +65,8 @@ public class ClienteController {
         List<ExerciseEntity> ejercicios = exerciseHasSessionRepository.getExercisesByIdSession(idSesion);
         model.addAttribute("ejercicios", ejercicios);
         model.addAttribute("idSesion", idSesion);
+
+
         return "entrenamiento_sesion_cliente";
     }
 
@@ -179,7 +182,29 @@ public class ClienteController {
         return "redirect:/home/cliente/ejercicio?idSesion=" + idSesion;
     }
 
+    @GetMapping("/valorar")
+    public String todasValoraciones(Model model, @RequestParam("idCliente") Integer idCliente){
 
+        List<RoutineEntity> rutinas = routineRepository.getRoutinesByClient(idCliente);
+        model.addAttribute("rutinas", rutinas);
+        model.addAttribute("idCliente", idCliente);
+        List<SessionEntity> sesiones = new ArrayList<>();
+
+        for(RoutineEntity r : rutinas){
+            sesiones = this.sessionRepository.getSessionsByIdRoutine(r.getId());
+        }
+        model.addAttribute("sesiones", sesiones);
+
+        List<ExerciseHasSessionEntity> ejs = new ArrayList<>();
+        List<ExerciseEntity> ejercicios = new ArrayList<>();
+        for(SessionEntity s : sesiones){
+            ejercicios = this.exerciseRepository.getExercisesByIdSession(s.getId());
+        }
+        model.addAttribute("ejercicios", ejercicios);
+
+
+        return "valoracion";
+    }
 
 
 

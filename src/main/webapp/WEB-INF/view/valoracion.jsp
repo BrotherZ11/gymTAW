@@ -1,16 +1,9 @@
 <%@ page import="java.util.List" %>
-<%@ page import="com.example.gymtaw.entity.*" %><%--
-  Created by IntelliJ IDEA.
-  User: marta
-  Date: 06/05/2024
-  Time: 18:18
-  To change this template use File | Settings | File Templates.
---%>
+<%@ page import="com.example.gymtaw.entity.*" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    List<RoutineEntity> rutinas = (List<RoutineEntity>) request.getAttribute("rutinas");
-    List<SessionEntity> sesiones = (List<SessionEntity>) request.getAttribute("sesiones");
-    List<ValoracionEntity> valoraciones = (List<ValoracionEntity>) request.getAttribute("valoraciones");
+        List<RoutineEntity> rutinas = (List<RoutineEntity>) request.getAttribute("rutinas");
+        List<SessionEntity> sesiones = (List<SessionEntity>) request.getAttribute("sesiones");
     List<ExerciseEntity> ejercicios = (List<ExerciseEntity>) request.getAttribute("ejercicios");
 %>
 <html>
@@ -22,66 +15,79 @@
 
 <h1>Valoraciones del Cliente</h1>
 
-<%for(RoutineEntity r : rutinas){
-
-%>
-<h2><%=r.getName()%></h2>
+    <% for (RoutineEntity rutina : rutinas) { %>
+<h2><%= rutina.getName() %></h2>
+    <% for (SessionEntity sesion : sesiones) { %>
+<h3><%= sesion.getName() %></h3>
+<form action="/home/cliente/guardarValoracion" method="post">
+    <table border="1">
+        <tr>
+            <th>Nombre ejercicio</th>
+            <th>Descripcion</th>
+            <th>Video</th>
+            <th>Completado</th>
+            <th>Valoración</th>
+        </tr>
+<% for (ExerciseEntity ejercicio : ejercicios) { %>
+        <tr>
+            <td><a href="/home/cliente/ejercicioIndividual?idEjercicio=<%= ejercicio.getId() %>"><%= ejercicio.getName() %></a></td>
+            <td><%= ejercicio.getDescription() != null ? ejercicio.getDescription() : "N/A" %></td>
+            <td><%= ejercicio.getVideo() != null ? ejercicio.getVideo() : "N/A" %></td>
+            <td align="center">
+                <%
+                    boolean isDone = false;
+                    List<ValoracionEntity> val = ejercicio.getValoracions();
+                    if (val != null) {
+                        for (ValoracionEntity v : val) {
+                            if (v.getDone() == 1) {
+                                isDone = true;
+                                break;
+                            }
+                        }
+                    }
+                %>
+                <form action="/home/cliente/guardarCompletado" method="post">
+                    <input type="hidden" name="idEjercicio" value="<%= ejercicio.getId() %>" />
+                    <input type="hidden" name="idSesion" value="<%= sesion.getId() %>" />
+                    <input type="hidden" name="idCliente" value="<%= sesion.getIdtrainer().getId() %>" />
+                    <input type="checkbox" name="done" value="1" <% if (isDone) { %>checked disabled<% } else { %> onchange="this.form.submit()"<% } %> />
+                </form>
+            </td>
+                <%
+                boolean valorado = false;
+                if (val != null) {
+                    for (ValoracionEntity v : val) {
+                        if (v.getDone() == 1) {
+                            if (v.getStars() != null) {
+                                valorado = true;
+            %>
+            <td align="center"><%= v.getStars() %></td>
+                <%
+            } else {
+            %>
+            <td align="center">-</td>
 <%
-for(SessionEntity s : sesiones){
-
+                                }
+                                break;
+                            }
+                        }
+                    }
+    if (!isDone) {
 %>
-<h3><%=s.getName()%></h3>
-<form action="/guardarValoracion" method="post">
-<%
-
-    for(ExerciseEntity e : ejercicios){
-
-
-%>
-<table border="1">
-    <tr>
-        <th>Nombre ejercicio</th>
-        <th>Descripcion</th>
-        <th>Video</th>
-        <th>Valoración</th>
-    </tr>
-    <tr>
-        <td><%=e.getName()%></td>
-        <td><%=e.getDescription()%></td>
-        <td><%=e.getVideo()%></td>
-        <%
-            List<ValoracionEntity> val = (List<ValoracionEntity>) e.getValoracionsById();
-            for(ValoracionEntity v : val){
-
-                boolean done = false;
-                if(v.getDone() == 1) done = true;
-                if(done){
-        %>
-        <input type="hidden" name="idCliente" value="<%=r.getIdclient()%>">
-        <input type="hidden" name="idEjercicio" value="<%=e.getId()%>">
-        <td align="center"><input type="text" name="estrellas" placeholder="<%=v.getStars()%>" value="<%=v.getStars()%>"></td>
-        <%}else{
-            String valor = "";
-        if(v.getStars() == null) valor = "Por favor introduzca valor";
-        %>
-        <td align="center"><input type="text" name="estrellas" placeholder="<%=valor%>>" value="<%=v.getStars()%>" ></td>
-        <%
+            <td align="center">Completar para valorar</td>
+            <%
+            } else if (!valorado) {
+            %>
+            <td align="center"><a href="/home/cliente/valorarEjercicio?idEjercicio=<%= ejercicio.getId() %>&idCliente=<%= sesion.getIdtrainer().getId() %>&idSesion=<%= sesion.getId() %>">Valorar</a></td>
+            <%
                 }
-            }
-        %>
-    </tr>
-
-</table>
-
-</br>
-<%}
-%>
-<button>Guardar valoraciones</button>
-</form>
-<%
-}}%>
-
-
+            %>
+        </tr>
+        <% } %>
+    </table>
+    <br>
+        <% } %>
+        <% } %>
 
 </body>
 </html>

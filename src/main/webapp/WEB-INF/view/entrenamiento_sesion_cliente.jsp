@@ -26,6 +26,7 @@
         <th>Video</th>
         <th>Completado</th>
         <th>Valoración</th>
+        <th></th>
     </tr>
     <% for (ExerciseEntity e : ejercicios) { %>
     <tr>
@@ -81,6 +82,13 @@
         <%
             }
         %>
+        <td>
+            <%if(valorado==true){%>
+        <a href="valorarEjercicio?idEjercicio=<%= e.getId() %>&idCliente=<%= s.getIdtrainer().getId() %>&idSesion=<%=s.getId()%>">Editar valoracion</a>
+            <%}else{%>
+            -
+            <% } %>
+        </td>
     </tr>
     <% } %>
 </table>
