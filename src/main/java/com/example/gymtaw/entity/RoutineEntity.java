@@ -3,18 +3,18 @@ package com.example.gymtaw.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "routine")
 public class RoutineEntity {
-    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
     @Column(name = "idroutine", nullable = false)
     private Integer id;
 
@@ -28,20 +28,13 @@ public class RoutineEntity {
     private LocalDate date;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     @JoinColumn(name = "idclient")
     private UserEntity idclient;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "idtrainer", nullable = false)
     private UserEntity idtrainer;
-
-    @OneToMany(mappedBy = "routine")
-    private Set<RoutineHasSessionEntity> routineHasSessions = new LinkedHashSet<>();
-
-    @ManyToMany
-    @JoinTable(name = "type_has_routine",
-            joinColumns = @JoinColumn(name = "routine_idroutine"),
-            inverseJoinColumns = @JoinColumn(name = "type_idtype"))
-    private Set<TypeEntity> types = new LinkedHashSet<>();
 
 }

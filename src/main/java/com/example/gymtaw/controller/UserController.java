@@ -1,11 +1,9 @@
 package com.example.gymtaw.controller;
 
 import com.example.gymtaw.dao.RolRepository;
-import com.example.gymtaw.dao.UserHasTrainerRepository;
 import com.example.gymtaw.dao.UserRepository;
 import com.example.gymtaw.entity.RolEntity;
 import com.example.gymtaw.entity.UserEntity;
-import com.example.gymtaw.entity.UserHasTrainerEntity;
 import com.example.gymtaw.ui.Filtro;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -23,8 +20,6 @@ public class UserController extends BaseController{
     UserRepository userRepository;
     @Autowired
     RolRepository rolRepository;
-    @Autowired
-    UserHasTrainerRepository userTrainerRepository;
 
     @GetMapping("/")
     public String doListarUsuarios (Model model, HttpSession session) {
@@ -33,10 +28,8 @@ public class UserController extends BaseController{
             strTo = "redirect:/";
         } else {
             List<UserEntity> usuarios = userRepository.findAll();
-            List<RolEntity> rols = rolRepository.findAll();
             model.addAttribute("usuarios", usuarios);
             model.addAttribute("filtro", new Filtro());
-            model.addAttribute("rols", rols);
         }
 
         return strTo;
@@ -48,20 +41,9 @@ public class UserController extends BaseController{
         if(!estaAutenticado(session)){
             strTo = "redirect:/";
         }
-        List<UserEntity> usuarios = new ArrayList<>();
-        if(filtro.noFilter()){
-            usuarios = userRepository.findAll();
-        } else {
-            if(filtro.getIdRol() != 0){
-                usuarios = userRepository.findUserEntitiesByIdRol(filtro.getIdRol());
-            } else {
-                usuarios = userRepository.findUserEntitiesByNameSurnameDni(filtro.getNombre(), filtro.getApellido(), filtro.getDni());
-            }
-        }
-        List<RolEntity> rols = rolRepository.findAll();
+        List<UserEntity> usuarios = userRepository.findUserEntitiesByIdRol(filtro.getIdRol());
         model.addAttribute("usuarios", usuarios);
-        model.addAttribute("filtro", filtro);
-        model.addAttribute("rols", rols);
+        model.addAttribute("filtro", new Filtro());
 
         return strTo;
     }
@@ -126,16 +108,16 @@ public class UserController extends BaseController{
 
     @PostMapping("/guardarCreacion")
     public String doGuardarCreacion (@RequestParam("id") Integer id,
-                             @RequestParam("gmail") String gmail,
-                             @RequestParam("nombre") String nombre,
-                             @RequestParam("apellido") String apellido,
-                             @RequestParam("edad") Integer edad,
-                             @RequestParam("telefono") String telefono,
-                             @RequestParam("genero") String genero,
-                             @RequestParam("contrasena") String contrasena,
-                             @RequestParam("dni") String dni,
-                             @RequestParam("rol") int rol,
-                             HttpSession session) {
+                                     @RequestParam("gmail") String gmail,
+                                     @RequestParam("nombre") String nombre,
+                                     @RequestParam("apellido") String apellido,
+                                     @RequestParam("edad") Integer edad,
+                                     @RequestParam("telefono") String telefono,
+                                     @RequestParam("genero") String genero,
+                                     @RequestParam("contrasena") String contrasena,
+                                     @RequestParam("dni") String dni,
+                                     @RequestParam("rol") int rol,
+                                     HttpSession session) {
 
         String strTo = "redirect:/users/";
         if (!estaAutenticado(session)) {
@@ -151,55 +133,10 @@ public class UserController extends BaseController{
             usuario.setPassword(contrasena);
             usuario.setDni(dni);
             RolEntity rolEntity = rolRepository.findById(rol).orElse(new RolEntity());
-            usuario.setIdRol(rolEntity);
+            usuario.setIdRolEntity(rolEntity);
 
             this.userRepository.save(usuario);
         }
         return strTo;
     }
-
-    @GetMapping("/asignar")
-    public String doAsignar(@RequestParam("id") int idUsuario, Model model, HttpSession session){
-        UserEntity usuario = userRepository.findById(idUsuario).get();
-        if(!estaAutenticado(session)){
-            return "redirect:/";
-        }
-        List<UserEntity> usuarios;
-        if(usuario.getIdRol().getId() == 4){
-            usuarios = userRepository.findTrainers();
-        } else {
-            usuarios = userRepository.findClients();
-        }
-        model.addAttribute("usuario", usuario);
-        model.addAttribute("usuariosAsignacion", usuarios);
-        return "asignarView";
-    }
-
-    @PostMapping("/realizarAsignacion")
-    public String doAsignacion (@RequestParam("idUsuario") Integer idUsuario, @RequestParam("idsUsuariosAsignar") List<Integer> usuariosAsignar, Model model, HttpSession session){
-        UserEntity usuario = userRepository.findById(idUsuario).get();
-        if(!estaAutenticado(session)){
-            return "redirect:/";
-        }
-
-        List<UserEntity> usuarios = userRepository.findAllById(usuariosAsignar);
-        if(usuario.getIdRol().getId() == 4){
-            for(UserEntity u : usuarios){
-                UserHasTrainerEntity ut = new UserHasTrainerEntity();
-                ut.setUser(usuario);
-                ut.setTrainer(u);
-                this.userTrainerRepository.save(ut);
-            }
-        } else {
-            for(UserEntity u : usuarios){
-                UserHasTrainerEntity ut = new UserHasTrainerEntity();
-                ut.setUser(u);
-                ut.setTrainer(usuario);
-                this.userTrainerRepository.save(ut);
-            }
-        }
-
-        return "redirect:/users/";
-    }
-
 }

@@ -4,16 +4,13 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 @Getter
 @Setter
 @Entity
 @Table(name = "user")
 public class UserEntity {
-    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
     @Column(name = "id", nullable = false)
     private Integer id;
 
@@ -43,27 +40,6 @@ public class UserEntity {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_rol", nullable = false)
-    private RolEntity idRol;
-
-    @OneToMany(mappedBy = "user")
-    private Set<ClientExerciseEntity> clientExercises = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "idclient")
-    private Set<RoutineEntity> routinesClient = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "idtrainer")
-    private Set<RoutineEntity> routinesTrainer = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "idtrainer")
-    private Set<SessionEntity> sessions = new LinkedHashSet<>();
-
-    @ManyToMany(mappedBy = "user")
-    private Set<UserEntity> usersClient = new LinkedHashSet<>();
-
-    @ManyToMany(mappedBy = "user")
-    private Set<UserEntity> usersTrainer = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "user")
-    private Set<ValoracionEntity> valoracions = new LinkedHashSet<>();
+    private RolEntity idRolEntity;
 
 }

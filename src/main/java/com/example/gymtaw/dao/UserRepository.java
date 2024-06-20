@@ -12,7 +12,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     @Query("select u from UserEntity u where u.email = :user and u.password = :pwd")
     UserEntity autenticacion (@Param("user") String user, @Param("pwd")String pwd);
 
-    @Query("select u from UserEntity u where u.idRol = :rol")
+    @Query("select u from UserEntity u where u.idRolEntity.id = :rol")
     List<UserEntity> findUserEntitiesByIdRol(@Param("rol") int rol);
 
     @Query("select u from UserEntity u where u.name like concat('%', :nombre, '%') and u.surname like concat('%', :apellido, '%') and u.dni like concat('%', :dni, '%')")

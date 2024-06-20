@@ -6,14 +6,13 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.Hibernate;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 @Getter
 @Setter
 @Embeddable
-public class RoutineHasSessionEntityId implements Serializable {
-    private static final long serialVersionUID = 2361236869427811153L;
+public class RoutineHasSessionEntityId implements java.io.Serializable {
+    private static final long serialVersionUID = 77386757019376885L;
     @Column(name = "routine_id", nullable = false)
     private Integer routineId;
 

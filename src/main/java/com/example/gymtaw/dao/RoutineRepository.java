@@ -15,9 +15,13 @@ public interface RoutineRepository extends JpaRepository<RoutineEntity, Integer>
             "WHERE trainer_routine.trainer_id = :idEntrenador " +
             "AND trainer_routine.user_id = :idCliente",
             nativeQuery = true)*/
-    @Query ("select r from RoutineEntity r where r.idtrainer = :idEntrenador and r.idclient = :idCliente")
+    @Query ("select r from RoutineEntity r where r.idtrainer.id = :idEntrenador and r.idclient.id = :idCliente")
     public List<RoutineEntity> getRoutinesByIdEntrenadorAndIdCliente(@Param("idEntrenador") Integer idEntrenador,
                                                                      @Param("idCliente") Integer idCliente);
+
+    @Query ("select r from RoutineEntity r where r.idtrainer.id = :idEntrenador and r.idclient IS NULL")
+    public List<RoutineEntity> getRoutinesByIdEntrenadorNoCliente(@Param("idEntrenador") Integer idEntrenador);
+
 
     @Query(value = "SELECT routine.idroutine as idroutine, routine.name as name, routine.description as description, routine.date as date, routine.idTrainer as id_trainer " +
             "FROM routine JOIN trainer_routine " +
@@ -34,7 +38,7 @@ public interface RoutineRepository extends JpaRepository<RoutineEntity, Integer>
             nativeQuery = true)
     public List<RoutineEntity> getRoutinesByIdEntrenador(@Param("idEntrenador") Integer idEntrenador);*/
 
-    @Query("select r from RoutineEntity r where r.idtrainer = :idEntrenador")
+    @Query("select r from RoutineEntity r where r.idtrainer.id = :idEntrenador")
     public List<RoutineEntity> getRoutinesbyEntrenador(@Param("idEntrenador") Integer idEntrenador);
 
     @Query("select r from RoutineEntity r where r.name like concat('%', :filtro, '%') ")

@@ -4,16 +4,13 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 @Getter
 @Setter
 @Entity
 @Table(name = "exercise")
 public class ExerciseEntity {
-    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
     @Column(name = "id", nullable = false)
     private Integer id;
 
@@ -28,15 +25,6 @@ public class ExerciseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "type_idtype", nullable = false)
-    private TypeEntity typeIdtype;
-
-    @OneToMany(mappedBy = "exercise")
-    private Set<ClientExerciseEntity> clientExercises = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "exercise")
-    private Set<ExerciseHasSessionEntity> exerciseHasSessions = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "exercise")
-    private Set<ValoracionEntity> valoracions = new LinkedHashSet<>();
+    private TypeEntity typeEntityIdtype;
 
 }

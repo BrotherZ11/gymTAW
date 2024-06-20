@@ -18,7 +18,7 @@
     if (esEditar) {
         nombre = rutina.getName();
         descripcion = rutina.getDescription() + "";
-        fecha = rutina.getDate();
+        fecha = rutina.getDate().atStartOfDay().toLocalDate();
     }
 %>
 <html>

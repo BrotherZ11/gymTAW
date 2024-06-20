@@ -3,8 +3,8 @@
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    List<RoutineEntity> lista = (List<RoutineEntity>) request.getAttribute("lista");
-    List<RoutineEntity> listaCompleta = (List<RoutineEntity>) request.getAttribute("listaCompleta");
+    List<RoutineEntity> listaRutinasCliente = (List<RoutineEntity>) request.getAttribute("listaRutinasCliente");
+    List<RoutineEntity> listaRutinasSinAsignar = (List<RoutineEntity>) request.getAttribute("listaRutinasSinAsignar");
     Integer idEntrenador = (Integer) request.getAttribute("idEntrenador");
     Integer idCliente = (Integer) request.getAttribute("idCliente");
     String filtro = request.getParameter("filtro");
@@ -12,7 +12,7 @@
 %>
 <html>
 <head>
-    <title>Routinas de Cliente</title>
+    <title>Rutinas del Cliente</title>
 </head>
 <body>
 <h1> Rutinas del Cliente </h1>
@@ -23,18 +23,16 @@
 </form:form>
 
 <%
-    if(listaCompleta.size() > lista.size()){
+    if(!listaRutinasSinAsignar.isEmpty()){
 %>
 <form method="post" action="asignar_rutina">
     <label>Selecciona una rutina: </label>
     <select id="rutinas" name="idRutina">
         <%
-            for(RoutineEntity rutina: listaCompleta){
-                if(!lista.contains(rutina)){
+            for(RoutineEntity rutina: listaRutinasSinAsignar){
         %>
         <option value=<%=rutina.getId()%>><%=rutina.getName()%></option>
         <%
-                }
             }
         %>
     </select>
@@ -58,7 +56,7 @@
         <th>FECHA</th>
     </tr>
     <%
-        if(lista.isEmpty()){
+        if(listaRutinasCliente.isEmpty()){
     %>
     <tr>
         <td>No tiene ninguna rutina</td>
@@ -67,14 +65,14 @@
     </tr>
     <%
     }else{
-        for(RoutineEntity r : lista){
+        for(RoutineEntity r : listaRutinasCliente){
     %>
     <tr>
         <td><%=r.getName()%></td>
         <td><%=r.getDescription()%></td>
         <td><%=r.getDate()%></td>
-        <td><a href="session_client?idRutina=<%= r.getId()  %>&idEntrenador=<%=idEntrenador%>">Ver</a> </td>
-        <td><a href="quitar_rutina?idRutina=<%= r.getId()  %>&idEntrenador=<%= idEntrenador %>&idCliente=<%= idCliente %>">Quitar rutina</a> </td>
+        <td><a href="session_client?idRutina=<%= r.getId() %>&idEntrenador=<%=idEntrenador%>">Ver</a> </td>
+        <td><a href="quitar_rutina?idRutina=<%= r.getId() %>&idEntrenador=<%= idEntrenador %>&idCliente=<%= idCliente %>">Quitar rutina</a> </td>
     </tr>
     <%
         }
