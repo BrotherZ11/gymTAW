@@ -13,7 +13,7 @@ import java.util.Objects;
 @Setter
 @Embeddable
 public class ExerciseHasSessionEntityId implements Serializable {
-    private static final long serialVersionUID = -4448749408538292899L;
+    private static final long serialVersionUID = -6353819351898563205L;
     @Column(name = "exercise_id", nullable = false)
     private Integer exerciseId;
 

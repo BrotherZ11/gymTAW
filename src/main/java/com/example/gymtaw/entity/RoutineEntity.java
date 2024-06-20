@@ -7,6 +7,8 @@ import lombok.Setter;
 import java.time.LocalDate;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Getter
 @Setter
@@ -28,10 +30,12 @@ public class RoutineEntity {
     private LocalDate date;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     @JoinColumn(name = "idclient")
     private UserEntity idclient;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "idtrainer", nullable = false)
     private UserEntity idtrainer;
 

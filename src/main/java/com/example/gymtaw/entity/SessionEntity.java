@@ -6,6 +6,8 @@ import lombok.Setter;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Getter
 @Setter
@@ -21,6 +23,7 @@ public class SessionEntity {
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "idtrainer", nullable = false)
     private UserEntity idtrainer;
 
