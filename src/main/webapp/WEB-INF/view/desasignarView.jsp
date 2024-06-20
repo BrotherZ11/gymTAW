@@ -8,37 +8,37 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<% List<UserEntity> usuariosAsignar = (List<UserEntity>) request.getAttribute("usuariosAsignacion");%>
+<% List<UserEntity> usuariosAsignar = (List<UserEntity>) request.getAttribute("usuariosDesasignacion");%>
 <% UserEntity usuario = (UserEntity) request.getAttribute("usuario");%>
 <html>
 <head>
-    <title>Asignación</title>
+    <title>Desasignación</title>
 </head>
 <body>
 <h2><%if(usuario.getIdRolEntity().getId() == 4){%>
-        Asignar entrenadores a <%=usuario.getName() + " " + usuario.getSurname()%>
+    Desasignar entrenadores a <%=usuario.getName() + " " + usuario.getSurname()%>
     <%} else {%>
-        Asignar clientes a <%=usuario.getName() + " " + usuario.getSurname()%>
+    Desasignar clientes a <%=usuario.getName() + " " + usuario.getSurname()%>
     <%}%>
 </h2>
-<form method="post" action="/users/realizarAsignacion">
+<form method="post" action="/users/realizarDesasignacion">
     <input type="hidden" name="idUsuario" value="<%=usuario.getId()%>"/>
     <table border="1">
         <tr>
             <td><%if(usuario.getIdRolEntity().getId() == 4){%>
-                    Entrenadores:
+                Entrenadores asignados:
                 <%} else {%>
-                    Clientes:
+                Clientes asignados:
                 <%}%>
             </td>
-            <td><select name="idsUsuariosAsignar" multiple>
+            <td><select name="idsUsuariosDesasignar" multiple>
                 <%for(UserEntity user: usuariosAsignar){%>
                 <option value="<%=user.getId()%>" ><%=user.getName() + " " + user.getSurname()%></option>
                 <%}%>
             </select></td>
         </tr>
     </table>
-    <button>Asignar</button>
+    <button>Desasignar</button>
 </form>
 </body>
 </html>
