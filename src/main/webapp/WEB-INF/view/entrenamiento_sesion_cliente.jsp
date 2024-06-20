@@ -5,6 +5,7 @@
     List<SessionEntity> sesiones = (List<SessionEntity>) request.getAttribute("sesiones");
     List<ExerciseEntity> ejercicios = (List<ExerciseEntity>) request.getAttribute("ejercicios");
     Integer idSesion = (Integer) request.getAttribute("idSesion");
+    Integer idCliente=0;
 %>
 <html>
 <head>
@@ -37,9 +38,14 @@
             <%
                 boolean isDone = false;
                 List<ValoracionEntity> val = e.getValoracions();
+
+                for( ExerciseHasSessionEntity es : s.getExerciseHasSessions()){
+                    for(ClientExerciseEntity ec : es.getExercise().getClientExercises()){
+                        idCliente = ec.getUser().getId();
+                    }}
                 if (val != null) {
                     for (ValoracionEntity v : val) {
-                        if (v.getDone() == 1) {
+                        if (v.getDone() == 1 && v.getUser().getId().equals(idCliente)) {
                             isDone = true;
                             break;
                         }
@@ -56,8 +62,13 @@
         <%
             boolean valorado = false;
             if (val != null) {
+
+                for( ExerciseHasSessionEntity es : s.getExerciseHasSessions()){
+                    for(ClientExerciseEntity ec : es.getExercise().getClientExercises()){
+                        idCliente = ec.getUser().getId();
+                    }}
                 for (ValoracionEntity v : val) {
-                    if (v.getDone() == 1) {
+                    if (v.getDone() == 1 && v.getUser().getId().equals(idCliente)) {
                         if (v.getStars() != null) {
                             valorado = true;
         %>
@@ -77,14 +88,26 @@
         <td align="center">Completar para valorar</td>
         <%
         } else if (!valorado) {
+
+            for( ExerciseHasSessionEntity es : s.getExerciseHasSessions()){
+                for(ClientExerciseEntity ec : es.getExercise().getClientExercises()){
+                    idCliente = ec.getUser().getId();
+                }}
+
         %>
-        <td align="center"><a href="valorarEjercicio?idEjercicio=<%= e.getId() %>&idCliente=<%= s.getIdtrainer().getId() %>&idSesion=<%=s.getId()%>">Valorar</a></td>
+        <td align="center"><a href="valorarEjercicio?idEjercicio=<%= e.getId() %>&idCliente=<%=idCliente %>&idSesion=<%=s.getId()%>">Valorar</a></td>
         <%
-            }
+                 }
         %>
         <td>
-            <%if(valorado==true){%>
-        <a href="valorarEjercicio?idEjercicio=<%= e.getId() %>&idCliente=<%= s.getIdtrainer().getId() %>&idSesion=<%=s.getId()%>">Editar valoracion</a>
+            <%if(valorado==true){
+
+            for( ExerciseHasSessionEntity es : s.getExerciseHasSessions()){
+                for(ClientExerciseEntity ec : es.getExercise().getClientExercises()){
+                    idCliente =  ec.getUser().getId();
+                }}
+            %>
+        <a href="valorarEjercicio?idEjercicio=<%= e.getId() %>&idCliente=<%=idCliente %>&idSesion=<%=s.getId()%>">Editar valoracion</a>
             <%}else{%>
             -
             <% } %>
