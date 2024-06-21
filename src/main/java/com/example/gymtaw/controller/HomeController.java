@@ -1,5 +1,6 @@
 package com.example.gymtaw.controller;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,8 +18,7 @@ public class HomeController {
     }
 
     @GetMapping("/cliente")
-    public String doHomeCliente (@RequestParam("idCliente") Integer idCliente, Model model) {
-        model.addAttribute("idCliente", idCliente);
+    public String doHomeCliente (Model model, HttpSession session) {
         return "home_client";
     }
 

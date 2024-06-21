@@ -20,7 +20,7 @@
     <title>Sesiones</title>
 </head>
 <body>
-<a href="http://localhost:8080/home/cliente/sesionesSemanales?idRutina=<%= idRutina%>&idCliente=<%=idCliente%>">Volver atrás</a>
+<a href="http://localhost:8080/home/cliente/sesionesSemanales?idRutina=<%= idRutina%>">Volver atrás</a>
 <h1>Sesiones del Cliente</h1>
 
 <% if (sesiones != null) { %>
@@ -39,7 +39,7 @@
     <% for (ExerciseEntity e : ejercicios) { %>
     <tr>
 
-        <td><a href="/home/cliente/ejercicioIndividual?idEjercicio=<%= e.getId() %>&idRutina=<%=idRutina%>&idSesion=<%=idSesion%>&idCliente=<%=idCliente%>"><%= e.getName() %></a></td>
+        <td><a href="/home/cliente/ejercicioIndividual?idEjercicio=<%= e.getId() %>&idRutina=<%=idRutina%>&idSesion=<%=idSesion%>"><%= e.getName() %></a></td>
 
         <td><%= e.getDescription() != null ? e.getDescription() : "N/A" %></td>
         <td><%= e.getVideo() != null ? e.getVideo() : "N/A" %></td>
@@ -64,7 +64,6 @@
             <form action="/home/cliente/guardarCompletado" method="post">
                 <input type="hidden" name="idEjercicio" value="<%= e.getId() %>" />
                 <input type="hidden" name="idSesion" value="<%= idSesion %>" />
-                <input type="hidden" name="idCliente" value="<%= idCliente %>" />
                 <input type="hidden" name="idRutina" value="<%= idRutina %>" />
                 <input type="checkbox" name="done" value="1" <% if (isDone) { %>checked disabled<% } else { %> onchange="this.form.submit()"<% } %> />
             </form>
@@ -101,7 +100,7 @@
                 }}
 
         %>
-        <td align="center"><a href="valorarEjercicio?idEjercicio=<%= e.getId() %>&idCliente=<%=idCliente %>&idSesion=<%=s.getId()%>&idRutina=<%=idRutina%>">Valorar</a></td>
+        <td align="center"><a href="valorarEjercicio?idEjercicio=<%= e.getId() %>&idSesion=<%=s.getId()%>&idRutina=<%=idRutina%>">Valorar</a></td>
         <%
                  }
         %>
@@ -113,7 +112,7 @@
                     idCliente =  ec.getUser().getId();
                 }}
             %>
-        <a href="valorarEjercicio?idEjercicio=<%= e.getId() %>&idCliente=<%=idCliente %>&idSesion=<%=s.getId()%>&idRutina=<%=idRutina%>">Editar valoracion</a>
+        <a href="valorarEjercicio?idEjercicio=<%= e.getId() %>&idSesion=<%=s.getId()%>&idRutina=<%=idRutina%>">Editar valoracion</a>
             <%}else{%>
             -
             <% } %>

@@ -13,7 +13,7 @@
     List<ClientExerciseEntity> clientExercise = (List<ClientExerciseEntity>) request.getAttribute("clientExercise");
     Integer idRutina = (Integer) request.getAttribute("idRutina");
     Integer idSesion = (Integer) request.getAttribute("idSesion");
-    Integer idCliente = (Integer) request.getAttribute("idCliente");
+
 %>
 <html>
 <head>
@@ -22,9 +22,9 @@
 
 <body>
 <%if(idSesion!=-1 && idRutina!=-1){%>
-<a href="http://localhost:8080/home/cliente/ejercicio?idRutina=<%= idRutina%>&idSesion=<%=idSesion%>&idCliente=<%=idCliente%>">Volver atrás</a>
+<a href="http://localhost:8080/home/cliente/ejercicio?idRutina=<%= idRutina%>&idSesion=<%=idSesion%>">Volver atrás</a>
 <%}else{%>
-<a href="http://localhost:8080/home/cliente/valorar?idCliente=<%=idCliente%>">Volver atrás</a>
+<a href="http://localhost:8080/home/cliente/valorar">Volver atrás</a>
 <%}%>
 <%
     if (ejercicio != null && clientExercise != null) {

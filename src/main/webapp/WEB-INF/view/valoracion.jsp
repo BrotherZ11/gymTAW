@@ -6,18 +6,18 @@
     List<ExerciseEntity> ejercicios = (List<ExerciseEntity>) request.getAttribute("ejercicios");
     Integer idSesion = -1;
     Integer idRutina = -1;
-    Integer idCliente= (Integer) request.getAttribute("idCliente");
+    UserEntity usuario= (UserEntity) session.getAttribute("usuario");
 %>
 <html>
 <head>
     <title>Valorar</title>
 </head>
 <body>
-<a href="http://localhost:8080/home/cliente?idCliente=<%=idCliente%>">Volver atrás</a>
+<a href="http://localhost:8080/home/cliente">Volver atrás</a>
 
 <h1>Filtros</h1>
 <form:form method="post" action="/home/cliente/filtrarValoraciones" modelAttribute="filtro">
-    <input type="hidden" name="idCliente" value="<%= idCliente %>">
+
     <label for="stars">Valoración:</label>
     <select id="stars" name="stars">
         <option value="">Todas</option>
@@ -31,7 +31,7 @@
 </form:form>
 
 <form:form method="post" action="/home/cliente/filtrarEjercicio" modelAttribute="filtroEj">
-    <input type="hidden" name="idCliente" value="<%= idCliente %>">
+
     Nombre del ejercicio: <form:input path="nombre" />
     <button type="submit">Filtrar</button>
 </form:form>
@@ -51,7 +51,7 @@
     </tr>
     <%for(ExerciseEntity e : ejercicios){%>
     <tr>
-        <td><a href="/home/cliente/ejercicioIndividual?idEjercicio=<%= e.getId() %>&idRutina=<%=idRutina%>&idSesion=<%=idSesion%>&idCliente=<%=idCliente%>"><%= e.getName()%></a></td>
+        <td><a href="/home/cliente/ejercicioIndividual?idEjercicio=<%= e.getId() %>&idRutina=<%=idRutina%>&idSesion=<%=idSesion%>"><%= e.getName()%></a></td>
         <td><%=e.getDescription()%></td>
         <td><%=e.getVideo()%></td>
         <td align="center">
@@ -62,7 +62,7 @@
 
                 if (val != null) {
                     for (ValoracionEntity v : val) {
-                        if (v.getDone() == 1 && v.getUser().getId().equals(idCliente)) {
+                        if (v.getDone() == 1 && v.getUser().getId().equals(usuario.getId())) {
                             isDone = true;
                             break;
                         }
@@ -73,7 +73,7 @@
                 <input type="hidden" name="idEjercicio" value="<%= e.getId() %>" />
                 <input type="hidden" name="idSesion" value="<%= idSesion %>" />
                 <input type="hidden" name="idRutina" value="<%= idRutina %>" />
-                <input type="hidden" name="idCliente" value="<%= idCliente %>" />
+
                 <input type="checkbox" name="done" value="1" <% if (isDone) { %>checked disabled<% } else { %> onchange="this.form.submit()"<% } %> />
             </form>
         </td>
@@ -83,7 +83,7 @@
             if (val != null) {
 
                 for (ValoracionEntity v : val) {
-                    if (v.getDone() == 1 && v.getUser().getId().equals(idCliente)) {
+                    if (v.getDone() == 1 && v.getUser().getId().equals(usuario.getId())) {
                         if (v.getStars() != null) {
                             valorado = true;
         %>
@@ -105,7 +105,7 @@
         } else if (!valorado) {
 
         %>
-        <td align="center"><a href="valorarEjercicio?idEjercicio=<%= e.getId() %>&idCliente=<%=idCliente %>&idSesion=<%=idSesion%>&idrutina=<%=idRutina%>">Valorar</a></td>
+        <td align="center"><a href="valorarEjercicio?idEjercicio=<%= e.getId() %>&idSesion=<%=idSesion%>&idrutina=<%=idRutina%>">Valorar</a></td>
         <%
             }
         %>
@@ -114,14 +114,14 @@
             <%
                 if (val != null) {
                     for (ValoracionEntity v : val) {
-                        if (v.getUser().getId().equals(idCliente)) {
+                        if (v.getUser().getId().equals(usuario.getId())) {
                             String review = v.getReview();
                             if (review == null) {
                                 review = "No tienes review aún.";
                             }
             %>
             <form method="post" action="/home/cliente/guardarReview">
-                <input type="hidden" id="idCliente" name="idCliente" value="<%= idCliente %>">
+
                 <input type="hidden" id="userId" name="userId" value="<%= v.getId().getUserId() %>">
                 <input type="hidden" id="exerciseId" name="exerciseId" value="<%= v.getId().getExerciseId() %>">
                 <input type="text" name="review" value="<%= review %>"/>
@@ -140,7 +140,7 @@
         <td>
             <%if(valorado==true){
             %>
-            <a href="valorarEjercicio?idEjercicio=<%= e.getId() %>&idCliente=<%=idCliente %>&idSesion=<%=idSesion%>&idRutina=<%=idRutina%>">Editar valoracion</a>
+            <a href="valorarEjercicio?idEjercicio=<%= e.getId() %>&idSesion=<%=idSesion%>&idRutina=<%=idRutina%>">Editar valoracion</a>
             <%}else{%>
             -
             <% } %>

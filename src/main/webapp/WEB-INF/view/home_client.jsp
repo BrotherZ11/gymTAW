@@ -8,9 +8,9 @@
 </head>
 <body>
 <h1 align="center">TAW</h1>
-<a href="/logout">Cerrar sesion</a> <!-- Corrected link to logout -->
+<a href="/salir">Cerrar sesion</a> <!-- Corrected link to logout -->
 <div>
-    <a href="/home/cliente/entrenamientos?idCliente=<%=idCliente%>">Entrenamientos</a>
+    <a href="/home/cliente/entrenamientos">Entrenamientos</a>
     <a href="/home/cliente/valorar?idCliente=<%=idCliente%>">Valoraciones</a> <!-- Corrected link to routines -->
 </div>
 </body>

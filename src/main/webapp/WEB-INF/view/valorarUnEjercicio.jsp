@@ -9,7 +9,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     ExerciseEntity ejercicio = (ExerciseEntity) request.getAttribute("ejercicio");
-    Integer idCliente = (Integer) request.getAttribute("idCliente");
+
     Integer idSesion = (Integer) request.getAttribute("idSesion");
     Integer idRutina = (Integer) request.getAttribute("idRutina");
 %>
@@ -19,14 +19,14 @@
 </head>
 <body>
 <%if(idSesion!=-1 && idRutina!=-1){%>
-<a href="http://localhost:8080/home/cliente/ejercicio?idRutina=<%= idRutina%>&idSesion=<%=idSesion%>&idCliente=<%=idCliente%>">Volver atrás</a>
+<a href="http://localhost:8080/home/cliente/ejercicio?idRutina=<%= idRutina%>&idSesion=<%=idSesion%>">Volver atrás</a>
 <%}else{%>
-<a href="http://localhost:8080/home/cliente/valorar?idCliente=<%=idCliente%>">Volver atrás</a>
+<a href="http://localhost:8080/home/cliente/valorar">Volver atrás</a>
 <%}%>
 <h1>Valorar "<%=ejercicio.getName()%>"</h1>
 <form method="post" action="/home/cliente/guardar">
     <input type="hidden" name="exerciseId" value="<%=ejercicio.getId()%>">
-    <input type="hidden" name="idCliente" value="<%=idCliente%>">
+
     <input type="hidden" name="idSesion" value="<%=idSesion%>">
     <input type="hidden" name="idRutina" value="<%=idRutina%>">
     <p>Por favor, selecciona una calificación:</p>

@@ -29,13 +29,13 @@ public class LoginController extends BaseController {
         String strTo = "login";
         if (estaAutenticado(session)) {
             UserEntity usuario = (UserEntity) session.getAttribute("usuario");
-            RolEntity rol = this.rolRepository.findById(usuario.getId()).get();
+            RolEntity rol = this.rolRepository.findById(usuario.getIdRol().getId()).get();
             if(rol.getType().equals("admin")){
                 strTo = "redirect:/users/";
-            } else if(rol.getType().equals("cross-training") || rol.getType().equals("bodybuilding")){
+            } else if(rol.getType().equals("crosstraining") || rol.getType().equals("bodybuilding")){
                 strTo = "redirect:/home/trainer?idEntrenador="+usuario.getId();
             }else if(rol.getType().equals("client")) {
-                strTo = "redirect:/home/cliente?idCliente=" + usuario.getId();
+                strTo = "redirect:/home/cliente";
             /*else if(usuario.getPermiso() == ...){
                 strTo = "redirect:";
             } else {
