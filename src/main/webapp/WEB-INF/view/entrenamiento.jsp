@@ -18,7 +18,7 @@
 </head>
 <body>
 <h1>Entrenamiento de la rutina: </h1>
-<a href="crearsesion?idEntrenador=<%=idEntrenador%>">Nueva sesion ... </a>
+<a href="crearsesion?idEntrenador=<%=idEntrenador%>&idRutina=<%=idRutina%>">Nueva sesion ... </a>
 <form method="post" action="guardar_sesiones">
     <table border="1">
         <tr>
@@ -47,7 +47,7 @@
                     <%
                         for(SessionEntity sesion: listaCompleta){
                             String isSelected = "";
-                            if (sesionRutina.getSessionEntity().getId().equals(sesion.getId())) {
+                            if (sesionRutina.getSession().getId().equals(sesion.getId())) {
                                 isSelected = "selected";
                             }
                     %>
@@ -90,7 +90,7 @@
                         if (sesionRutina.getId().getDay() == i) {
                             found = true;
             %>
-            <td><a href="exercise_client?idSesion=<%=sesionRutina.getSessionEntity().getId()%>">Ver</a></td>
+            <td><a href="exercise_client?idSesion=<%=sesionRutina.getSession().getId()%>">Ver</a></td>
             <%
                         break;
                     }

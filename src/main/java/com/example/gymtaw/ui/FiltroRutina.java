@@ -1,10 +1,18 @@
 package com.example.gymtaw.ui;
 
+import com.example.gymtaw.entity.TypeEntity;
+
+import java.util.Set;
+
 public class FiltroRutina {
     protected String nombre;
 
+    protected Set<TypeEntity> tipos;
+
     public FiltroRutina() {
-        this.nombre = nombre;
+
+        this.nombre = "";
+        this.tipos = null;
     }
 
     public String getNombre() {
@@ -15,7 +23,15 @@ public class FiltroRutina {
         this.nombre = nombre;
     }
 
-    public boolean estaVacio(){
-        return nombre.isEmpty();
+    public Set<TypeEntity> getTipos() {
+        return tipos;
+    }
+
+    public void setTipos(Set<TypeEntity> tipos) {
+        this.tipos = tipos;
+    }
+
+    public boolean estaVacioTipos(){
+        return tipos==null || tipos.isEmpty();
     }
 }

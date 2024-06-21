@@ -18,12 +18,15 @@ public class RoutineHasSessionEntity {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "routine_id", nullable = false)
-    private RoutineEntity routineEntity;
+    private RoutineEntity routine;
 
     @MapsId("sessionId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "session_id", nullable = false)
-    private SessionEntity sessionEntity;
+    private SessionEntity session;
 
+    public int getDay() {
+        return id.getDay();
+    }
 }

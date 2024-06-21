@@ -2,13 +2,11 @@ package com.example.gymtaw.controller;
 
 import com.example.gymtaw.dao.*;
 import com.example.gymtaw.entity.*;
+import com.example.gymtaw.ui.FiltroRutina;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,6 +30,9 @@ public class ClientController {
     @Autowired
     RoutineHasSessionRepository routineHasSessionRepository;
 
+    @Autowired
+    TypeRepository typeRepository;
+
     @GetMapping("/clients")
     public String doListar (@RequestParam("idEntrenador") Integer idEntrenador, Model model) {
         List<UserEntity> clients = clientRepository.getClientesByEntrenador(idEntrenador);
@@ -47,10 +48,14 @@ public class ClientController {
                                    Model model) {
         List<RoutineEntity> rutinasCliente = routineRepository.getRoutinesByIdEntrenadorAndIdCliente(idEntrenador, idCliente);
         List<RoutineEntity> rutinasSinAsignar = routineRepository.getRoutinesByIdEntrenadorNoCliente(idEntrenador);
+        List<TypeEntity> tipos = typeRepository.findAll();
+
         model.addAttribute("listaRutinasCliente", rutinasCliente);
         model.addAttribute("listaRutinasSinAsignar", rutinasSinAsignar);
+        model.addAttribute("tipos", tipos);
         model.addAttribute("idEntrenador", idEntrenador);
         model.addAttribute("idCliente", idCliente);
+        model.addAttribute("filtro", new FiltroRutina());
         return "routine_client";
     }
 
@@ -58,6 +63,7 @@ public class ClientController {
     public String doQuitarRutina (@RequestParam("idRutina") Integer idRutina,
                                   @RequestParam("idEntrenador") Integer idEntrenador,
                                   @RequestParam("idCliente") Integer idCliente,
+                                  @ModelAttribute("filtro")FiltroRutina filtro,
                                   Model model) {
 
         Optional<RoutineEntity> rutinaOptional = routineRepository.findById(idRutina);
@@ -67,20 +73,29 @@ public class ClientController {
             routineRepository.save(rutina);
         }
 
+        //if(filtro.estaVacioTipos()) rutinas = routineRepository.findByFiltro(filtro.getNombre());
+        //else rutinas = routineRepository.findByFiltroNombreYTipo(filtro.getNombre(), filtro.getTipos());
+
         List<RoutineEntity> rutinasCliente = routineRepository.getRoutinesByIdEntrenadorAndIdCliente(idEntrenador, idCliente);
         List<RoutineEntity> rutinasSinAsignar = routineRepository.getRoutinesByIdEntrenadorNoCliente(idEntrenador);
+        List<TypeEntity> tipos = typeRepository.findAll();
+
         model.addAttribute("listaRutinasCliente", rutinasCliente);
         model.addAttribute("listaRutinasSinAsignar", rutinasSinAsignar);
+        model.addAttribute("tipos", tipos);
         model.addAttribute("idEntrenador", idEntrenador);
         model.addAttribute("idCliente", idCliente);
+        model.addAttribute("filtro", filtro);
+
         return "routine_client";
     }
 
 @PostMapping("/asignar_rutina")
     public String doAsignarRutina (@RequestParam("idRutina") int idRutina,
-                                    @RequestParam("idEntrenador") int idEntrenador,
-                                    @RequestParam("idCliente") int idCliente,
-                                    Model model) {
+                                   @RequestParam("idEntrenador") int idEntrenador,
+                                   @RequestParam("idCliente") int idCliente,
+                                   @ModelAttribute("filtro")FiltroRutina filtro,
+                                   Model model) {
 
         Optional<RoutineEntity> rutinaOptional = routineRepository.findById(idRutina);
         Optional<UserEntity> clienteOptional = clientRepository.findById(idCliente);
@@ -93,10 +108,14 @@ public class ClientController {
 
         List<RoutineEntity> rutinasCliente = routineRepository.getRoutinesByIdEntrenadorAndIdCliente(idEntrenador, idCliente);
         List<RoutineEntity> rutinasSinAsignar = routineRepository.getRoutinesByIdEntrenadorNoCliente(idEntrenador);
+        List<TypeEntity> tipos = typeRepository.findAll();
+
         model.addAttribute("listaRutinasCliente", rutinasCliente);
         model.addAttribute("listaRutinasSinAsignar", rutinasSinAsignar);
+        model.addAttribute("tipos", tipos);
         model.addAttribute("idEntrenador", idEntrenador);
         model.addAttribute("idCliente", idCliente);
+        model.addAttribute("filtro", filtro);
 
         return "routine_client";
     }

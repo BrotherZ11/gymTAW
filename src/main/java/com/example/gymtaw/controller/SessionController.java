@@ -1,9 +1,6 @@
 package com.example.gymtaw.controller;
 
-import com.example.gymtaw.dao.ExerciseHasSessionRepository;
-import com.example.gymtaw.dao.ExerciseRepository;
-import com.example.gymtaw.dao.SessionRepository;
-import com.example.gymtaw.dao.UserRepository;
+import com.example.gymtaw.dao.*;
 import com.example.gymtaw.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/home/trainer")
@@ -33,15 +32,20 @@ public class SessionController {
     @Autowired
     ExerciseHasSessionRepository exerciseHasSessionRepository;
 
+    @Autowired
+    TypeHasSessionRepository typeHasSessionRepository;
+
 
     @GetMapping("/crearsesion")
-    public String doNueva(Model model, @RequestParam("idEntrenador") Integer idEntrenador) {
+    public String doNueva(Model model, @RequestParam("idEntrenador") Integer idEntrenador,
+                            @RequestParam("idRutina") Integer idRutina) {
         SessionEntity sesion = new SessionEntity();
         sesion.setId(-1);
         List<ExerciseEntity> ejercicios = exerciseRepository.findAll();
         model.addAttribute("sesion", sesion);
         model.addAttribute("idEntrenador", idEntrenador);
         model.addAttribute("ejercicios", ejercicios);
+        model.addAttribute("idRutina", idRutina);
         return "session";
     }
 
@@ -49,6 +53,7 @@ public class SessionController {
     public String doGuardar(@RequestParam("id") Integer id,
                             @RequestParam("nombre") String nombre,
                             @RequestParam("idEntrenador") Integer idEntrenador,
+                            @RequestParam("idRutina") Integer idRutina,
                             @RequestParam(value = "ejercicioId", required = false) List<Integer> ejercicioIds,
                             @RequestParam Map<String, String> requestParams) {
 
@@ -64,6 +69,9 @@ public class SessionController {
 
         sesion = this.sessionRepository.save(sesion);
 
+        //Creo una lista con los tipos de la sesion
+        Set<TypeEntity> tiposSesion = new HashSet<>();
+
         if (ejercicioIds != null) {
             for (Integer ejercicioId : ejercicioIds) {
                 Integer orden = Integer.parseInt(requestParams.get("orden_" + ejercicioId));
@@ -72,18 +80,37 @@ public class SessionController {
                 exerciseHasSessionId.setExerciseId(ejercicioId);
                 exerciseHasSessionId.setOrder(orden);
 
-                if (!this.exerciseHasSessionRepository.existsById(exerciseHasSessionId.getExerciseId())) {
+                ExerciseEntity exercise = exerciseRepository.findById(ejercicioId).orElse(null);
+
+                if (!this.exerciseHasSessionRepository.existsById(exerciseHasSessionId)) {
                     ExerciseHasSessionEntity exerciseHasSession = new ExerciseHasSessionEntity();
                     exerciseHasSession.setId(exerciseHasSessionId);
-                    exerciseHasSession.setExerciseEntity(exerciseRepository.findById(ejercicioId).orElse(null));
-                    exerciseHasSession.setSessionEntity(sesion);
+                    exerciseHasSession.setExercise(exercise);
+                    exerciseHasSession.setSession(sesion);
                     this.exerciseHasSessionRepository.save(exerciseHasSession);
                 } else {
                     throw new IllegalArgumentException("Ya existe una entrada con el mismo ID.");
                 }
+
+                //Añado tipos de la sesion a la lista para quitar duplicados
+                tiposSesion.add(exercise.getTypeIdtype());
             }
+
+            //Una vez quitados los repetidos, guardamos los tipos unicos en las sesiones
+            for(TypeEntity tipo : tiposSesion){
+                TypeHasSessionEntityId typeHasSessionEntityId = new TypeHasSessionEntityId();
+                typeHasSessionEntityId.setSessionId(sesion.getId());
+                typeHasSessionEntityId.setTypeIdtype(tipo.getId());
+
+                TypeHasSessionEntity typeHasSessionEntity = new TypeHasSessionEntity();
+                typeHasSessionEntity.setId(typeHasSessionEntityId);
+                typeHasSessionEntity.setSession(sesion);
+                typeHasSessionEntity.setTypeIdtype(tipo);
+                typeHasSessionRepository.save(typeHasSessionEntity);
+            }
+
         }
 
-        return "redirect:/home/trainer/ver?id=" + sesion.getId() + "&idEntrenador=" + idEntrenador;
+        return "redirect:/home/trainer/ver?id=" + idRutina + "&idEntrenador=" + idEntrenador;
     }
 }

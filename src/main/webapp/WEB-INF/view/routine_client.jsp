@@ -1,5 +1,7 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.example.gymtaw.entity.RoutineEntity" %>
+<%@ page import="com.example.gymtaw.entity.TypeEntity" %>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
@@ -7,6 +9,7 @@
     List<RoutineEntity> listaRutinasSinAsignar = (List<RoutineEntity>) request.getAttribute("listaRutinasSinAsignar");
     Integer idEntrenador = (Integer) request.getAttribute("idEntrenador");
     Integer idCliente = (Integer) request.getAttribute("idCliente");
+    List<TypeEntity> tipos = (List<TypeEntity>) request.getAttribute("tipos");
     String filtro = request.getParameter("filtro");
     if (filtro == null) filtro = "";
 %>
@@ -17,8 +20,16 @@
 <body>
 <h1> Rutinas del Cliente </h1>
 <h2> TAW </h2>
-<form:form method="post" action="/rutina_bodybuilding/filtrar" modelAttribute="filtro">
-    Nombre de la rutina: <form:input path="titulo" />
+<form:form method="post" action="/home/trainer/filtro_routine_client" modelAttribute="filtro">
+    Nombre de la rutina: <form:input path="nombre" />
+    Tipos de la rutina:
+    <%
+        for(TypeEntity tipo : tipos){
+    %>
+    <form:checkbox value="<%=tipo%>" label="<%=tipo.getName()%>" path="tipos"/>
+    <%
+        }
+    %>
     <form:button>Filtrar</form:button>
 </form:form>
 

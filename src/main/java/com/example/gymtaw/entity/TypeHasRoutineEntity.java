@@ -18,12 +18,12 @@ public class TypeHasRoutineEntity {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "type_idtype", nullable = false)
-    private TypeEntity typeEntityIdtype;
+    private TypeEntity typeIdtype;
 
     @MapsId("routineIdroutine")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "routine_idroutine", nullable = false)
-    private RoutineEntity routineEntityIdroutine;
+    private RoutineEntity routineIdroutine;
 
 }

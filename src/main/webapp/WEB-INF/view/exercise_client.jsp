@@ -49,7 +49,7 @@
         <td><%=e.getName()%></td>
         <td><%=e.getDescription()%></td>
         <td><%=e.getVideo()%></td>
-        <td><%=e.getTypeEntityIdtype().getName()%></td>
+        <td><%=e.getTypeIdtype().getName()%></td>
         <td><a href="exercise_client?idSession=<%= e.getId()  %>">Ver</a> </td>
     </tr>
     <%
