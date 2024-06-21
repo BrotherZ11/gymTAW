@@ -28,7 +28,7 @@
 <h1>Datos de la rutina</h1>
 <a href="/home/trainer/rutina">Cancelar</a>
 <form method="post" action="guardar">
-    <input type="hidden" name="id" value="<%= rutina.getId() %>">
+    <input type="hidden" name="idRutina" value="<%= rutina.getId() %>">
     <table border="0">
         <tr>
             <td>Nombre:</td>

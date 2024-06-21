@@ -166,7 +166,7 @@ public class UserController extends BaseController{
             return "redirect:/";
         }
         List<UserEntity> usuarios;
-        if(usuario.getIdRolEntity().getId() == 4){
+        if(usuario.getIdRol().getId() == 4){
             usuarios = userRepository.findTrainersNotAssignedToUser(usuario.getId());
         } else {
             usuarios = userRepository.findClientsNotAssignedToTrainer(usuario.getId());
@@ -183,14 +183,14 @@ public class UserController extends BaseController{
             return "redirect:/";
         }
         List<UserEntity> usuarios = userRepository.findAllById(usuariosAsignar);
-        if(usuario.getIdRolEntity().getId() == 4){
+        if(usuario.getIdRol().getId()== 4){
             for(UserEntity u : usuarios){
                 UserHasTrainerEntity ut = new UserHasTrainerEntity();
                 UserHasTrainerEntityId utId = new UserHasTrainerEntityId();
                 utId.setUserId(usuario.getId());
                 utId.setTrainerId(u.getId());
                 ut.setId(utId);
-                ut.setUserEntity(usuario);
+                ut.setUser(usuario);
                 ut.setTrainer(u);
                 this.userTrainerRepository.save(ut);
             }
@@ -201,7 +201,7 @@ public class UserController extends BaseController{
                 utId.setUserId(u.getId());
                 utId.setTrainerId(usuario.getId());
                 ut.setId(utId);
-                ut.setUserEntity(u);
+                ut.setUser(u);
                 ut.setTrainer(usuario);
                 this.userTrainerRepository.save(ut);
             }
@@ -216,7 +216,7 @@ public class UserController extends BaseController{
             return "redirect:/";
         }
         List<UserEntity> usuarios;
-        if(usuario.getIdRolEntity().getId() == 4){
+        if(usuario.getIdRol().getId()== 4){
             usuarios = userRepository.findTrainersAssignedToUser(usuario.getId());
         } else {
             usuarios = userRepository.findClientsAssignedToTrainer(usuario.getId());
@@ -234,7 +234,7 @@ public class UserController extends BaseController{
             return "redirect:/";
         }
         List<UserEntity> usuarios = userRepository.findAllById(usuariosDeasignar);
-        if(usuario.getIdRolEntity().getId() == 4){
+        if(usuario.getIdRol().getId() == 4){
             for(UserEntity u : usuarios){
                 UserHasTrainerEntityId utId = new UserHasTrainerEntityId();
                 utId.setUserId(usuario.getId());
