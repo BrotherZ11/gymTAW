@@ -2,13 +2,12 @@ package com.example.gymtaw.controller;
 
 import com.example.gymtaw.dao.*;
 import com.example.gymtaw.entity.*;
+import com.example.gymtaw.ui.FiltroRutina;
+import com.example.gymtaw.ui.FiltroValoracion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,11 +77,16 @@ public class ClienteController {
     }
 
     @PostMapping("/guardarCompletado")
-    public String guardarComplecion(@RequestParam("idSesion") Integer idSesion,
+    public String guardarComplecion(@RequestParam("idRutina") Integer idRutina,
+                                    @RequestParam("idSesion") Integer idSesion,
                                     @RequestParam("idEjercicio") Integer idEjercicio,
                                     @RequestParam("idCliente") Integer idCliente,
                                     @RequestParam(value = "done", required = false) String done,
                                     Model model) {
+        String strTo="redirect:/home/cliente/ejercicio?idSesion=" + idSesion + "&idRutina=" + idRutina + "&idCliente=" + idCliente;
+        if(idSesion==-1){
+            strTo="redirect:/home/cliente/valorar?idCliente=" + idCliente;
+        }
         // Find the exercise by id
         ExerciseEntity exercise = exerciseRepository.findById(idEjercicio).orElseThrow(() -> new IllegalArgumentException("Invalid exercise Id:" + idEjercicio));
 
@@ -117,7 +121,7 @@ public class ClienteController {
         }
 
         // Redirect back to the session page
-        return "redirect:/home/cliente/ejercicio?idSesion=" + idSesion;
+        return strTo;
     }
 
 
@@ -226,6 +230,57 @@ public class ClienteController {
 
         return "valoracion";
     }
+
+    @PostMapping("/filtrarValoraciones")
+    public String filtrarValoraciones(@ModelAttribute("filtro") FiltroValoracion filtro,
+                                      Model model,
+                                      @RequestParam("idCliente") Integer idCliente) {
+
+        // Retrieve all exercise IDs associated with the client
+        List<Integer> exerciseIds = clientExerciseRepository.findExerciseIdByClientId(idCliente);
+        List<ExerciseEntity> ejercicios = new ArrayList<>();
+
+        // Iterate through each exercise ID and fetch the exercise with the specified star rating
+        for (Integer exerciseId : exerciseIds) {
+            ExerciseEntity ejercicio = exerciseRepository.getExercisesByIdEjercicio(exerciseId);
+            if (ejercicio != null) {
+                List<ValoracionEntity> valoraciones = ejercicio.getValoracions();
+                boolean shouldAdd = true;
+
+                // Check if the exercise has any valorations matching the star rating
+                if (filtro.getStars() != null && filtro.getStars() > 0) {
+                    shouldAdd = false; // Assume exercise doesn't match until proven otherwise
+
+                    for (ValoracionEntity valoracion : valoraciones) {
+                        if (valoracion.getUser().getId().equals(idCliente) && valoracion.getDone() == 1) {
+                            if (valoracion.getStars() != null && valoracion.getStars() == filtro.getStars()) {
+                                shouldAdd = true; // Found a matching star rating
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if (shouldAdd) {
+                    ejercicios.add(ejercicio);
+                }
+            }
+        }
+
+        // Set the filtered exercises to the model
+        model.addAttribute("ejercicios", ejercicios);
+        model.addAttribute("idCliente", idCliente);
+        model.addAttribute("filtro", filtro); // Add filtro back to maintain state in the view
+
+        // Forward to the valoracion.jsp view to display filtered exercises
+        return "valoracion";
+    }
+
+
+
+
+
+
 
     @PostMapping("/guardarReview")
     public String guardarReview(@RequestParam("idCliente") Integer idCliente,
