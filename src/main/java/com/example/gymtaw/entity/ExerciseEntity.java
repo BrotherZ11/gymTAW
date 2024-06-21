@@ -8,7 +8,8 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "exercise")
-public class Exercise {
+public class ExerciseEntity {
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false)
     private Integer id;
@@ -16,18 +17,14 @@ public class Exercise {
     @Column(name = "name", nullable = false, length = 45)
     private String name;
 
-    @Column(name = "description", nullable = false, length = 500)
+    @Column(name = "description", length = 500)
     private String description;
 
     @Column(name = "video", nullable = false, length = 250)
     private String video;
 
-    @Lob
-    @Column(name = "type")
-    private String type;
-
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "type_idtype", nullable = false)
-    private Type typeIdtype;
+    private TypeEntity typeEntityIdtype;
 
 }

@@ -10,10 +10,13 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "session")
-public class Session {
+@Table(name = "rol")
+public class RolEntity {
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "id_rol", nullable = false)
     private Integer id;
+
+    @Column(name = "type", length = 20)
+    private String type;
 
 }

@@ -7,21 +7,16 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDate;
-
 @Getter
 @Setter
 @Entity
-@Table(name = "routine")
-public class Routine {
+@Table(name = "type")
+public class TypeEntity {
     @Id
-    @Column(name = "idroutine", nullable = false)
+    @Column(name = "idtype", nullable = false)
     private Integer id;
 
-    @Column(name = "description", length = 45)
-    private String description;
-
-    @Column(name = "date")
-    private LocalDate date;
+    @Column(name = "name", length = 45)
+    private String name;
 
 }

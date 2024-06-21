@@ -1,9 +1,6 @@
 package com.example.gymtaw.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,15 +8,16 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "user")
-public class User {
+public class UserEntity {
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Column(name = "email", nullable = false, length = 45)
+    @Column(name = "email", nullable = false, length = 250)
     private String email;
 
-    @Column(name = "password", nullable = false, length = 45)
+    @Column(name = "password", nullable = false, length = 250)
     private String password;
 
     @Column(name = "name", nullable = false, length = 45)
@@ -39,5 +37,9 @@ public class User {
 
     @Column(name = "gender", nullable = false, length = 45)
     private String gender;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "id_rol", nullable = false)
+    private RolEntity idRolEntity;
 
 }

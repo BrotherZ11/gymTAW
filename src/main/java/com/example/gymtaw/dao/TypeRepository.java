@@ -1,7 +1,7 @@
 package com.example.gymtaw.dao;
 
-import com.example.gymtaw.entity.Type;
+import com.example.gymtaw.entity.TypeEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface TypeRepository extends JpaRepository<Type, Integer> {
+public interface TypeRepository extends JpaRepository<TypeEntity, Integer> {
 }
