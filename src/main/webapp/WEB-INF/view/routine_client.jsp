@@ -1,44 +1,59 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.example.gymtaw.entity.RoutineEntity" %>
+<%@ page import="com.example.gymtaw.entity.TypeEntity" %>
+<%@ page import="com.example.gymtaw.entity.UserEntity" %>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    List<RoutineEntity> lista = (List<RoutineEntity>) request.getAttribute("lista");
-    List<RoutineEntity> listaCompleta = (List<RoutineEntity>) request.getAttribute("listaCompleta");
-    Integer idEntrenador = (Integer) request.getAttribute("idEntrenador");
+    List<RoutineEntity> listaRutinasCliente = (List<RoutineEntity>) request.getAttribute("listaRutinasCliente");
+    List<RoutineEntity> listaRutinasSinAsignar = (List<RoutineEntity>) request.getAttribute("listaRutinasSinAsignar");
+    UserEntity usuario = (UserEntity) session.getAttribute("usuario");
     Integer idCliente = (Integer) request.getAttribute("idCliente");
+    List<TypeEntity> tipos = (List<TypeEntity>) request.getAttribute("tipos");
     String filtro = request.getParameter("filtro");
     if (filtro == null) filtro = "";
 %>
 <html>
 <head>
-    <title>Routinas de Cliente</title>
+    <title>Rutinas del Cliente</title>
 </head>
 <body>
 <h1> Rutinas del Cliente </h1>
 <h2> TAW </h2>
-<form:form method="post" action="/rutina_bodybuilding/filtrar" modelAttribute="filtro">
-    Nombre de la rutina: <form:input path="titulo" />
+<a href="/home/trainer">Home  </a>
+<a href="/home//clients">Atrás</a>
+<form:form method="post" action="/home/trainer/routine_client_filtrar" modelAttribute="filtro">
+    Nombre de la rutina: <form:input path="nombre" />
+    <%
+        if ("crosstraining".equals(usuario.getIdRol().getType())) {
+    %>
+    Tipos de la rutina:
+    <%
+        for(TypeEntity tipo : tipos){
+    %>
+    <form:checkbox value="<%=tipo%>" label="<%=tipo.getName()%>" path="tipos"/>
+    <%
+            }
+        }
+    %>
     <form:button>Filtrar</form:button>
 </form:form>
 
 <%
-    if(listaCompleta.size() > lista.size()){
+    if(!listaRutinasSinAsignar.isEmpty()){
 %>
 <form method="post" action="asignar_rutina">
     <label>Selecciona una rutina: </label>
     <select id="rutinas" name="idRutina">
         <%
-            for(RoutineEntity rutina: listaCompleta){
-                if(!lista.contains(rutina)){
+            for(RoutineEntity rutina: listaRutinasSinAsignar){
         %>
         <option value=<%=rutina.getId()%>><%=rutina.getName()%></option>
         <%
-                }
             }
         %>
     </select>
-    <input type="hidden" name="idEntrenador" value="<%= idEntrenador %>">
     <input type="hidden" name="idCliente" value="<%= idCliente %>">
     <button type="submit">Asignar rutina al cliente</button>
 </form>
@@ -58,7 +73,7 @@
         <th>FECHA</th>
     </tr>
     <%
-        if(lista.isEmpty()){
+        if(listaRutinasCliente.isEmpty()){
     %>
     <tr>
         <td>No tiene ninguna rutina</td>
@@ -67,14 +82,14 @@
     </tr>
     <%
     }else{
-        for(RoutineEntity r : lista){
+        for(RoutineEntity r : listaRutinasCliente){
     %>
     <tr>
         <td><%=r.getName()%></td>
         <td><%=r.getDescription()%></td>
         <td><%=r.getDate()%></td>
-        <td><a href="session_client?idRutina=<%= r.getId()  %>&idEntrenador=<%=idEntrenador%>">Ver</a> </td>
-        <td><a href="quitar_rutina?idRutina=<%= r.getId()  %>&idEntrenador=<%= idEntrenador %>&idCliente=<%= idCliente %>">Quitar rutina</a> </td>
+        <td><a href="session_client?idRutina=<%= r.getId() %>">Ver</a> </td>
+        <td><a href="quitar_rutina?idRutina=<%= r.getId() %>">Quitar rutina</a> </td>
     </tr>
     <%
         }

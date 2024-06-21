@@ -5,7 +5,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     List<UserEntity> lista = (List<UserEntity>) request.getAttribute("lista");
-    Integer idEntrenador = (Integer) request.getAttribute("idEntrenador");
     String filtro = request.getParameter("filtro");
     if (filtro == null) filtro = "";
 %>
@@ -48,7 +47,7 @@
             <td><%= cliente.getDni() %></td>
             <td><%= cliente.getName() %></td>
             <td><%= cliente.getSurname() %></td>
-            <td><a href="routine_client?idEntrenador=<%= idEntrenador %>&idCliente=<%= cliente.getId() %>">Rutina</a> </td>
+            <td><a href="routine_client?idCliente=<%= cliente.getId() %>">Rutina</a> </td>
             <td><a href="/users/editarUsuario?id=<%= cliente.getId() %>">Valoración</a> </td>
         </tr>
         <%

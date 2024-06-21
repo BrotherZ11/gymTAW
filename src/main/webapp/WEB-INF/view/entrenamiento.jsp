@@ -4,13 +4,9 @@
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    List<SessionEntity> lista = (List<SessionEntity>) request.getAttribute("lista");
     List<RoutineHasSessionEntity> listaSesionRutina = (List<RoutineHasSessionEntity>) request.getAttribute("listaSesionRutina");
     List<SessionEntity> listaCompleta = (List<SessionEntity>) request.getAttribute("listaCompleta");
-    Integer idRutina = (Integer) request.getAttribute("idRutina");
-    Integer idEntrenador = (Integer) request.getAttribute("idEntrenador");
-    String filtro = request.getParameter("filtro");
-    if (filtro == null) filtro = "";
+
 %>
 <html>
 <head>
@@ -18,9 +14,10 @@
 </head>
 <body>
 <h1>Entrenamiento de la rutina: </h1>
-<h2>TAW</h2>
+<a href="/home/trainer/rutina">Volver</a>
+<a href="crear_sesion">Nueva sesion ... </a>
 <form method="post" action="guardar_sesiones">
-    <table border="1 ">
+    <table border="1">
         <tr>
             <th>DIA</th>
             <td>Lunes</td>
@@ -34,9 +31,12 @@
         <tr>
             <th>NOMBRE</th>
             <%
-                int index = 0;
+                //int index = 0;
                 for(int i = 1; i <= 7; i++){
-                    if(!lista.isEmpty() && index < lista.size() && listaSesionRutina.get(index).getDay() == i){
+                    boolean found = false;
+                    for (RoutineHasSessionEntity sesionRutina : listaSesionRutina) {
+                        if (sesionRutina.getId().getDay() == i) {
+                            found = true;
             %>
             <td>
                 <select id="sesiones<%=i%>" name="idSesion<%=i%>">
@@ -44,19 +44,21 @@
                     <%
                         for(SessionEntity sesion: listaCompleta){
                             String isSelected = "";
-                            if(index < lista.size() && sesion.equals(lista.get(index))){
+                            if (sesionRutina.getSession().getId().equals(sesion.getId())) {
                                 isSelected = "selected";
                             }
                     %>
-                    <option value=<%=sesion.getId()%> <%=isSelected%>><%=sesion.getName()%></option>
+                    <option value="<%=sesion.getId()%>" <%=isSelected%>><%=sesion.getName()%></option>
                     <%
                         }
-                        index++;
                     %>
                 </select>
             </td>
             <%
-            }else{
+                        break;
+                    }
+                }
+                if (!found) {
             %>
             <td>
                 <select id="sesiones<%=i%>" name="idSesion<%=i%>">
@@ -64,10 +66,9 @@
                     <%
                         for(SessionEntity sesion: listaCompleta){
                     %>
-                    <option value=<%=sesion.getId()%>><%=sesion.getName()%></option>
+                    <option value="<%=sesion.getId()%>"><%=sesion.getName()%></option>
                     <%
                         }
-                        index++;
                     %>
                 </select>
             </td>
@@ -80,13 +81,23 @@
         <tr>
             <th></th>
             <%
-                index = 0;
                 for(int i = 1; i <= 7; i++){
-                    if(!lista.isEmpty() && index < lista.size() && listaSesionRutina.get(index).getDay() == i){
+                    boolean found = false;
+                    for (RoutineHasSessionEntity sesionRutina : listaSesionRutina) {
+                        if (sesionRutina.getId().getDay() == i) {
+                            found = true;
             %>
-            <td><a href="exercise_client?idSesion=<%=lista.get(index++).getId()%>">Ver</a></td>
+            <td>
+                <a href="exercise_client?idSesion=<%=sesionRutina.getSession().getId()%>">Ver</a>
+                <a href="editar_sesion?idSesion=<%=sesionRutina.getSession().getId()%>">Editar</a>
+                <a href="borrar_sesion?idSesion=<%=sesionRutina.getSession().getId()%>">Borrar</a>
+            </td>
+
             <%
-            }else{
+                        break;
+                    }
+                }
+                if (!found) {
             %>
             <td> - </td>
             <%
@@ -95,8 +106,6 @@
             %>
         </tr>
     </table>
-    <input type="hidden" name="idEntrenador" value="<%= idEntrenador %>">
-    <input type="hidden" name="idRutina" value="<%= idRutina %>">
     <button type="submit">Guardar sesiones</button>
 </form>
 </body>
