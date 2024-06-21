@@ -55,7 +55,7 @@
             <form action="/home/cliente/guardarCompletado" method="post">
                 <input type="hidden" name="idEjercicio" value="<%= e.getId() %>" />
                 <input type="hidden" name="idSesion" value="<%= idSesion %>" />
-                <input type="hidden" name="idCliente" value="<%= s.getIdtrainer().getId() %>" />
+                <input type="hidden" name="idCliente" value="<%= idCliente %>" />
                 <input type="checkbox" name="done" value="1" <% if (isDone) { %>checked disabled<% } else { %> onchange="this.form.submit()"<% } %> />
             </form>
         </td>
@@ -63,10 +63,6 @@
             boolean valorado = false;
             if (val != null) {
 
-                for( ExerciseHasSessionEntity es : s.getExerciseHasSessions()){
-                    for(ClientExerciseEntity ec : es.getExercise().getClientExercises()){
-                        idCliente = ec.getUser().getId();
-                    }}
                 for (ValoracionEntity v : val) {
                     if (v.getDone() == 1 && v.getUser().getId().equals(idCliente)) {
                         if (v.getStars() != null) {
