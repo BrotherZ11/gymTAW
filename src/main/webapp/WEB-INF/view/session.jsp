@@ -1,6 +1,7 @@
 <%@ page import="com.example.gymtaw.entity.SessionEntity" %>
 <%@ page import="com.example.gymtaw.entity.ExerciseEntity" %>
-<%@ page import="java.util.List" %><%--
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.Map" %><%--
   Created by IntelliJ IDEA.
   User: dzarz
   Date: 29/04/2024
@@ -10,11 +11,15 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     SessionEntity sesion = (SessionEntity) request.getAttribute("sesion");
+    Integer id = (Integer) request.getAttribute("idRutina");
     boolean esEditar = (sesion.getId() != -1);
     String nombre = "";
     List<ExerciseEntity> ejercicios = (List<ExerciseEntity>) request.getAttribute("ejercicios");
+    Map<Integer, Integer> ejercicioOrdenMap = (Map<Integer, Integer>) request.getAttribute("ejercicioOrdenMap");
     if (esEditar) {
         nombre = sesion.getName();
+
+
 
     }
 %>
@@ -24,9 +29,9 @@
 </head>
 <body>
 <h1>Datos de la sesion</h1>
-<a href="/home/trainer/ver">Cancelar</a>
+<a href="/home/trainer/ver?idRutina=<%=id%>">Cancelar</a>
 <form method="post" action="guardar_sesion">
-    <input type="hidden" name="id" value="<%= sesion.getId() %>">
+    <input type="hidden" name="idSesion" value="<%= sesion.getId() %>">
     <table border="0">
         <tr>
             <td>Nombre:</td>
@@ -38,14 +43,15 @@
                 <table border="1">
                     <%
                         for (ExerciseEntity ejercicio : ejercicios) {
+                            Integer orden = ejercicioOrdenMap.get(ejercicio.getId());
                     %>
                     <tr>
                         <td><%=ejercicio.getName()%></td>
                         <td>
-                            <input type="checkbox" name="ejercicioId" value="<%=ejercicio.getId()%>"> Incluir
+                            <input type="checkbox" name="ejercicioId" value="<%= ejercicio.getId() %>" <%= (orden != null) ? "checked" : "" %>> Incluir
                         </td>
                         <td>
-                            Orden: <input type="number" name="orden_<%=ejercicio.getId()%>" min="1">
+                            Orden: <input type="number" name="orden_<%= ejercicio.getId() %>" min="1" value="<%= (orden != null) ? orden : "" %>">
                         </td>
                     </tr>
                     <%

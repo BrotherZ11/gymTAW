@@ -88,9 +88,9 @@
                             found = true;
             %>
             <td>
-                <a href="exercise_client?id=<%=sesionRutina.getSession().getId()%>">Ver</a>
-                <a href="editar_sesion?id=<%=sesionRutina.getSession().getId()%>">Editar</a>
-                <a href="borrar_sesion?id=<%=sesionRutina.getSession().getId()%>">Borrar</a>
+                <a href="exercise_client?idSesion=<%=sesionRutina.getSession().getId()%>">Ver</a>
+                <a href="editar_sesion?idSesion=<%=sesionRutina.getSession().getId()%>">Editar</a>
+                <a href="borrar_sesion?idSesion=<%=sesionRutina.getSession().getId()%>">Borrar</a>
             </td>
 
             <%

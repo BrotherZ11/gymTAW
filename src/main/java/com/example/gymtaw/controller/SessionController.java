@@ -13,10 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.sql.Date;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Controller
 @RequestMapping("/home/trainer")
@@ -41,18 +38,43 @@ public class SessionController extends BaseController{
     public String doNueva(Model model, HttpSession session) {
         if(!estaAutenticado(session)) return  "redirect:/";
         else{
+            Integer idRutina = (Integer) session.getAttribute("idRutina");
             SessionEntity sesion = new SessionEntity();
             sesion.setId(-1);
             List<ExerciseEntity> ejercicios = exerciseRepository.findAll();
+            Map<Integer, Integer> ejercicioOrdenMap = new HashMap<>();
+            model.addAttribute("ejercicioOrdenMap", ejercicioOrdenMap);
             model.addAttribute("sesion", sesion);
+            model.addAttribute("idRutina", idRutina);
             model.addAttribute("ejercicios", ejercicios);
             return "session";
         }
 
     }
+    @GetMapping("/editar_sesion")
+    public String doEditar(Model model, HttpSession session, @RequestParam("idSesion") Integer idSesion) {
+        if(!estaAutenticado(session)) return "redirect:/";
+        else{
+            Integer idRutina = (Integer) session.getAttribute("idRutina");
+            SessionEntity sesion = this.sessionRepository.findById(idSesion).orElse(null);
+            List<ExerciseHasSessionEntity> ejerciciosEnSesion = exerciseHasSessionRepository.findBySessionId(idSesion);
+
+            Map<Integer, Integer> ejercicioOrdenMap = new HashMap<>();
+            for (ExerciseHasSessionEntity ejercicioEnSesion : ejerciciosEnSesion) {
+                ejercicioOrdenMap.put(ejercicioEnSesion.getId().getExerciseId(), ejercicioEnSesion.getId().getOrder());
+            }
+            List<ExerciseEntity> ejercicios = exerciseRepository.findAll();
+
+            model.addAttribute("ejercicios", ejercicios);
+            model.addAttribute("sesion", sesion);
+            model.addAttribute("idRutina", idRutina);
+            model.addAttribute("ejercicioOrdenMap", ejercicioOrdenMap);
+            return "session";
+        }
+    }
 
     @PostMapping("/guardar_sesion")
-    public String doGuardar(@RequestParam("id") Integer id,
+    public String doGuardar(@RequestParam("idSesion") Integer idSesion,
                             @RequestParam("nombre") String nombre,
                             @RequestParam(value = "ejercicioId", required = false) List<Integer> ejercicioIds,
                             @RequestParam Map<String, String> requestParams,
@@ -60,23 +82,18 @@ public class SessionController extends BaseController{
         if(!estaAutenticado(session)) return "redirect:/";
         else{
             Integer idEntrenador = (Integer) session.getAttribute("idEntrenador");
-
+            Integer idRutina = (Integer) session.getAttribute("idRutina");
             UserEntity entrenador = userRepository.findById(idEntrenador).orElse(null);
-            SessionEntity sesion = this.sessionRepository.findById(id).orElse(null);
-
-            if (sesion == null) {
-                sesion = new SessionEntity();
-            }
+            SessionEntity sesion = (idSesion != null) ? this.sessionRepository.findById(idSesion).orElse(new SessionEntity()) : new SessionEntity();
 
             sesion.setName(nombre);
             sesion.setIdtrainer(entrenador);
-
             sesion = this.sessionRepository.save(sesion);
 
-            //Creo una lista con los tipos de la sesion
-            Set<TypeEntity> tiposSesion = new HashSet<>();
-
             if (ejercicioIds != null) {
+                //Creo una lista con los tipos de la sesion
+                Set<TypeEntity> tiposSesion = new HashSet<>();
+
                 for (Integer ejercicioId : ejercicioIds) {
                     Integer orden = Integer.parseInt(requestParams.get("orden_" + ejercicioId));
                     ExerciseHasSessionEntityId exerciseHasSessionId = new ExerciseHasSessionEntityId();
@@ -86,15 +103,11 @@ public class SessionController extends BaseController{
 
                     ExerciseEntity exercise = exerciseRepository.findById(ejercicioId).orElse(null);
 
-                    if (!this.exerciseHasSessionRepository.existsById(exerciseHasSessionId)) {
-                        ExerciseHasSessionEntity exerciseHasSession = new ExerciseHasSessionEntity();
-                        exerciseHasSession.setId(exerciseHasSessionId);
-                        exerciseHasSession.setExercise(exercise);
-                        exerciseHasSession.setSession(sesion);
-                        this.exerciseHasSessionRepository.save(exerciseHasSession);
-                    } else {
-                        throw new IllegalArgumentException("Ya existe una entrada con el mismo ID.");
-                    }
+                    ExerciseHasSessionEntity exerciseHasSession = new ExerciseHasSessionEntity();
+                    exerciseHasSession.setId(exerciseHasSessionId);
+                    exerciseHasSession.setExercise(exercise);
+                    exerciseHasSession.setSession(sesion);
+                    this.exerciseHasSessionRepository.save(exerciseHasSession);
 
                     //Añado tipos de la sesion a la lista para quitar duplicados
                     tiposSesion.add(exercise.getTypeIdtype());
@@ -115,19 +128,19 @@ public class SessionController extends BaseController{
 
             }
 
-            return "redirect:/home/trainer/ver";
+            return "redirect:/home/trainer/ver?idRutina=" + idRutina;
         }
 
     }
 
     @GetMapping("borrar_sesion")
-    public String doBorrar(@RequestParam("id") Integer id, HttpSession session) {
+    public String doBorrar(@RequestParam("idSesion") Integer idSesion, HttpSession session) {
         if(!estaAutenticado(session)) return  "redirect:/";
         else{
             Integer idRutina =(Integer) session.getAttribute("idRutina");
-            this.sessionRepository.deleteById(id);
+            this.sessionRepository.deleteById(idSesion);
 
-            return "redirect:/home/trainer/ver?idRutina="+idRutina;
+            return "redirect:/home/trainer/ver?idRutina=" + idRutina;
         }
 
 
