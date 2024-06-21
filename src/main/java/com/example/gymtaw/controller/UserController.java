@@ -227,4 +227,30 @@ public class UserController extends BaseController{
         return "desasignarView";
     }
 
+    @PostMapping("/realizarDesasignacion")
+    public String doDesasignacion (@RequestParam("idUsuario") Integer idUsuario, @RequestParam("idsUsuariosDesasignar") List<Integer> usuariosDeasignar, Model model, HttpSession session){
+        UserEntity usuario = userRepository.findById(idUsuario).get();
+        if(!estaAutenticado(session)){
+            return "redirect:/";
+        }
+        List<UserEntity> usuarios = userRepository.findAllById(usuariosDeasignar);
+        if(usuario.getIdRolEntity().getId() == 4){
+            for(UserEntity u : usuarios){
+                UserHasTrainerEntityId utId = new UserHasTrainerEntityId();
+                utId.setUserId(usuario.getId());
+                utId.setTrainerId(u.getId());
+                UserHasTrainerEntity ut = userTrainerRepository.findById(utId).get();
+                userTrainerRepository.delete(ut);
+            }
+        } else {
+            for(UserEntity u : usuarios){
+                UserHasTrainerEntityId utId = new UserHasTrainerEntityId();
+                utId.setUserId(u.getId());
+                utId.setTrainerId(usuario.getId());
+                UserHasTrainerEntity ut = userTrainerRepository.findById(utId).get();
+                userTrainerRepository.delete(ut);
+            }
+        }
+        return "redirect:/users/";
+    }
 }
