@@ -9,7 +9,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     ExerciseEntity ejercicio = (ExerciseEntity) request.getAttribute("ejercicio");
-
     Integer idSesion = (Integer) request.getAttribute("idSesion");
     Integer idRutina = (Integer) request.getAttribute("idRutina");
 %>
@@ -26,7 +25,6 @@
 <h1>Valorar "<%=ejercicio.getName()%>"</h1>
 <form method="post" action="/home/cliente/guardar">
     <input type="hidden" name="exerciseId" value="<%=ejercicio.getId()%>">
-
     <input type="hidden" name="idSesion" value="<%=idSesion%>">
     <input type="hidden" name="idRutina" value="<%=idRutina%>">
     <p>Por favor, selecciona una calificación:</p>
