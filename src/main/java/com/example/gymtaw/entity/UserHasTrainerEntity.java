@@ -18,7 +18,7 @@ public class UserHasTrainerEntity {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "user_id", nullable = false)
-    private UserEntity userEntity;
+    private UserEntity user;
 
     @MapsId("trainerId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

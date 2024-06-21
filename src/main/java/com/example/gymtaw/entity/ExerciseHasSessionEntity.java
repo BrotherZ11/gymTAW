@@ -18,12 +18,12 @@ public class ExerciseHasSessionEntity {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "exercise_id", nullable = false)
-    private ExerciseEntity exerciseEntity;
+    private ExerciseEntity exercise;
 
     @MapsId("sessionId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "session_id", nullable = false)
-    private SessionEntity sessionEntity;
+    private SessionEntity session;
 
 }

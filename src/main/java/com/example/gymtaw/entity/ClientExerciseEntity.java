@@ -18,12 +18,12 @@ public class ClientExerciseEntity {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "user_id", nullable = false)
-    private UserEntity userEntity;
+    private UserEntity user;
 
     @MapsId("exerciseId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "exercise_id", nullable = false)
-    private ExerciseEntity exerciseEntity;
+    private ExerciseEntity exercise;
 
     @Column(name = "reps", length = 45)
     private String reps;

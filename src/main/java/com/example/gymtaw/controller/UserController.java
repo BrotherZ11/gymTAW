@@ -152,7 +152,7 @@ public class UserController extends BaseController{
             usuario.setPassword(contrasena);
             usuario.setDni(dni);
             RolEntity rolEntity = rolRepository.findById(rol).orElse(new RolEntity());
-            usuario.setIdRolEntity(rolEntity);
+            usuario.setIdRol(rolEntity);
 
             this.userRepository.save(usuario);
         }

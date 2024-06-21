@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface ClientRepository extends JpaRepository<UserEntity, Integer> {
 
-    @Query("select u from UserEntity u join UserHasTrainerEntity ut on u.id = ut.userEntity.id where ut.trainer.id= :idEntrenador")
+    @Query("select u from UserEntity u join UserHasTrainerEntity ut on u.id = ut.user.id where ut.trainer.id= :idEntrenador")
     public List<UserEntity> getClientesByEntrenador(@Param("idEntrenador") int idEntrenador);
 
 }

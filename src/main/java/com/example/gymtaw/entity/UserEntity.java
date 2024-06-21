@@ -4,13 +4,16 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 @Getter
 @Setter
 @Entity
 @Table(name = "user")
 public class UserEntity {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 
@@ -40,6 +43,36 @@ public class UserEntity {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_rol", nullable = false)
-    private RolEntity idRolEntity;
+    private RolEntity idRol;
 
+    @OneToMany(mappedBy = "user")
+    private Set<ClientExerciseEntity> clientExercises = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "idclient")
+    private Set<RoutineEntity> routinesClient = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "idtrainer")
+    private Set<RoutineEntity> routinesTrainer = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "idtrainer")
+    private Set<SessionEntity> sessions = new LinkedHashSet<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_client_trainer",
+            joinColumns = @JoinColumn(name = "client_id"),
+            inverseJoinColumns = @JoinColumn(name = "trainer_id")
+    )
+    private Set<UserEntity> trainers = new LinkedHashSet<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_client_trainer",
+            joinColumns = @JoinColumn(name = "trainer_id"),
+            inverseJoinColumns = @JoinColumn(name = "client_id")
+    )
+    private Set<UserEntity> clients = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "user")
+    private Set<ValoracionEntity> valoracions = new LinkedHashSet<>();
 }

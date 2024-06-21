@@ -1,5 +1,7 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="com.example.gymtaw.entity.RoutineEntity" %>
-<%@ page import="java.util.List" %><%--
+<%@ page import="java.util.List" %>
+<%@ page import="com.example.gymtaw.entity.TypeEntity" %><%--
   Created by IntelliJ IDEA.
   User: dzarz
   Date: 29/04/2024
@@ -9,8 +11,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     List<RoutineEntity> lista = (List<RoutineEntity>) request.getAttribute("lista");
+    List<TypeEntity> tipos = (List<TypeEntity>) request.getAttribute("tipos");
     String filtro = request.getParameter("filtro");
-    Integer idEntrenador = (Integer) request.getAttribute("idEntrenador");
+    String rol = (String) request.getAttribute("rol");
     if (filtro == null) filtro = "";
 %>
 <html>
@@ -20,17 +23,34 @@
 <body>
 <h1> Rutinas </h1>
 <h2> TAW </h2>
-<form:form method="post" action="/filtrar" modelAttribute="filtro">
+<a href="/home/trainer">Volver</a>
+<form:form method="post" action="/home/trainer/filtrar" modelAttribute="filtro">
     Nombre de la rutina: <form:input path="nombre" />
+    <%
+        if ("crosstraining".equals(rol)) {
+    %>
+    Tipos de la rutina:
+    <%
+        for(TypeEntity tipo : tipos){
+    %>
+    <form:checkbox value="<%=tipo%>" label="<%=tipo.getName()%>" path="tipos"/>
+    <%
+            }
+        }
+    %>
     <form:button>Filtrar</form:button>
 </form:form>
-<a href="crear?idEntrenador=<%=idEntrenador%>">Nueva rutina ... </a>
+<a href="crear">Nueva rutina ... </a>
 <table border="1 ">
 
     <tr>
-        <th>ID</th>
+        <th>NOMBRE</th>
         <th>DESCRIPCION</th>
         <th>FECHA</th>
+        <th></th>
+        <th></th>
+        <th></th>
+
     </tr>
     <%
         for(RoutineEntity r : lista){
@@ -39,10 +59,9 @@
         <td><%=r.getName()%></td>
         <td><%=r.getDescription()%></td>
         <td><%=r.getDate()%></td>
-        <td><a href="ver?id=<%= r.getId()%>&idEntrenador=<%=idEntrenador%>">Ver</a> </td>
-        <td><a href="editar?id=<%= r.getId()%>&idEntrenador=<%=idEntrenador%>">Editar</a> </td>
-        <td><a href="borrar?id=<%= r.getId()%>&idEntrenador=<%=idEntrenador%>">Borrar</a> </td>
-        <td><a href="asignar?id=<%= r.getId()  %>">Asignar</a> </td>
+        <td><a href="ver?idRutina=<%= r.getId()%>">Ver</a> </td>
+        <td><a href="editar?idRutina=<%= r.getId()%>">Editar</a> </td>
+        <td><a href="borrar?idRutina=<%= r.getId()%>">Borrar</a> </td>
     </tr>
     <%
         }
