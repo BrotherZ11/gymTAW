@@ -43,27 +43,31 @@ public class RoutineController {
     @GetMapping("/rutina")
     public String doListar (Model model, @RequestParam("idEntrenador") Integer idEntrenador) {
         List<RoutineEntity> rutinas = routineRepository.getRoutinesbyEntrenador(idEntrenador);
+        UserEntity user = userRepository.getById(idEntrenador);
+        String rol = user.getIdRol().getType();
         List<TypeEntity> tipos = typeRepository.findAll();
         model.addAttribute("tipos", tipos);
         model.addAttribute("lista", rutinas);
         model.addAttribute("idEntrenador", idEntrenador);
+        model.addAttribute("rol", rol);
         model.addAttribute("filtro", new FiltroRutina());
         return "routine_trainer";
     }
 
     @PostMapping("/filtrar")
-    public String doListar (@ModelAttribute("filtro") FiltroRutina filtro, Model model) {
+    public String doListar (@ModelAttribute("filtro") FiltroRutina filtro, Model model,@RequestParam("idEntrenador") Integer idEntrenador) {
         List<RoutineEntity> rutinas = null;
         List<TypeEntity> tipos = typeRepository.findAll();
-        //idEntrenador Temporal
-        Integer idEntrenador = 3;
+        UserEntity entrenador = userRepository.findById(idEntrenador).orElse(null);
+        String rol = entrenador.getIdRol().getType();
 
-        if(filtro.estaVacioTipos()) rutinas = routineRepository.findByFiltro(filtro.getNombre());
-        else rutinas = routineRepository.findByFiltroNombreYTipo(filtro.getNombre(), filtro.getTipos());
+        if(filtro.estaVacioTipos()) rutinas = routineRepository.findByFiltro(filtro.getNombre(), idEntrenador);
+        else rutinas = routineRepository.findByFiltroNombreYTipo(filtro.getNombre(), filtro.getTipos(), idEntrenador);
 
         model.addAttribute("lista", rutinas);
         model.addAttribute("tipos", tipos);
         model.addAttribute("idEntrenador", idEntrenador);
+        model.addAttribute("rol", rol);
         model.addAttribute("filtro", filtro);
         return "routine_trainer";
     }

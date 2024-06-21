@@ -9,6 +9,8 @@ public class FiltroRutina {
 
     protected Set<TypeEntity> tipos;
 
+    protected Integer idEntrenador;
+
     public FiltroRutina() {
 
         this.nombre = "";
@@ -33,5 +35,13 @@ public class FiltroRutina {
 
     public boolean estaVacioTipos(){
         return tipos==null || tipos.isEmpty();
+    }
+
+    public Integer getIdEntrenador() {
+        return idEntrenador;
+    }
+
+    public void setIdEntrenador(Integer idEntrenador) {
+        this.idEntrenador = idEntrenador;
     }
 }

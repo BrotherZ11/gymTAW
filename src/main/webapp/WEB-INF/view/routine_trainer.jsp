@@ -14,6 +14,7 @@
     List<TypeEntity> tipos = (List<TypeEntity>) request.getAttribute("tipos");
     String filtro = request.getParameter("filtro");
     Integer idEntrenador = (Integer) request.getAttribute("idEntrenador");
+    String rol = (String) request.getAttribute("rol");
     if (filtro == null) filtro = "";
 %>
 <html>
@@ -23,14 +24,20 @@
 <body>
 <h1> Rutinas </h1>
 <h2> TAW </h2>
+<a href="/home/trainer?idEntrenador=<%=idEntrenador%>">Volver</a>
 <form:form method="post" action="/home/trainer/filtrar" modelAttribute="filtro">
+    <form:hidden path="idEntrenador" value="${idEntrenador}"/>
     Nombre de la rutina: <form:input path="nombre" />
+    <%
+        if ("crosstraining".equals(rol)) {
+    %>
     Tipos de la rutina:
     <%
         for(TypeEntity tipo : tipos){
     %>
     <form:checkbox value="<%=tipo%>" label="<%=tipo.getName()%>" path="tipos"/>
     <%
+            }
         }
     %>
     <form:button>Filtrar</form:button>
