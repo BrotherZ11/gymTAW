@@ -4,6 +4,7 @@
 <%
     List<ExerciseEntity> ejercicios = (List<ExerciseEntity>) request.getAttribute("ejercicios");
     Integer idSesion = -1;
+    Integer idRutina = -1;
     Integer idCliente= (Integer) request.getAttribute("idCliente");
 %>
 <html>
@@ -11,7 +12,7 @@
     <title>Valorar</title>
 </head>
 <body>
-<input type="button" onclick="history.back()" name="Volver atrás" value="Volver atrás">
+<a href="http://localhost:8080/home/cliente?idCliente=<%=idCliente%>">Volver atrás</a>
 
 
 
@@ -29,7 +30,7 @@
     </tr>
     <%for(ExerciseEntity e : ejercicios){%>
     <tr>
-        <td><a href="/home/cliente/ejercicioIndividual?idEjercicio=<%= e.getId() %>"><%= e.getName() %></a></td>
+        <td><a href="/home/cliente/ejercicioIndividual?idEjercicio=<%= e.getId() %>&idRutina=<%=idRutina%>&idSesion=<%=idSesion%>&idCliente=<%=idCliente%>"><%= e.getName()%></a></td>
         <td><%=e.getDescription()%></td>
         <td><%=e.getVideo()%></td>
         <td align="center">
@@ -82,7 +83,7 @@
         } else if (!valorado) {
 
         %>
-        <td align="center"><a href="valorarEjercicio?idEjercicio=<%= e.getId() %>&idCliente=<%=idCliente %>&&idSesion=<%=idSesion%>">Valorar</a></td>
+        <td align="center"><a href="valorarEjercicio?idEjercicio=<%= e.getId() %>&idCliente=<%=idCliente %>&idSesion=<%=idSesion%>&idrutina=<%=idRutina%>">Valorar</a></td>
         <%
             }
         %>
@@ -113,7 +114,7 @@
         <td>
             <%if(valorado==true){
             %>
-            <a href="valorarEjercicio?idEjercicio=<%= e.getId() %>&idCliente=<%=idCliente %>&&idSesion=<%=idSesion%>">Editar valoracion</a>
+            <a href="valorarEjercicio?idEjercicio=<%= e.getId() %>&idCliente=<%=idCliente %>&idSesion=<%=idSesion%>&idRutina=<%=idRutina%>">Editar valoracion</a>
             <%}else{%>
             -
             <% } %>

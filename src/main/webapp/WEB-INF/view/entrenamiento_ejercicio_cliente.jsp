@@ -11,6 +11,9 @@
 <%
     ExerciseEntity ejercicio = (ExerciseEntity) request.getAttribute("ejercicio");
     List<ClientExerciseEntity> clientExercise = (List<ClientExerciseEntity>) request.getAttribute("clientExercise");
+    Integer idRutina = (Integer) request.getAttribute("idRutina");
+    Integer idSesion = (Integer) request.getAttribute("idSesion");
+    Integer idCliente = (Integer) request.getAttribute("idCliente");
 %>
 <html>
 <head>
@@ -18,7 +21,11 @@
 </head>
 
 <body>
-<input type="button" onclick="history.back()" name="Volver atrás" value="Volver atrás">
+<%if(idSesion!=-1 && idRutina!=-1){%>
+<a href="http://localhost:8080/home/cliente/ejercicio?idRutina=<%= idRutina%>&idSesion=<%=idSesion%>&idCliente=<%=idCliente%>">Volver atrás</a>
+<%}else{%>
+<a href="http://localhost:8080/home/cliente/valorar?idCliente=<%=idCliente%>">Volver atrás</a>
+<%}%>
 <%
     if (ejercicio != null && clientExercise != null) {
         for (ClientExerciseEntity ce : clientExercise) {

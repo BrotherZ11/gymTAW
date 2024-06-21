@@ -5,15 +5,22 @@
     List<SessionEntity> sesiones = (List<SessionEntity>) request.getAttribute("sesiones");
     List<ExerciseEntity> ejercicios = (List<ExerciseEntity>) request.getAttribute("ejercicios");
     Integer idSesion = (Integer) request.getAttribute("idSesion");
+    Integer idRutina = (Integer) request.getAttribute("idRutina");
     Integer idCliente=0;
+    for (SessionEntity s : sesiones) {
+        for (ExerciseHasSessionEntity es : s.getExerciseHasSessions()) {
+            for (ClientExerciseEntity ec : es.getExercise().getClientExercises()) {
+                idCliente = ec.getUser().getId();
+            }
+        }
+    }
 %>
 <html>
 <head>
     <title>Sesiones</title>
 </head>
 <body>
-<input type="button" onclick="history.back()" name="Volver atrás" value="Volver atrás">
-
+<a href="http://localhost:8080/home/cliente/sesionesSemanales?idRutina=<%= idRutina%>&idCliente=<%=idCliente%>">Volver atrás</a>
 <h1>Sesiones del Cliente</h1>
 
 <% if (sesiones != null) { %>
@@ -31,7 +38,9 @@
     </tr>
     <% for (ExerciseEntity e : ejercicios) { %>
     <tr>
-        <td><a href="/home/cliente/ejercicioIndividual?idEjercicio=<%= e.getId() %>"><%= e.getName() %></a></td>
+
+        <td><a href="/home/cliente/ejercicioIndividual?idEjercicio=<%= e.getId() %>&idRutina=<%=idRutina%>&idSesion=<%=idSesion%>&idCliente=<%=idCliente%>"><%= e.getName() %></a></td>
+
         <td><%= e.getDescription() != null ? e.getDescription() : "N/A" %></td>
         <td><%= e.getVideo() != null ? e.getVideo() : "N/A" %></td>
         <td align="center">
@@ -91,7 +100,7 @@
                 }}
 
         %>
-        <td align="center"><a href="valorarEjercicio?idEjercicio=<%= e.getId() %>&idCliente=<%=idCliente %>&idSesion=<%=s.getId()%>">Valorar</a></td>
+        <td align="center"><a href="valorarEjercicio?idEjercicio=<%= e.getId() %>&idCliente=<%=idCliente %>&idSesion=<%=s.getId()%>&idRutina=<%=idRutina%>">Valorar</a></td>
         <%
                  }
         %>
@@ -103,7 +112,7 @@
                     idCliente =  ec.getUser().getId();
                 }}
             %>
-        <a href="valorarEjercicio?idEjercicio=<%= e.getId() %>&idCliente=<%=idCliente %>&idSesion=<%=s.getId()%>">Editar valoracion</a>
+        <a href="valorarEjercicio?idEjercicio=<%= e.getId() %>&idCliente=<%=idCliente %>&idSesion=<%=s.getId()%>&idRutina=<%=idRutina%>">Editar valoracion</a>
             <%}else{%>
             -
             <% } %>
@@ -119,5 +128,6 @@ No hay ejercicios para esta sesión.
 <% } else { %>
 <p>No hay sesiones disponibles.</p>
 <% } %>
+
 </body>
 </html>

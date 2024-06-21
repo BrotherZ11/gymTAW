@@ -8,13 +8,15 @@
 <%
     List<SessionEntity> sesiones = (List<SessionEntity>) request.getAttribute("sesiones");
     List<RoutineHasSessionEntity> sesionRutina = (List<RoutineHasSessionEntity>) request.getAttribute("sesionRutina");
+    Integer idCliente= (Integer) request.getAttribute("idCliente");
+    Integer idRutina= (Integer) request.getAttribute("idRutina");
 %>
 <html>
 <head>
     <title>Sesiones de Cliente</title>
 </head>
 <body>
-<input type="button" onclick="history.back()" name="Volver atrás" value="Volver atrás">
+<a href="http://localhost:8080/home/cliente/entrenamientos?idCliente=<%= idCliente %>">Volver atrás</a>
 <h1> Sesiones del Cliente </h1>
 <h2> TAW </h2>
 
@@ -61,7 +63,7 @@
                     if(sesionRutina.get(j).getDay() == i){
                         found = true;
         %>
-        <td><a href="/home/cliente/ejercicio?idSesion=<%= sesiones.get(j).getId() %>">Ver</a></td>
+        <td><a href="/home/cliente/ejercicio?idSesion=<%= sesiones.get(j).getId() %>&idRutina=<%=idRutina%>&idCliente=<%=idCliente%>">Ver</a></td>
         <%
                     //break;
                 }

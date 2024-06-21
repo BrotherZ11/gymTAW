@@ -7,13 +7,15 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<% List<RoutineEntity> rutinas = (List<RoutineEntity>) request.getAttribute("rutinas"); %>
+<% List<RoutineEntity> rutinas = (List<RoutineEntity>) request.getAttribute("rutinas");
+    Integer idCliente= (Integer) request.getAttribute("idCliente");
+%>
 <html>
 <head>
     <title>Rutinas</title>
 </head>
 <body>
-<input type="button" onclick="history.back()" name="Volver atrás" value="Volver atrás">
+<a href="http://localhost:8080/home/cliente?idCliente=<%= idCliente %>">Volver atrás</a>
 <% if (rutinas.isEmpty()) {%>
 <div align="center">
     <h1>NO TIENES RUTINAS</h1>
@@ -33,7 +35,7 @@
     <% for (RoutineEntity r : rutinas) { %>
         <td><%=r.getName()%></td>
         <td><%=r.getDescription()%></td>
-        <td><a href="/home/cliente/sesionesSemanales?idRutina=<%=r.getId()%>">Más detalles</a></td>
+        <td><a href="/home/cliente/sesionesSemanales?idRutina=<%=r.getId()%>&idCliente=<%=idCliente%>">Más detalles</a></td>
     <% } %>
         <tr>
 

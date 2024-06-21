@@ -51,22 +51,28 @@ public class ClienteController {
     }
 
     @GetMapping("/sesionesSemanales")
-    public String getSesionesSemanales(@RequestParam("idRutina") Integer idRutina, Model model) {
+    public String getSesionesSemanales(@RequestParam("idCliente") Integer idCliente,@RequestParam("idRutina") Integer idRutina, Model model) {
         List<SessionEntity> sesiones = sessionRepository.getSessionsByIdRoutine(idRutina);
         model.addAttribute("sesiones", sesiones);
         List<RoutineHasSessionEntity> sesionRutina = routineHasSessionRepository.findSessionsByRoutineId(idRutina);
         model.addAttribute("sesionRutina", sesionRutina);
+        model.addAttribute("idCliente", idCliente);
+        model.addAttribute("idRutina", idRutina);
         return "cliente_sesiones_semanales";
     }
 
     @GetMapping("/ejercicio")
-    public String getSesion(@RequestParam("idSesion") Integer idSesion, Model model) {
+    public String getSesion(@RequestParam("idRutina") Integer idRutina,
+                            @RequestParam("idSesion") Integer idSesion,
+                            @RequestParam("idCliente") Integer idCliente,
+                            Model model) {
         List<SessionEntity> sesiones = sessionRepository.findSessionBySessionId(idSesion);
         model.addAttribute("sesiones", sesiones);
         List<ExerciseEntity> ejercicios = exerciseHasSessionRepository.getExercisesByIdSession(idSesion);
         model.addAttribute("ejercicios", ejercicios);
         model.addAttribute("idSesion", idSesion);
-
+        model.addAttribute("idRutina", idRutina);
+        model.addAttribute("idCliente", idCliente);
 
         return "entrenamiento_sesion_cliente";
     }
@@ -117,20 +123,32 @@ public class ClienteController {
 
 
     @GetMapping("/ejercicioIndividual")
-    public String getEjercicioCliente(@RequestParam("idEjercicio") Integer idEjercicio, Model model) {
+    public String getEjercicioCliente(@RequestParam("idRutina") Integer idRutina,
+                                      @RequestParam("idSesion") Integer idSesion,
+                                      @RequestParam("idEjercicio") Integer idEjercicio,
+                                      @RequestParam("idCliente") Integer idCliente
+                                        , Model model) {
         ExerciseEntity ejercicio = exerciseRepository.getExercisesByIdEjercicio(idEjercicio);
         model.addAttribute("ejercicio", ejercicio);
         List<ClientExerciseEntity> clientExercise = clientExerciseRepository.getClientExercisesByIdEjercicio(idEjercicio);
         model.addAttribute("clientExercise", clientExercise);
+        model.addAttribute("idRutina", idRutina);
+        model.addAttribute("idSesion", idSesion);
+        model.addAttribute("idCliente", idCliente);
         return "entrenamiento_ejercicio_cliente";
     }
 
     @GetMapping("/valorarEjercicio")
-    public String valorarDesdeEjercicio(@RequestParam("idEjercicio") Integer idEjercicio, @RequestParam("idCliente") Integer idCliente, @RequestParam("idSesion") Integer idSesion, Model model) {
+    public String valorarDesdeEjercicio(@RequestParam("idRutina") Integer idRutina,
+                                        @RequestParam("idEjercicio") Integer idEjercicio,
+                                        @RequestParam("idCliente") Integer idCliente,
+                                        @RequestParam("idSesion") Integer idSesion,
+                                        Model model) {
         ExerciseEntity ejercicio = exerciseRepository.getExercisesByIdEjercicio(idEjercicio);
         model.addAttribute("ejercicio", ejercicio);
         model.addAttribute("idCliente", idCliente);
         model.addAttribute("idSesion", idSesion); // Add idSesion to the model
+        model.addAttribute("idRutina", idRutina);
         return "valorarUnEjercicio";
     }
 
@@ -138,9 +156,10 @@ public class ClienteController {
     public String guardarValoracion(@RequestParam("stars") Integer stars,
                                     @RequestParam("idCliente") Integer idCliente,
                                     @RequestParam("exerciseId") Integer exerciseId,
-                                    @RequestParam("idSesion") Integer idSesion, // Ensure this parameter is here
+                                    @RequestParam("idSesion") Integer idSesion,
+                                    @RequestParam("idRutina") Integer idRutina,
                                     Model model) {
-        String strTo="redirect:/home/cliente/ejercicio?idSesion=" + idSesion;
+        String strTo="redirect:/home/cliente/ejercicio?idSesion=" + idSesion + "&idRutina=" + idRutina + "&idCliente=" + idCliente;
         if(idSesion==-1){
             strTo="redirect:/home/cliente/valorar?idCliente=" + idCliente;
         }
@@ -199,6 +218,10 @@ public class ClienteController {
             ejercicios.add(ejercicio);
         }
         model.addAttribute("ejercicios", ejercicios);
+        Integer idSesion=-1;
+        Integer idRutina=-1;
+        model.addAttribute("idSesion", idSesion);
+        model.addAttribute("idRutina", idRutina);
 
 
         return "valoracion";
