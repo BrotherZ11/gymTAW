@@ -30,8 +30,9 @@ public class LoginController extends BaseController {
             RolEntity rol = this.rolRepository.findById(usuario.getIdRol().getId()).get();
             if(rol.getType().equals("admin")){
                 strTo = "redirect:/users/";
-            } else if(rol.getType().equals("cross-training") || rol.getType().equals("bodybuilding")){
-                strTo = "redirect:/home/trainer?idEntrenador="+usuario.getId();
+            } else if(rol.getType().equals("crosstraining") || rol.getType().equals("bodybuilding")){
+                session.setAttribute("idEntrenador", usuario.getId());
+                strTo = "redirect:/home/trainer";
             } /*else if(usuario.getPermiso() == ...){
                 strTo = "redirect:";
             } else {
@@ -56,8 +57,9 @@ public class LoginController extends BaseController {
             session.setAttribute("usuario", user);
              if(rol.getType().equals("admin")){
                 strTo = "redirect:/users/";
-            } else if(rol.getType().equals("cross-training")){
-                strTo = "redirect:/home/trainer?idEntrenador="+ user.getId();
+            } else if(rol.getType().equals("crosstraining")){
+                 session.setAttribute("idEntrenador", user.getId());
+                strTo = "redirect:/home/trainer";
             } /*else if(usuario.getPermiso() == ...){
                 strTo = "redirect:";
             } else {

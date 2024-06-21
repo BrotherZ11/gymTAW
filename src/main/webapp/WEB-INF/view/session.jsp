@@ -10,8 +10,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     SessionEntity sesion = (SessionEntity) request.getAttribute("sesion");
-    Integer idEntrenador = (Integer) request.getAttribute("idEntrenador");
-    Integer idRutina = (Integer) request.getAttribute("idRutina");
     boolean esEditar = (sesion.getId() != -1);
     String nombre = "";
     List<ExerciseEntity> ejercicios = (List<ExerciseEntity>) request.getAttribute("ejercicios");
@@ -26,10 +24,9 @@
 </head>
 <body>
 <h1>Datos de la sesion</h1>
+<a href="/home/trainer/ver">Cancelar</a>
 <form method="post" action="guardar_sesion">
     <input type="hidden" name="id" value="<%= sesion.getId() %>">
-    <input type="hidden" name="idEntrenador" value="<%= idEntrenador %>">
-    <input type="hidden" name="idRutina" value="<%= idRutina %>">
     <table border="0">
         <tr>
             <td>Nombre:</td>

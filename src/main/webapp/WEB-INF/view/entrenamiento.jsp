@@ -4,13 +4,9 @@
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    List<SessionEntity> lista = (List<SessionEntity>) request.getAttribute("lista");
     List<RoutineHasSessionEntity> listaSesionRutina = (List<RoutineHasSessionEntity>) request.getAttribute("listaSesionRutina");
     List<SessionEntity> listaCompleta = (List<SessionEntity>) request.getAttribute("listaCompleta");
-    Integer idRutina = (Integer) request.getAttribute("idRutina");
-    Integer idEntrenador = (Integer) request.getAttribute("idEntrenador");
-    String filtro = request.getParameter("filtro");
-    if (filtro == null) filtro = "";
+
 %>
 <html>
 <head>
@@ -18,7 +14,8 @@
 </head>
 <body>
 <h1>Entrenamiento de la rutina: </h1>
-<a href="crearsesion?idEntrenador=<%=idEntrenador%>&idRutina=<%=idRutina%>">Nueva sesion ... </a>
+<a href="/home/trainer/rutina">Volver</a>
+<a href="crear_sesion">Nueva sesion ... </a>
 <form method="post" action="guardar_sesiones">
     <table border="1">
         <tr>
@@ -90,7 +87,12 @@
                         if (sesionRutina.getId().getDay() == i) {
                             found = true;
             %>
-            <td><a href="exercise_client?idSesion=<%=sesionRutina.getSession().getId()%>">Ver</a></td>
+            <td>
+                <a href="exercise_client?id=<%=sesionRutina.getSession().getId()%>">Ver</a>
+                <a href="editar_sesion?id=<%=sesionRutina.getSession().getId()%>">Editar</a>
+                <a href="borrar_sesion?id=<%=sesionRutina.getSession().getId()%>">Borrar</a>
+            </td>
+
             <%
                         break;
                     }
@@ -104,8 +106,6 @@
             %>
         </tr>
     </table>
-    <input type="hidden" name="idEntrenador" value="<%= idEntrenador %>">
-    <input type="hidden" name="idRutina" value="<%= idRutina %>">
     <button type="submit">Guardar sesiones</button>
 </form>
 </body>
