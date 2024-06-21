@@ -30,6 +30,12 @@
     <button type="submit">Filtrar</button>
 </form:form>
 
+<form:form method="post" action="/home/cliente/filtrarEjercicio" modelAttribute="filtroEj">
+    <input type="hidden" name="idCliente" value="<%= idCliente %>">
+    Nombre del ejercicio: <form:input path="nombre" />
+    <button type="submit">Filtrar</button>
+</form:form>
+
 
 <h1>Valoraciones de ejercicios</h1>
 <% if (!ejercicios.isEmpty()) { %>

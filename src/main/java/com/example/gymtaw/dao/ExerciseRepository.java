@@ -18,4 +18,7 @@ public interface ExerciseRepository extends JpaRepository<ExerciseEntity, Intege
 
     @Query(value = "select e from ExerciseEntity e join ValoracionEntity v on v.exercise.id = :id where e.id = :id AND v.stars = :stars")
     ExerciseEntity getExercisesByIdEjercicioAndFiltro(Integer id, Integer stars);
+
+    @Query("SELECT e FROM ExerciseEntity e WHERE e.name LIKE CONCAT('%', :nombre, '%')")
+    List<ExerciseEntity> findExercisesByName(@Param("nombre") String nombre);
 }

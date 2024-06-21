@@ -2,6 +2,7 @@ package com.example.gymtaw.controller;
 
 import com.example.gymtaw.dao.*;
 import com.example.gymtaw.entity.*;
+import com.example.gymtaw.ui.FiltroEjercicio;
 import com.example.gymtaw.ui.FiltroValoracion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -228,6 +229,8 @@ public class ClienteController {
         Integer idRutina=-1;
         model.addAttribute("idSesion", idSesion);
         model.addAttribute("idRutina", idRutina);
+        model.addAttribute("filtro", new FiltroValoracion());
+        model.addAttribute("filtroEj", new FiltroEjercicio());
 
 
         return "valoracion";
@@ -270,6 +273,25 @@ public class ClienteController {
         model.addAttribute("ejercicios", ejercicios);
         model.addAttribute("idCliente", idCliente);
         model.addAttribute("filtro", filtro);
+        model.addAttribute("filtroEj", new FiltroEjercicio());
+
+        return "valoracion";
+    }
+
+    @PostMapping("/filtrarEjercicio")
+    public String filtrarEjercicio(@ModelAttribute("filtroEj") FiltroEjercicio filtroEj,
+                                   @RequestParam("idCliente") Integer idCliente,
+                                   Model model) {
+
+        List<ExerciseEntity> ejercicios = new ArrayList<>();
+        if (filtroEj.getNombre() != null && !filtroEj.getNombre().isEmpty()) {
+            ejercicios = exerciseRepository.findExercisesByName(filtroEj.getNombre());
+        }
+
+        model.addAttribute("ejercicios", ejercicios);
+        model.addAttribute("idCliente", idCliente);
+        model.addAttribute("filtro", new FiltroValoracion());
+        model.addAttribute("filtroEj", filtroEj);
 
         return "valoracion";
     }
