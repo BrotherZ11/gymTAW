@@ -59,9 +59,9 @@
         <td><%=r.getName()%></td>
         <td><%=r.getDescription()%></td>
         <td><%=r.getDate()%></td>
-        <td><a href="ver?id=<%= r.getId()%>">Ver</a> </td>
-        <td><a href="editar?id=<%= r.getId()%>">Editar</a> </td>
-        <td><a href="borrar?id=<%= r.getId()%>">Borrar</a> </td>
+        <td><a href="ver?idRutina=<%= r.getId()%>">Ver</a> </td>
+        <td><a href="editar?idRutina=<%= r.getId()%>">Editar</a> </td>
+        <td><a href="borrar?idRutina=<%= r.getId()%>">Borrar</a> </td>
     </tr>
     <%
         }

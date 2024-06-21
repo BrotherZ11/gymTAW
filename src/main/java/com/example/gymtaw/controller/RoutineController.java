@@ -82,17 +82,17 @@ public class RoutineController extends BaseController{
     }
 
     @GetMapping("/borrar")
-    public String doBorrar (@RequestParam("id") Integer id, HttpSession session) {
+    public String doBorrar (@RequestParam("idRutina") Integer idRutina, HttpSession session) {
         if(!estaAutenticado(session)) return  "redirect:/";
         else{
-            this.routineRepository.deleteById(id);
+            this.routineRepository.deleteById(idRutina);
             return "redirect:/home/trainer/rutina";
         }
 
     }
 
     @GetMapping("/ver")
-    public String doVer (@RequestParam("id") Integer idRutina, HttpSession session, Model model) {
+    public String doVer (@RequestParam("idRutina") Integer idRutina, HttpSession session, Model model) {
         if(!estaAutenticado(session)) return  "redirect:/";
         else{
             Integer idEntrenador = (Integer) session.getAttribute("idEntrenador");
@@ -167,7 +167,7 @@ public class RoutineController extends BaseController{
             }
 
             // Redirigir a la página de visualización de la rutina
-            return "redirect:/home/trainer/ver?id=" + idRutina;
+            return "redirect:/home/trainer/ver?idRutina=" + idRutina;
         }
 
     }
@@ -186,10 +186,10 @@ public class RoutineController extends BaseController{
 
 
     @GetMapping("/editar")
-    public String doEditar (@RequestParam("id") Integer id, Model model, HttpSession session) {
+    public String doEditar (@RequestParam("idRutina") Integer idRutina, Model model, HttpSession session) {
         if(!estaAutenticado(session)) return "redirect:/";
         else{
-            RoutineEntity rutina = this.routineRepository.findById(id).orElse(null);
+            RoutineEntity rutina = this.routineRepository.findById(idRutina).orElse(null);
             model.addAttribute("rutina", rutina);
             return "routine";
         }
@@ -197,7 +197,7 @@ public class RoutineController extends BaseController{
     }
 
     @PostMapping("/guardar")
-    public String doGuardar (@RequestParam("id") Integer id,
+    public String doGuardar (@RequestParam("idRutina") Integer idRutina,
                              @RequestParam("nombre") String nombre,
                              @RequestParam("descripcion") String descripcion,
                              @RequestParam("fecha") LocalDate fecha,
@@ -206,7 +206,7 @@ public class RoutineController extends BaseController{
         else {
             Integer idEntrenador = (Integer) session.getAttribute("idEntrenador");
             UserEntity entrenador = userRepository.findById(idEntrenador).orElse(null);
-            RoutineEntity rutina = this.routineRepository.findById(id).orElse(new RoutineEntity());
+            RoutineEntity rutina = this.routineRepository.findById(idRutina).orElse(new RoutineEntity());
             rutina.setName(nombre);
             rutina.setDescription(descripcion);
             rutina.setDate(Date.valueOf(fecha).toLocalDate());
