@@ -61,7 +61,7 @@ public class LoginController extends BaseController {
             session.setAttribute("usuario", user);
              if(rol.getType().equals("admin")){
                 strTo = "redirect:/users/";
-            } else if(rol.getType().equals("cross-training")){
+            } else if(rol.getType().equals("crosstraining") || rol.getType().equals("bodybuilding")){
                 strTo = "redirect:/home/trainer";
             }
              else if(rol.getType().equals("client")) {
