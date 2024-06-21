@@ -4,6 +4,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     List<ExerciseEntity> listaEjercicios = (List<ExerciseEntity>) request.getAttribute("listaEjercicios");
+    List<ExerciseEntity> listaEjerciciosConDatos = (List<ExerciseEntity>) request.getAttribute("listaEjerciciosConDatos");
     String filtro = request.getParameter("filtro");
     if (filtro == null) filtro = "";
 %>
@@ -50,7 +51,7 @@
         <td><%=e.getDescription()%></td>
         <td><%=e.getVideo()%></td>
         <td><%=e.getTypeIdtype().getName()%></td>
-        <td><a href="exercise_client?idSession=<%= e.getId()  %>">Ver</a> </td>
+        <td><a href="exercise_client_info?idEjercicio=<%= e.getId()  %>"><%=listaEjerciciosConDatos.contains(e)?"Editar datos":"Crear datos"%></a> </td>
     </tr>
     <%
         i++;

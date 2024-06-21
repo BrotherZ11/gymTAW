@@ -15,6 +15,7 @@ public class HomeController extends BaseController {
     public String doHomeTrainer (Model model, HttpSession session) {
         if(!estaAutenticado(session)) return  "redirect:/";
         else{
+            session.removeAttribute("cliente");
             return "home_trainer";
         }
 

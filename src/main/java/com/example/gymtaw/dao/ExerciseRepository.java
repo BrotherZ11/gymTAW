@@ -12,4 +12,7 @@ public interface ExerciseRepository extends JpaRepository<ExerciseEntity, Intege
     @Query(value = "select e from ExerciseEntity e join ExerciseHasSessionEntity es on e.id = es.exercise.id where es.session.id = :idSesion order by es.id.order")
     public List<ExerciseEntity> getExercisesByIdSession(@Param("idSesion") Integer idSesion);
 
+    @Query(value = "select e from ExerciseEntity e join ExerciseHasSessionEntity es on e.id = es.exercise.id where es.session.id = :idSesion and exists (select ce from ClientExerciseEntity ce where ce.exercise = es.exercise)")
+    public List<ExerciseEntity> getExercisesByIdSessionWithData(@Param("idSesion") Integer idSesion);
+
 }

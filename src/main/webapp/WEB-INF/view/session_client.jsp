@@ -6,7 +6,6 @@
 <%
     List<SessionEntity> listaSesiones = (List<SessionEntity>) request.getAttribute("listaSesiones");
     List<RoutineHasSessionEntity> listaSesionesDias = (List<RoutineHasSessionEntity>) request.getAttribute("listaSesionesDias");
-    Integer idEntrenador = (Integer) request.getAttribute("idEntrenador");
     String filtro = request.getParameter("filtro");
     if (filtro == null) filtro = "";
 %>

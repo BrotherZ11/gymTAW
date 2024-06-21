@@ -2,12 +2,13 @@
 <%@ page import="java.util.List" %>
 <%@ page import="com.example.gymtaw.entity.RoutineEntity" %>
 <%@ page import="com.example.gymtaw.entity.TypeEntity" %>
+<%@ page import="com.example.gymtaw.entity.UserEntity" %>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     List<RoutineEntity> listaRutinasCliente = (List<RoutineEntity>) request.getAttribute("listaRutinasCliente");
     List<RoutineEntity> listaRutinasSinAsignar = (List<RoutineEntity>) request.getAttribute("listaRutinasSinAsignar");
-    Integer idEntrenador = (Integer) request.getAttribute("idEntrenador");
+    UserEntity usuario = (UserEntity) session.getAttribute("usuario");
     Integer idCliente = (Integer) request.getAttribute("idCliente");
     List<TypeEntity> tipos = (List<TypeEntity>) request.getAttribute("tipos");
     String filtro = request.getParameter("filtro");
@@ -20,14 +21,20 @@
 <body>
 <h1> Rutinas del Cliente </h1>
 <h2> TAW </h2>
-<form:form method="post" action="/home/trainer/filtro_routine_client" modelAttribute="filtro">
+<a href="/home/trainer">Home  </a>
+<a href="/home//clients">Atrás</a>
+<form:form method="post" action="/home/trainer/routine_client_filtrar" modelAttribute="filtro">
     Nombre de la rutina: <form:input path="nombre" />
+    <%
+        if ("crosstraining".equals(usuario.getIdRol().getType())) {
+    %>
     Tipos de la rutina:
     <%
         for(TypeEntity tipo : tipos){
     %>
     <form:checkbox value="<%=tipo%>" label="<%=tipo.getName()%>" path="tipos"/>
     <%
+            }
         }
     %>
     <form:button>Filtrar</form:button>
@@ -47,7 +54,6 @@
             }
         %>
     </select>
-    <input type="hidden" name="idEntrenador" value="<%= idEntrenador %>">
     <input type="hidden" name="idCliente" value="<%= idCliente %>">
     <button type="submit">Asignar rutina al cliente</button>
 </form>
@@ -82,8 +88,8 @@
         <td><%=r.getName()%></td>
         <td><%=r.getDescription()%></td>
         <td><%=r.getDate()%></td>
-        <td><a href="session_client?idRutina=<%= r.getId() %>&idEntrenador=<%=idEntrenador%>">Ver</a> </td>
-        <td><a href="quitar_rutina?idRutina=<%= r.getId() %>&idEntrenador=<%= idEntrenador %>&idCliente=<%= idCliente %>">Quitar rutina</a> </td>
+        <td><a href="session_client?idRutina=<%= r.getId() %>">Ver</a> </td>
+        <td><a href="quitar_rutina?idRutina=<%= r.getId() %>">Quitar rutina</a> </td>
     </tr>
     <%
         }
