@@ -65,6 +65,7 @@
                 <input type="hidden" name="idEjercicio" value="<%= e.getId() %>" />
                 <input type="hidden" name="idSesion" value="<%= idSesion %>" />
                 <input type="hidden" name="idCliente" value="<%= idCliente %>" />
+                <input type="hidden" name="idRutina" value="<%= idRutina %>" />
                 <input type="checkbox" name="done" value="1" <% if (isDone) { %>checked disabled<% } else { %> onchange="this.form.submit()"<% } %> />
             </form>
         </td>

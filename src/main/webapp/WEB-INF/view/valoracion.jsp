@@ -104,6 +104,7 @@
             }
         %>
         <td>
+            <% if (isDone) { %>
             <%
                 if (val != null) {
                     for (ValoracionEntity v : val) {
@@ -125,6 +126,9 @@
                     }
                 }
             %>
+            <% } else { %>
+            -
+            <% } %>
         </td>
 
         <td>
