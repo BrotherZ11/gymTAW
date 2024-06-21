@@ -4,6 +4,7 @@ import com.example.gymtaw.dao.*;
 import com.example.gymtaw.entity.*;
 import com.example.gymtaw.ui.FiltroEjercicio;
 import com.example.gymtaw.ui.FiltroValoracion;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +16,7 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/home/cliente")
-public class ClienteController {
+public class ClienteController extends BaseController{
 
     @Autowired
     RoutineRepository routineRepository;
@@ -43,40 +44,54 @@ public class ClienteController {
 
     @GetMapping("/entrenamientos")
     public String doListar(@RequestParam("idCliente") Integer idCliente,
-                           Model model) {
-        List<RoutineEntity> rutinas = routineRepository.getRoutinesByClient(idCliente);
-        model.addAttribute("rutinas", rutinas);
-        model.addAttribute("idCliente", idCliente);
-        return "entrenamiento_rutina_cliente";
+                           Model model, HttpSession session) {
+        String strTo = "entrenamiento_rutina_cliente";
+        if(!estaAutenticado(session)){
+            strTo = "redirect:/";
+        } else{
+            List<RoutineEntity> rutinas = routineRepository.getRoutinesByClient(idCliente);
+            model.addAttribute("rutinas", rutinas);
+            model.addAttribute("idCliente", idCliente);
+        }
+        return strTo;
     }
 
     @GetMapping("/sesionesSemanales")
     public String getSesionesSemanales(@RequestParam("idCliente") Integer idCliente,
                                        @RequestParam("idRutina") Integer idRutina,
-                                       Model model) {
-        List<SessionEntity> sesiones = sessionRepository.getSessionsByIdRoutine(idRutina);
-        model.addAttribute("sesiones", sesiones);
-        List<RoutineHasSessionEntity> sesionRutina = routineHasSessionRepository.findSessionsByRoutineId(idRutina);
-        model.addAttribute("sesionRutina", sesionRutina);
-        model.addAttribute("idCliente", idCliente);
-        model.addAttribute("idRutina", idRutina);
-        return "cliente_sesiones_semanales";
+                                       Model model, HttpSession session) {
+        String strTo = "cliente_sesiones_semanales";
+        if(!estaAutenticado(session)){
+            strTo = "redirect:/";
+        } else{
+            List<SessionEntity> sesiones = sessionRepository.getSessionsByIdRoutine(idRutina);
+            model.addAttribute("sesiones", sesiones);
+            List<RoutineHasSessionEntity> sesionRutina = routineHasSessionRepository.findSessionsByRoutineId(idRutina);
+            model.addAttribute("sesionRutina", sesionRutina);
+            model.addAttribute("idCliente", idCliente);
+            model.addAttribute("idRutina", idRutina);
+        }
+        return strTo;
     }
 
     @GetMapping("/ejercicio")
     public String getSesion(@RequestParam("idRutina") Integer idRutina,
                             @RequestParam("idSesion") Integer idSesion,
                             @RequestParam("idCliente") Integer idCliente,
-                            Model model) {
-        List<SessionEntity> sesiones = sessionRepository.findSessionBySessionId(idSesion);
-        model.addAttribute("sesiones", sesiones);
-        List<ExerciseEntity> ejercicios = exerciseHasSessionRepository.getExercisesByIdSession(idSesion);
-        model.addAttribute("ejercicios", ejercicios);
-        model.addAttribute("idSesion", idSesion);
-        model.addAttribute("idRutina", idRutina);
-        model.addAttribute("idCliente", idCliente);
-
-        return "entrenamiento_sesion_cliente";
+                            Model model, HttpSession session) {
+        String strTo = "entrenamiento_sesion_cliente";
+        if(!estaAutenticado(session)){
+            strTo = "redirect:/";
+        } else{
+            List<SessionEntity> sesiones = sessionRepository.findSessionBySessionId(idSesion);
+            model.addAttribute("sesiones", sesiones);
+            List<ExerciseEntity> ejercicios = exerciseHasSessionRepository.getExercisesByIdSession(idSesion);
+            model.addAttribute("ejercicios", ejercicios);
+            model.addAttribute("idSesion", idSesion);
+            model.addAttribute("idRutina", idRutina);
+            model.addAttribute("idCliente", idCliente);
+        }
+        return strTo;
     }
 
     @PostMapping("/guardarCompletado")
@@ -85,13 +100,15 @@ public class ClienteController {
                                     @RequestParam("idEjercicio") Integer idEjercicio,
                                     @RequestParam("idCliente") Integer idCliente,
                                     @RequestParam(value = "done", required = false) String done,
-                                    Model model) {
+                                    Model model, HttpSession session) {
 
         String strTo="redirect:/home/cliente/ejercicio?idSesion=" + idSesion + "&idRutina=" + idRutina + "&idCliente=" + idCliente;
+        if(!estaAutenticado(session)){
+            strTo = "redirect:/";
+        }
         if(idSesion==-1){
             strTo="redirect:/home/cliente/valorar?idCliente=" + idCliente;
         }
-
         ExerciseEntity exercise = exerciseRepository.findById(idEjercicio).orElse(new ExerciseEntity());
 
         // Busca o crea la valoracion para el ejercicio
@@ -134,15 +151,20 @@ public class ClienteController {
                                       @RequestParam("idSesion") Integer idSesion,
                                       @RequestParam("idEjercicio") Integer idEjercicio,
                                       @RequestParam("idCliente") Integer idCliente
-                                        , Model model) {
-        ExerciseEntity ejercicio = exerciseRepository.getExercisesByIdEjercicio(idEjercicio);
-        model.addAttribute("ejercicio", ejercicio);
-        List<ClientExerciseEntity> clientExercise = clientExerciseRepository.getClientExercisesByIdEjercicio(idEjercicio);
-        model.addAttribute("clientExercise", clientExercise);
-        model.addAttribute("idRutina", idRutina);
-        model.addAttribute("idSesion", idSesion);
-        model.addAttribute("idCliente", idCliente);
-        return "entrenamiento_ejercicio_cliente";
+                                        , Model model, HttpSession session) {
+        String strTo = "entrenamiento_ejercicio_cliente";
+        if(!estaAutenticado(session)){
+            strTo = "redirect:/";
+        } else{
+            ExerciseEntity ejercicio = exerciseRepository.getExercisesByIdEjercicio(idEjercicio);
+            model.addAttribute("ejercicio", ejercicio);
+            List<ClientExerciseEntity> clientExercise = clientExerciseRepository.getClientExercisesByIdEjercicio(idEjercicio);
+            model.addAttribute("clientExercise", clientExercise);
+            model.addAttribute("idRutina", idRutina);
+            model.addAttribute("idSesion", idSesion);
+            model.addAttribute("idCliente", idCliente);
+        }
+        return strTo;
     }
 
     @GetMapping("/valorarEjercicio")
@@ -150,13 +172,19 @@ public class ClienteController {
                                         @RequestParam("idEjercicio") Integer idEjercicio,
                                         @RequestParam("idCliente") Integer idCliente,
                                         @RequestParam("idSesion") Integer idSesion,
-                                        Model model) {
-        ExerciseEntity ejercicio = exerciseRepository.getExercisesByIdEjercicio(idEjercicio);
-        model.addAttribute("ejercicio", ejercicio);
-        model.addAttribute("idCliente", idCliente);
-        model.addAttribute("idSesion", idSesion); // Add idSesion to the model
-        model.addAttribute("idRutina", idRutina);
-        return "valorarUnEjercicio";
+                                        Model model, HttpSession session) {
+        String strTo = "valorarUnEjercicio";
+        if(!estaAutenticado(session)){
+            strTo = "redirect:/";
+        } else{
+            ExerciseEntity ejercicio = exerciseRepository.getExercisesByIdEjercicio(idEjercicio);
+            model.addAttribute("ejercicio", ejercicio);
+            model.addAttribute("idCliente", idCliente);
+            model.addAttribute("idSesion", idSesion);
+            model.addAttribute("idRutina", idRutina);
+        }
+
+        return strTo;
     }
 
     @PostMapping("/guardar")
@@ -165,11 +193,16 @@ public class ClienteController {
                                     @RequestParam("exerciseId") Integer exerciseId,
                                     @RequestParam("idSesion") Integer idSesion,
                                     @RequestParam("idRutina") Integer idRutina,
-                                    Model model) {
+                                    Model model, HttpSession session) {
+
         String strTo="redirect:/home/cliente/ejercicio?idSesion=" + idSesion + "&idRutina=" + idRutina + "&idCliente=" + idCliente;
+        if(!estaAutenticado(session)){
+            strTo="redirect:/";
+        }
         if(idSesion==-1){
             strTo="redirect:/home/cliente/valorar?idCliente=" + idCliente;
         }
+
         UserEntity user = userRepository.findById(idCliente)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + idCliente));
         ExerciseEntity exercise = exerciseRepository.findById(exerciseId)
@@ -209,91 +242,97 @@ public class ClienteController {
     }
 
     @GetMapping("/valorar")
-    public String todasValoraciones(Model model, @RequestParam("idCliente") Integer idCliente){
+    public String todasValoraciones(@RequestParam("idCliente") Integer idCliente,
+                                    Model model, HttpSession session){
+        String strTo = "valoracion";
+        if(!estaAutenticado(session)){
+            strTo = "redirect:/";
+        } else{
+            List<RoutineEntity> rutinas = routineRepository.getRoutinesByClient(idCliente);
+            model.addAttribute("rutinas", rutinas);
+            model.addAttribute("idCliente", idCliente);
 
-        List<RoutineEntity> rutinas = routineRepository.getRoutinesByClient(idCliente);
-        model.addAttribute("rutinas", rutinas);
-        model.addAttribute("idCliente", idCliente);
+            List<Integer> exerciseIntegersByClientId = this.clientExerciseRepository.findExerciseIdByClientId(idCliente);
 
-
-        List<Integer> exerciseIntegersByClientId = this.clientExerciseRepository.findExerciseIdByClientId(idCliente);
-
-        ExerciseEntity ejercicio = new ExerciseEntity();
-        List<ExerciseEntity> ejercicios = new ArrayList<>();
-        for(Integer id : exerciseIntegersByClientId){
-            ejercicio = this.exerciseRepository.getExercisesByIdEjercicio(id);
-            ejercicios.add(ejercicio);
+            ExerciseEntity ejercicio = new ExerciseEntity();
+            List<ExerciseEntity> ejercicios = new ArrayList<>();
+            for(Integer id : exerciseIntegersByClientId){
+                ejercicio = this.exerciseRepository.getExercisesByIdEjercicio(id);
+                ejercicios.add(ejercicio);
+            }
+            model.addAttribute("ejercicios", ejercicios);
+            Integer idSesion=-1;
+            Integer idRutina=-1;
+            model.addAttribute("idSesion", idSesion);
+            model.addAttribute("idRutina", idRutina);
+            model.addAttribute("filtro", new FiltroValoracion());
+            model.addAttribute("filtroEj", new FiltroEjercicio());
         }
-        model.addAttribute("ejercicios", ejercicios);
-        Integer idSesion=-1;
-        Integer idRutina=-1;
-        model.addAttribute("idSesion", idSesion);
-        model.addAttribute("idRutina", idRutina);
-        model.addAttribute("filtro", new FiltroValoracion());
-        model.addAttribute("filtroEj", new FiltroEjercicio());
-
-
-        return "valoracion";
+        return strTo;
     }
 
     @PostMapping("/filtrarValoraciones")
     public String filtrarValoraciones(@ModelAttribute("filtro") FiltroValoracion filtro,
                                       @RequestParam("idCliente") Integer idCliente,
-                                      Model model) {
+                                      Model model, HttpSession session) {
+        String strTo = "valoracion";
+        if(!estaAutenticado(session)){
+            strTo = "redirect:/";
+        } else{
+            List<Integer> exerciseIds = clientExerciseRepository.findExerciseIdByClientId(idCliente);
+            List<ExerciseEntity> ejercicios = new ArrayList<>();
 
-        List<Integer> exerciseIds = clientExerciseRepository.findExerciseIdByClientId(idCliente);
-        List<ExerciseEntity> ejercicios = new ArrayList<>();
+            // Iteramos por cada ejercicio para buscar el que tenga la valoracion que buscamos.
+            for (Integer exerciseId : exerciseIds) {
+                ExerciseEntity ejercicio = exerciseRepository.getExercisesByIdEjercicio(exerciseId);
+                if (ejercicio != null) {
+                    List<ValoracionEntity> valoraciones = ejercicio.getValoracions();
+                    boolean addEjercicioALista = true;
 
-        // Iteramos por cada ejercicio para buscar el que tenga la valoracion que buscamos.
-        for (Integer exerciseId : exerciseIds) {
-            ExerciseEntity ejercicio = exerciseRepository.getExercisesByIdEjercicio(exerciseId);
-            if (ejercicio != null) {
-                List<ValoracionEntity> valoraciones = ejercicio.getValoracions();
-                boolean addEjercicioALista = true;
+                    // Vemos si el ejercicio tiene la misma valoracion que el filtro
+                    if (filtro.getStars() != null && filtro.getStars() > 0) {
+                        addEjercicioALista = false; // Empieza asumiendo que no tiene la valoracion buscada
 
-                // Vemos si el ejercicio tiene la misma valoracion que el filtro
-                if (filtro.getStars() != null && filtro.getStars() > 0) {
-                    addEjercicioALista = false; // Empieza asumiendo que no tiene la valoracion buscada
-
-                    for (ValoracionEntity valoracion : valoraciones) {
-                        if (valoracion.getUser().getId().equals(idCliente) && valoracion.getDone() == 1) {
-                            if (valoracion.getStars() != null && valoracion.getStars() == filtro.getStars()) {
-                                addEjercicioALista = true; // Ha encontrado la valoracion
-                                break;
+                        for (ValoracionEntity valoracion : valoraciones) {
+                            if (valoracion.getUser().getId().equals(idCliente) && valoracion.getDone() == 1) {
+                                if (valoracion.getStars() != null && valoracion.getStars() == filtro.getStars()) {
+                                    addEjercicioALista = true; // Ha encontrado la valoracion
+                                    break;
+                                }
                             }
                         }
                     }
-                }
-                if (addEjercicioALista) {
-                    ejercicios.add(ejercicio);
+                    if (addEjercicioALista) {
+                        ejercicios.add(ejercicio);
+                    }
                 }
             }
+            model.addAttribute("ejercicios", ejercicios);
+            model.addAttribute("idCliente", idCliente);
+            model.addAttribute("filtro", filtro);
+            model.addAttribute("filtroEj", new FiltroEjercicio());
         }
-
-        model.addAttribute("ejercicios", ejercicios);
-        model.addAttribute("idCliente", idCliente);
-        model.addAttribute("filtro", filtro);
-        model.addAttribute("filtroEj", new FiltroEjercicio());
-
-        return "valoracion";
+        return strTo;
     }
 
     @PostMapping("/filtrarEjercicio")
     public String filtrarEjercicio(@ModelAttribute("filtroEj") FiltroEjercicio filtroEj,
                                    @RequestParam("idCliente") Integer idCliente,
-                                   Model model) {
-
-        List<ExerciseEntity> ejercicios = new ArrayList<>();
-        if (filtroEj.getNombre() != null && !filtroEj.getNombre().isEmpty()) {
-            ejercicios = exerciseRepository.findExercisesByName(filtroEj.getNombre());
+                                   Model model, HttpSession session) {
+        String strTo = "valoracion";
+        if(!estaAutenticado(session)){
+            strTo = "redirect:/";
+        } else{
+            List<ExerciseEntity> ejercicios = new ArrayList<>();
+            if (filtroEj.getNombre() != null && !filtroEj.getNombre().isEmpty()) {
+                ejercicios = exerciseRepository.findExercisesByName(filtroEj.getNombre());
+            }
+            model.addAttribute("ejercicios", ejercicios);
+            model.addAttribute("idCliente", idCliente);
+            model.addAttribute("filtro", new FiltroValoracion());
+            model.addAttribute("filtroEj", filtroEj);
         }
-
-        model.addAttribute("ejercicios", ejercicios);
-        model.addAttribute("idCliente", idCliente);
-        model.addAttribute("filtro", new FiltroValoracion());
-        model.addAttribute("filtroEj", filtroEj);
-
-        return "valoracion";
+        return strTo;
     }
 
 
@@ -302,18 +341,24 @@ public class ClienteController {
                                 @RequestParam("userId") Integer userId,
                                 @RequestParam("exerciseId") Integer exerciseId,
                                 @RequestParam("review") String review,
-                                Model model) {
-        ValoracionEntityId valoracionId = new ValoracionEntityId();
-        valoracionId.setUserId(userId);
-        valoracionId.setExerciseId(exerciseId);
+                                Model model, HttpSession session) {
+        String strTo = "redirect:/home/cliente/valorar?idCliente=" + idCliente;
+        if(!estaAutenticado(session)){
+            strTo = "redirect:/";
+        } else{
+            ValoracionEntityId valoracionId = new ValoracionEntityId();
+            valoracionId.setUserId(userId);
+            valoracionId.setExerciseId(exerciseId);
 
-        Optional<ValoracionEntity> valoracionEntity = this.valoracionRepository.findById(valoracionId);
-        if (valoracionEntity.isPresent()) {
-            ValoracionEntity valoracion = valoracionEntity.get();
-            valoracion.setReview(review);
-            valoracionRepository.save(valoracion);
+            Optional<ValoracionEntity> valoracionEntity = this.valoracionRepository.findById(valoracionId);
+            if (valoracionEntity.isPresent()) {
+                ValoracionEntity valoracion = valoracionEntity.get();
+                valoracion.setReview(review);
+                valoracionRepository.save(valoracion);
+            }
         }
-        return "redirect:/home/cliente/valorar?idCliente=" + idCliente;
+
+        return strTo;
     }
 
 
