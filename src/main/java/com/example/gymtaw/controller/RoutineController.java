@@ -54,7 +54,7 @@ public class RoutineController extends BaseController{
         if(!estaAutenticado(session)) return  "redirect:/";
         else{
             User usuario = (User) session.getAttribute("usuario");
-            List<Routine> rutinas = routineService.listarRutinas(usuario.getId());
+            List<Routine> rutinas = routineService.listarRutinasEntrenador(usuario.getId());
             User user = userService.BuscarPorId(usuario.getId());
             String rol = user.getRol().getType();
             List<Type> tipos = typeService.cogerTipos();
@@ -106,7 +106,7 @@ public class RoutineController extends BaseController{
         if(!estaAutenticado(session)) return  "redirect:/";
         else{
             User usuario = (User) session.getAttribute("usuario");
-            List<RoutineHasSession> sessionRoutineEntities = routineHasSessionService.cogersesionesderutina(idRutina);
+            List<RoutineHasSession> sessionRoutineEntities = routineHasSessionService.getSessionsRoutineByIdRoutine(idRutina);
             List<SessionEntity> sessionCompleteEntities = sessionRepository.getSessionsByIdEntrenador(usuario.getId());
             model.addAttribute("listaSesionRutina", sessionRoutineEntities);
             model.addAttribute("listaCompleta", sessionCompleteEntities);
@@ -127,7 +127,7 @@ public class RoutineController extends BaseController{
         else{
             Integer idRutina = (Integer) session.getAttribute("idRutina");
             //Borramos las sesiones que habia y los tipos de esas sesiones en la rutina
-            List<RoutineHasSession> sesionesABorrar = routineHasSessionService.cogersesionesderutina(idRutina);
+            List<RoutineHasSession> sesionesABorrar = routineHasSessionService.getSessionsRoutineByIdRoutine(idRutina);
             List<TypeHasRoutineEntity> tiposRutinaABorrar = typeHasRoutineRepository.getTypeHasRoutineEntitiesByRoutineIdroutine(idRutina);
 
             //routineHasSessionService.deleteAll(sesionesABorrar);

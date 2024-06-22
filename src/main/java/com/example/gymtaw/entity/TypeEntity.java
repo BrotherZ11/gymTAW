@@ -27,16 +27,16 @@ public class TypeEntity implements DTO<Type> {
 
     @ManyToMany
     @JoinTable(
-            name = "type_routine",
-            joinColumns = @JoinColumn(name = "type_id"),
-            inverseJoinColumns = @JoinColumn(name = "routine_id")
+            name = "type_has_routine",
+            joinColumns = @JoinColumn(name = "type_idtype"),
+            inverseJoinColumns = @JoinColumn(name = "routine_idroutine")
     )
     private Set<RoutineEntity> routines = new LinkedHashSet<>();
 
     @ManyToMany
     @JoinTable(
-            name = "type_session",
-            joinColumns = @JoinColumn(name = "type_id"),
+            name = "type_has_session",
+            joinColumns = @JoinColumn(name = "type_idtype"),
             inverseJoinColumns = @JoinColumn(name = "session_id")
     )
     private Set<SessionEntity> sessions = new LinkedHashSet<>();

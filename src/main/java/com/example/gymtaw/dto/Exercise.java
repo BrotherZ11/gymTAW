@@ -15,7 +15,7 @@ public class Exercise {
     private String description;
     private String video;
     private Type typeIdtype;
-    private List<ClientExerciseEntityId> clientExercises;
-    private List<Integer> exerciseHasSessions;
-    private List<ValoracionEntityId> valoracions;
+    private Set<ClientExerciseEntityId> clientExercises;
+    private Set<Integer> exerciseHasSessions;
+    private Set<ValoracionEntityId> valoracions;
 }
