@@ -1,5 +1,7 @@
 package com.example.gymtaw.entity;
 
+import com.example.gymtaw.dto.DTO;
+import com.example.gymtaw.dto.UserHasTrainerId;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.Getter;
@@ -12,7 +14,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @Embeddable
-public class UserHasTrainerEntityId implements Serializable {
+public class UserHasTrainerEntityId implements Serializable, DTO<UserHasTrainerId>{
     private static final long serialVersionUID = 3113045283274485412L;
     @Column(name = "user_id", nullable = false)
     private Integer userId;
@@ -34,4 +36,10 @@ public class UserHasTrainerEntityId implements Serializable {
         return Objects.hash(userId, trainerId);
     }
 
+    public UserHasTrainerId toDTO() {
+        UserHasTrainerId userHasTrainerId = new UserHasTrainerId();
+        userHasTrainerId.setUser_id(this.userId);
+        userHasTrainerId.setTrainer_id(this.trainerId);
+        return userHasTrainerId;
+    }
 }

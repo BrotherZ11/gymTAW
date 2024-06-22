@@ -1,5 +1,7 @@
 package com.example.gymtaw.entity;
 
+import com.example.gymtaw.dto.DTO;
+import com.example.gymtaw.dto.UserHasTrainer;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +12,7 @@ import org.hibernate.annotations.OnDeleteAction;
 @Setter
 @Entity
 @Table(name = "user_has_trainer")
-public class UserHasTrainerEntity {
+public class UserHasTrainerEntity implements DTO<UserHasTrainer> {
     @EmbeddedId
     private UserHasTrainerEntityId id;
 
@@ -26,4 +28,11 @@ public class UserHasTrainerEntity {
     @JoinColumn(name = "trainer_id", nullable = false)
     private UserEntity trainer;
 
+    public UserHasTrainer toDTO() {
+        UserHasTrainer userHasTrainer = new UserHasTrainer();
+        userHasTrainer.setId(this.id.toDTO());
+        userHasTrainer.setUser(this.user.toDTO());
+        userHasTrainer.setTrainer(this.trainer.toDTO());
+        return userHasTrainer;
+    }
 }

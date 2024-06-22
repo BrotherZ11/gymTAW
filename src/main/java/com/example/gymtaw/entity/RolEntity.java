@@ -1,5 +1,7 @@
 package com.example.gymtaw.entity;
 
+import com.example.gymtaw.dto.DTO;
+import com.example.gymtaw.dto.Rol;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,7 +13,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "rol")
-public class RolEntity {
+public class RolEntity implements DTO<Rol> {
     @Id
     @Column(name = "id_rol", nullable = false)
     private Integer id;
@@ -22,4 +24,10 @@ public class RolEntity {
     @OneToMany(mappedBy = "idRol")
     private Set<UserEntity> users = new LinkedHashSet<>();
 
+    public Rol toDTO() {
+        Rol rol = new Rol();
+        rol.setId(this.id);
+        rol.setType(this.type);
+        return rol;
+    }
 }

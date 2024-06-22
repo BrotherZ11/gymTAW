@@ -1,5 +1,7 @@
 package com.example.gymtaw.entity;
 
+import com.example.gymtaw.dto.DTO;
+import com.example.gymtaw.dto.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,7 +13,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "user")
-public class UserEntity {
+public class UserEntity implements DTO<User> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -75,4 +77,24 @@ public class UserEntity {
 
     @OneToMany(mappedBy = "user")
     private Set<ValoracionEntity> valoracions = new LinkedHashSet<>();
+
+    public User toDTO() {
+        User user = new User();
+        user.setId(this.id);
+        user.setEmail(this.email);
+        user.setPassword(this.password);
+        user.setName(this.name);
+        user.setSurname(this.surname);
+        user.setDni(this.dni);
+        user.setPhone(this.phone);
+        user.setAge(this.age);
+        user.setGender(this.gender);
+        user.setIdRol(this.idRol.toDTO());
+        this.clientExercises.forEach(clientExerciseEntity -> user.getUserExercises().add(clientExerciseEntity.getExercise().getId()));
+        this.routinesClient.forEach(routineEntity -> user.getClientRoutines().add(routineEntity.getId()));
+        this.routinesTrainer.forEach(routineEntity -> user.getTrainerRoutines().add(routineEntity.getId()));
+        this.sessions.forEach(sessionEntity -> user.getSessions().add(sessionEntity.getId()));
+
+        return user;
+    }
 }
