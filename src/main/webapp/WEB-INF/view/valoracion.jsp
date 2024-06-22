@@ -2,12 +2,17 @@
 <%@ page import="java.util.List" %>
 <%@ page import="com.example.gymtaw.entity.*" %>
 <%@ page import="java.util.Set" %>
+<%@ page import="com.example.gymtaw.dto.User" %>
+<%@ page import="com.example.gymtaw.dto.Exercise" %>
+<%@ page import="com.example.gymtaw.dto.Valoracion" %>
+<%@ page import="com.example.gymtaw.dto.ValoracionId" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    List<ExerciseEntity> ejercicios = (List<ExerciseEntity>) request.getAttribute("ejercicios");
+    List<Exercise> ejercicios = (List<Exercise>) request.getAttribute("ejercicios");
     Integer idSesion = -1;
     Integer idRutina = -1;
-    UserEntity usuario= (UserEntity) session.getAttribute("usuario");
+    User usuario= (User) session.getAttribute("usuario");
+    List<Valoracion> valoraciones = (List<Valoracion>) request.getAttribute("valoraciones");
 %>
 <html>
 <head>
@@ -50,7 +55,7 @@
         <th>Review</th>
         <th></th>
     </tr>
-    <%for(ExerciseEntity e : ejercicios){%>
+    <%for(Exercise e : ejercicios){%>
     <tr>
         <td><a href="/home/cliente/ejercicioIndividual?idEjercicio=<%= e.getId() %>&idRutina=<%=idRutina%>&idSesion=<%=idSesion%>"><%= e.getName()%></a></td>
         <td><%=e.getDescription()%></td>
@@ -58,11 +63,10 @@
         <td align="center">
             <%
                 boolean isDone = false;
-                Set<ValoracionEntity> val = e.getValoracions();
 
 
-                if (val != null) {
-                    for (ValoracionEntity v : val) {
+                if (valoraciones != null) {
+                    for (Valoracion v : valoraciones) {
                         if (v.getDone() == 1 && v.getUser().getId().equals(usuario.getId())) {
                             isDone = true;
                             break;
@@ -81,9 +85,9 @@
 
         <%
             boolean valorado = false;
-            if (val != null) {
+            if (valoraciones != null) {
 
-                for (ValoracionEntity v : val) {
+                for (Valoracion v : valoraciones) {
                     if (v.getDone() == 1 && v.getUser().getId().equals(usuario.getId())) {
                         if (v.getStars() != null) {
                             valorado = true;
@@ -113,8 +117,8 @@
         <td>
             <% if (isDone) { %>
             <%
-                if (val != null) {
-                    for (ValoracionEntity v : val) {
+                if (valoraciones != null) {
+                    for (Valoracion v : valoraciones) {
                         if (v.getUser().getId().equals(usuario.getId())) {
                             String review = v.getReview();
                             if (review == null) {

@@ -95,7 +95,7 @@
                  }
         %>
         <td>
-            <%if(valorado==true){
+            <%if(valorado){
 
             %>
         <a href="valorarEjercicio?idEjercicio=<%= e.getId() %>&idSesion=<%=s.getId()%>&idRutina=<%=idRutina%>">Editar valoracion</a>
