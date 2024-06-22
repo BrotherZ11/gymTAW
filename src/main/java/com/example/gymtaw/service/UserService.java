@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class UserService {
+public class UserService extends DTOService<User, UserEntity>{
 
     @Autowired
     protected UserRepository userRepository;
@@ -24,10 +24,11 @@ public class UserService {
 
     public List<User> listarUsuarios() {
         List<UserEntity> usuarios = this.userRepository.findAll();
-        List<User> usuariosDTO = new ArrayList<>();
-        for (UserEntity usuario : usuarios) {
-            usuariosDTO.add(usuario.toDTO());
-        }
-        return usuariosDTO;
+        return this.entidadesADTO(usuarios);
+    }
+
+    public List<User> listarUsuariosPorRol(int rol) {
+        List<UserEntity> usuarios = this.userRepository.findUserEntitiesByIdRol(rol);
+        return this.entidadesADTO(usuarios);
     }
 }

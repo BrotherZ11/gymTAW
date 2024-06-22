@@ -68,7 +68,7 @@ public class ClienteController extends BaseController{
 
             List<SessionEntity> sesiones = sessionRepository.getSessionsByIdRoutine(idRutina);
             model.addAttribute("sesiones", sesiones);
-            List<RoutineHasSessionEntity> sesionRutina = routineHasSessionRepository.findSessionsByRoutineId(idRutina);
+            List<RoutineHasSessionEntity> sesionRutina = routineHasSessionRepository.getSessionsRoutineByIdRoutine(idRutina);
             model.addAttribute("sesionRutina", sesionRutina);
             model.addAttribute("idCliente", usuario.getId());
             model.addAttribute("idRutina", idRutina);
