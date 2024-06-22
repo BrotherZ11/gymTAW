@@ -11,6 +11,9 @@
     <title>Home Trainer</title>
 </head>
 <body>
+    <div align="right">
+        <a href="/salir">Log out</a>
+    </div>
     <div>
         <a href="trainer/clients">Clientes</a>
         <a href="trainer/rutina">Rutinas</a>

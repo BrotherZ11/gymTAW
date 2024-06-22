@@ -2,12 +2,14 @@
 <%@ page import="java.util.List" %>
 <%@ page import="com.example.gymtaw.entity.RoutineEntity" %>
 <%@ page import="com.example.gymtaw.entity.TypeEntity" %>
+<%@ page import="com.example.gymtaw.entity.UserEntity" %>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     List<RoutineEntity> listaRutinasCliente = (List<RoutineEntity>) request.getAttribute("listaRutinasCliente");
     List<RoutineEntity> listaRutinasSinAsignar = (List<RoutineEntity>) request.getAttribute("listaRutinasSinAsignar");
-    Integer idEntrenador = (Integer) request.getAttribute("idEntrenador");
+    UserEntity usuario = (UserEntity) session.getAttribute("usuario");
+    UserEntity cliente = (UserEntity) session.getAttribute("cliente");
     Integer idCliente = (Integer) request.getAttribute("idCliente");
     List<TypeEntity> tipos = (List<TypeEntity>) request.getAttribute("tipos");
     String filtro = request.getParameter("filtro");
@@ -18,16 +20,23 @@
     <title>Rutinas del Cliente</title>
 </head>
 <body>
-<h1> Rutinas del Cliente </h1>
-<h2> TAW </h2>
-<form:form method="post" action="/home/trainer/filtro_routine_client" modelAttribute="filtro">
+<div align="right">
+    <a href="/salir">Log out</a>
+</div>
+<h1> Rutinas de <%=cliente.getName()%> <%=cliente.getSurname()%></h1>
+<p><a href="/home/trainer">Home</a> / <a href="clients">Clientes</a> / Rutinas <%=cliente.getName()%> <%=cliente.getSurname()%></p><br>
+<form:form method="post" action="/home/trainer/routine_client_filtrar" modelAttribute="filtro">
     Nombre de la rutina: <form:input path="nombre" />
+    <%
+        if ("crosstraining".equals(usuario.getIdRol().getType())) {
+    %>
     Tipos de la rutina:
     <%
         for(TypeEntity tipo : tipos){
     %>
     <form:checkbox value="<%=tipo%>" label="<%=tipo.getName()%>" path="tipos"/>
     <%
+            }
         }
     %>
     <form:button>Filtrar</form:button>
@@ -47,7 +56,6 @@
             }
         %>
     </select>
-    <input type="hidden" name="idEntrenador" value="<%= idEntrenador %>">
     <input type="hidden" name="idCliente" value="<%= idCliente %>">
     <button type="submit">Asignar rutina al cliente</button>
 </form>
@@ -82,8 +90,8 @@
         <td><%=r.getName()%></td>
         <td><%=r.getDescription()%></td>
         <td><%=r.getDate()%></td>
-        <td><a href="session_client?idRutina=<%= r.getId() %>&idEntrenador=<%=idEntrenador%>">Ver</a> </td>
-        <td><a href="quitar_rutina?idRutina=<%= r.getId() %>&idEntrenador=<%= idEntrenador %>&idCliente=<%= idCliente %>">Quitar rutina</a> </td>
+        <td><a href="session_client?idRutina=<%= r.getId() %>">Ver</a> </td>
+        <td><a href="quitar_rutina?idRutina=<%= r.getId() %>">Quitar rutina</a> </td>
     </tr>
     <%
         }
