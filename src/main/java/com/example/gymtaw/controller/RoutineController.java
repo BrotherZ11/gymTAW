@@ -2,9 +2,13 @@ package com.example.gymtaw.controller;
 
 import com.example.gymtaw.dao.*;
 import com.example.gymtaw.dto.Routine;
+import com.example.gymtaw.dto.RoutineHasSession;
+import com.example.gymtaw.dto.Type;
 import com.example.gymtaw.dto.User;
 import com.example.gymtaw.entity.*;
+import com.example.gymtaw.service.RoutineHasSessionService;
 import com.example.gymtaw.service.RoutineService;
+import com.example.gymtaw.service.TypeService;
 import com.example.gymtaw.service.UserService;
 import com.example.gymtaw.ui.FiltroRutina;
 import jakarta.servlet.http.HttpSession;
@@ -28,7 +32,7 @@ public class RoutineController extends BaseController{
     RoutineService routineService;
 
     @Autowired
-    RoutineHasSessionRepository routineHasSessionRepository;
+    RoutineHasSessionService routineHasSessionService;
 
     @Autowired
     SessionRepository sessionRepository;
@@ -43,17 +47,17 @@ public class RoutineController extends BaseController{
     TypeHasSessionRepository typeHasSessionRepository;
 
     @Autowired
-    TypeRepository typeRepository;
+    TypeService typeService;
 
     @GetMapping("/rutina")
     public String doListar (Model model, HttpSession session) {
         if(!estaAutenticado(session)) return  "redirect:/";
         else{
-            UserEntity usuario = (UserEntity) session.getAttribute("usuario");
+            User usuario = (User) session.getAttribute("usuario");
             List<Routine> rutinas = routineService.listarRutinas(usuario.getId());
-            User user = userService.buscarUsuario(usuario.getId());
+            User user = userService.BuscarPorId(usuario.getId());
             String rol = user.getRol().getType();
-            List<TypeEntity> tipos = typeRepository.findAll();
+            List<Type> tipos = typeService.cogerTipos();
             model.addAttribute("tipos", tipos);
             model.addAttribute("lista", rutinas);
             model.addAttribute("rol", rol);
@@ -67,11 +71,11 @@ public class RoutineController extends BaseController{
     public String doListar (@ModelAttribute("filtro") FiltroRutina filtro, Model model, HttpSession session) {
         if(!estaAutenticado(session)) return  "redirect:/";
         else{
-            UserEntity usuario = (UserEntity) session.getAttribute("usuario");
+            User usuario = (User) session.getAttribute("usuario");
 
             List<Routine> rutinas = null;
-            List<TypeEntity> tipos = typeRepository.findAll();
-            User entrenador = userService.buscarUsuario(usuario.getId());
+            List<Type> tipos = typeService.cogerTipos();
+            User entrenador = userService.BuscarPorId(usuario.getId());
             String rol = entrenador.getRol().getType();
 
             if(filtro.estaVacioTipos()) rutinas = routineService.listarRutinas(filtro.getNombre(), usuario.getId());
@@ -101,8 +105,8 @@ public class RoutineController extends BaseController{
     public String doVer (@RequestParam("idRutina") Integer idRutina, HttpSession session, Model model) {
         if(!estaAutenticado(session)) return  "redirect:/";
         else{
-            UserEntity usuario = (UserEntity) session.getAttribute("usuario");
-            List<RoutineHasSessionEntity> sessionRoutineEntities = routineHasSessionRepository.getSessionsRoutineByIdRoutine(idRutina);
+            User usuario = (User) session.getAttribute("usuario");
+            List<RoutineHasSession> sessionRoutineEntities = routineHasSessionService.cogersesionesderutina(idRutina);
             List<SessionEntity> sessionCompleteEntities = sessionRepository.getSessionsByIdEntrenador(usuario.getId());
             model.addAttribute("listaSesionRutina", sessionRoutineEntities);
             model.addAttribute("listaCompleta", sessionCompleteEntities);
@@ -123,10 +127,10 @@ public class RoutineController extends BaseController{
         else{
             Integer idRutina = (Integer) session.getAttribute("idRutina");
             //Borramos las sesiones que habia y los tipos de esas sesiones en la rutina
-            List<RoutineHasSessionEntity> sesionesABorrar = routineHasSessionRepository.getSessionsRoutineByIdRoutine(idRutina);
+            List<RoutineHasSession> sesionesABorrar = routineHasSessionService.cogersesionesderutina(idRutina);
             List<TypeHasRoutineEntity> tiposRutinaABorrar = typeHasRoutineRepository.getTypeHasRoutineEntitiesByRoutineIdroutine(idRutina);
 
-            routineHasSessionRepository.deleteAll(sesionesABorrar);
+            //routineHasSessionService.deleteAll(sesionesABorrar);
             typeHasRoutineRepository.deleteAll(tiposRutinaABorrar);
 
             //Creo la lista de tipos de rutina
@@ -150,7 +154,7 @@ public class RoutineController extends BaseController{
                     sessionRoutineEntity.setId(routineHasSessionId);
                     // sessionRoutineEntity.setRoutine(routine);
                     sessionRoutineEntity.setSession(sesion);
-                    routineHasSessionRepository.save(sessionRoutineEntity);
+                   // routineHasSessionRepository.save(sessionRoutineEntity);
 
                     //Añado tipos de las sesiones a la lista para quitar duplicados
                     List<TypeHasSessionEntity> tiposSesion = typeHasSessionRepository.getTypeHasRoutineEntitiesBySessionId(sesion.getId());

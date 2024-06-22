@@ -1,5 +1,7 @@
 package com.example.gymtaw.entity;
 
+import com.example.gymtaw.dto.DTO;
+import com.example.gymtaw.dto.Session;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,7 +15,7 @@ import org.hibernate.annotations.OnDeleteAction;
 @Setter
 @Entity
 @Table(name = "session")
-public class SessionEntity {
+public class SessionEntity implements DTO<Session> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -36,4 +38,14 @@ public class SessionEntity {
     @ManyToMany(mappedBy = "sessions")
     private Set<TypeEntity> types = new LinkedHashSet<>();
 
+    public Session toDTO(){
+        Session session = new Session();
+        session.setId(this.getId());
+        session.setName(this.getName());
+        session.setExerciseHasSessions(this.getExerciseHasSessions());
+        session.setRoutineHasSessions(this.getRoutineHasSessions());
+        session.setTypes(this.getTypes());
+        session.setTrainerId(this.getIdtrainer().getId());
+        return session;
+    }
 }

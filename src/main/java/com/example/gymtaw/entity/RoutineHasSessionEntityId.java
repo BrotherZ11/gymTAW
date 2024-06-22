@@ -1,5 +1,8 @@
 package com.example.gymtaw.entity;
 
+import com.example.gymtaw.dto.DTO;
+import com.example.gymtaw.dto.RoutineHasSessionId;
+import com.example.gymtaw.dto.UserHasTrainerId;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.Getter;
@@ -12,7 +15,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @Embeddable
-public class RoutineHasSessionEntityId implements Serializable {
+public class RoutineHasSessionEntityId implements Serializable, DTO<RoutineHasSessionId> {
     private static final long serialVersionUID = 2361236869427811153L;
     @Column(name = "routine_id", nullable = false)
     private Integer routineId;
@@ -36,6 +39,14 @@ public class RoutineHasSessionEntityId implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(sessionId, routineId, day);
+    }
+
+    public RoutineHasSessionId toDTO() {
+        RoutineHasSessionId routineHasSessionId = new RoutineHasSessionId();
+        routineHasSessionId.setSessionId(this.getSessionId());
+        routineHasSessionId.setRoutineId(this.getRoutineId());
+        routineHasSessionId.setDay(this.getDay());
+        return routineHasSessionId;
     }
 
 }
