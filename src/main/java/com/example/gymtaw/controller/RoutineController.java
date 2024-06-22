@@ -1,15 +1,9 @@
 package com.example.gymtaw.controller;
 
 import com.example.gymtaw.dao.*;
-import com.example.gymtaw.dto.Routine;
-import com.example.gymtaw.dto.RoutineHasSession;
-import com.example.gymtaw.dto.Type;
-import com.example.gymtaw.dto.User;
+import com.example.gymtaw.dto.*;
 import com.example.gymtaw.entity.*;
-import com.example.gymtaw.service.RoutineHasSessionService;
-import com.example.gymtaw.service.RoutineService;
-import com.example.gymtaw.service.TypeService;
-import com.example.gymtaw.service.UserService;
+import com.example.gymtaw.service.*;
 import com.example.gymtaw.ui.FiltroRutina;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +29,7 @@ public class RoutineController extends BaseController{
     RoutineHasSessionService routineHasSessionService;
 
     @Autowired
-    SessionRepository sessionRepository;
+    SessionService sessionService;
 
     @Autowired
     UserService userService;
@@ -107,7 +101,7 @@ public class RoutineController extends BaseController{
         else{
             User usuario = (User) session.getAttribute("usuario");
             List<RoutineHasSession> sessionRoutineEntities = routineHasSessionService.getSessionsRoutineByIdRoutine(idRutina);
-            List<SessionEntity> sessionCompleteEntities = sessionRepository.getSessionsByIdEntrenador(usuario.getId());
+            List<Session> sessionCompleteEntities = sessionService.buscarSesionesByEntrenador(usuario.getId());
             model.addAttribute("listaSesionRutina", sessionRoutineEntities);
             model.addAttribute("listaCompleta", sessionCompleteEntities);
             model.addAttribute("idRutina", idRutina);
@@ -119,7 +113,7 @@ public class RoutineController extends BaseController{
 
     }
 
-    @PostMapping("/guardar_sesiones")
+    /*@PostMapping("/guardar_sesiones")
     public String doGuardarRutinas (HttpSession session,
                                     @RequestParam Map<String, String> allParams,
                                     Model model) {
@@ -148,7 +142,7 @@ public class RoutineController extends BaseController{
                     routineHasSessionId.setSessionId(idSesion);
                     routineHasSessionId.setRoutineId(idRutina);
 
-                    SessionEntity sesion = sessionRepository.findById(idSesion).orElse(null);
+                    SessionEntity sesion = sessionService.buscarSesionesByIdSesion(idSesion);
 
                     RoutineHasSessionEntity sessionRoutineEntity = new RoutineHasSessionEntity();
                     sessionRoutineEntity.setId(routineHasSessionId);
@@ -181,7 +175,7 @@ public class RoutineController extends BaseController{
             return "redirect:/home/trainer/ver?idRutina=" + idRutina;
         }
 
-    }
+    }*/
 
     @GetMapping("/crear")
     public String doNuevo (Model model, HttpSession session) {

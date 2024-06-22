@@ -78,10 +78,10 @@ public class RoutineService extends DTOService<Routine, RoutineEntity>{
         routineRepository.save(routine);
     }
 
-    public void actualizarSesionesRutina(Integer idRutina, Set<Integer> sesiones, Set<Integer> tipos) {
+/*    public void actualizarSesionesRutina(Integer idRutina, Set<Integer> sesiones, Set<Integer> tipos) {
         routineSessionService.actualizarSesiones(idRutina, sesiones);
         routineTypeService.actualizarTipos(idRutina, tipos);
-    }
+    }*/
 
 
 }

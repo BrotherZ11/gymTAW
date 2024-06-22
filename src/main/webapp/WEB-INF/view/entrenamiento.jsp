@@ -1,6 +1,4 @@
 <%@ page import="java.util.List" %>
-<%@ page import="com.example.gymtaw.entity.SessionEntity" %>
-<%@ page import="com.example.gymtaw.entity.RoutineHasSessionEntity" %>
 <%@ page import="com.example.gymtaw.dto.RoutineHasSession" %>
 <%@ page import="com.example.gymtaw.dto.Session" %>
 

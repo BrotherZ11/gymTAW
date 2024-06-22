@@ -24,12 +24,12 @@ public class RoutineHasSessionService extends DTOService<RoutineHasSession, Rout
         routineHasSessionRepository.deleteAll(sesiones);
     }
 
-    public void actualizarSesiones(Integer idRutina, Set<Integer> sesiones) {
+/*    public void actualizarSesiones(Integer idRutina, Set<Integer> sesiones) {
         routineHasSessionRepository.deleteByRoutineId(idRutina);
         sesiones.forEach(sessionId -> {
             RoutineHasSessionEntity entity = new RoutineHasSessionEntity(new RoutineHasSessionEntityId(idRutina, sessionId));
             entity.setSession(sessionRepository.findById(sessionId).orElse(null));
             routineHasSessionRepository.save(entity);
         });
-    }
+    }*/
 }
