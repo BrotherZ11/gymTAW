@@ -1,5 +1,8 @@
 package com.example.gymtaw.entity;
 
+import com.example.gymtaw.dto.DTO;
+import com.example.gymtaw.dto.RoutineHasSession;
+import com.example.gymtaw.dto.UserHasTrainer;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +13,7 @@ import org.hibernate.annotations.OnDeleteAction;
 @Setter
 @Entity
 @Table(name = "routine_has_session")
-public class RoutineHasSessionEntity {
+public class RoutineHasSessionEntity implements DTO<RoutineHasSession> {
     @EmbeddedId
     private RoutineHasSessionEntityId id;
 
@@ -28,5 +31,13 @@ public class RoutineHasSessionEntity {
 
     public int getDay() {
         return id.getDay();
+    }
+
+    public RoutineHasSession toDTO() {
+        RoutineHasSession routineHasSession = new RoutineHasSession();
+        routineHasSession.setId(this.id.toDTO());
+        routineHasSession.setRoutine(this.routine.toDTO());
+        routineHasSession.setSession(this.session.toDTO());
+        return routineHasSession;
     }
 }

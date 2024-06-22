@@ -1,10 +1,11 @@
 <%@ page import="java.util.List" %>
 <%@ page import="com.example.gymtaw.entity.SessionEntity" %>
 <%@ page import="com.example.gymtaw.entity.RoutineHasSessionEntity" %>
+<%@ page import="com.example.gymtaw.dto.RoutineHasSession" %>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    List<RoutineHasSessionEntity> listaSesionRutina = (List<RoutineHasSessionEntity>) request.getAttribute("listaSesionRutina");
+    List<RoutineHasSession> listaSesionRutina = (List<RoutineHasSession>) request.getAttribute("listaSesionRutina");
     List<SessionEntity> listaCompleta = (List<SessionEntity>) request.getAttribute("listaCompleta");
 
 %>
@@ -34,7 +35,7 @@
                 //int index = 0;
                 for(int i = 1; i <= 7; i++){
                     boolean found = false;
-                    for (RoutineHasSessionEntity sesionRutina : listaSesionRutina) {
+                    for (RoutineHasSession sesionRutina : listaSesionRutina) {
                         if (sesionRutina.getId().getDay() == i) {
                             found = true;
             %>
@@ -83,7 +84,7 @@
             <%
                 for(int i = 1; i <= 7; i++){
                     boolean found = false;
-                    for (RoutineHasSessionEntity sesionRutina : listaSesionRutina) {
+                    for (RoutineHasSession sesionRutina : listaSesionRutina) {
                         if (sesionRutina.getId().getDay() == i) {
                             found = true;
             %>

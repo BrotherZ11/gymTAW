@@ -1,5 +1,7 @@
 package com.example.gymtaw.entity;
 
+import com.example.gymtaw.dto.DTO;
+import com.example.gymtaw.dto.Type;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,7 +13,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "type")
-public class TypeEntity {
+public class TypeEntity implements DTO<Type> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idtype", nullable = false)
@@ -38,5 +40,12 @@ public class TypeEntity {
             inverseJoinColumns = @JoinColumn(name = "session_id")
     )
     private Set<SessionEntity> sessions = new LinkedHashSet<>();
+
+    public Type toDTO(){
+        Type type = new Type();
+        type.setId(this.getId());
+        type.setName(this.getName());
+        return type;
+    }
 
 }
