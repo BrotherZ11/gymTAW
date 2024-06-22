@@ -62,10 +62,10 @@ public class AdminController extends BaseController{
             if(filtro.getIdRol() != 0){
                 usuarios = userService.listarUsuariosPorRol(filtro.getIdRol());
             } else {
-                usuarios = userService.listarUsuariosPorNombreYDni(filtro.getNombre(), filtro.getApellido(), filtro.getDni());
+                usuarios = userService.listarUsuariosPorNombreApellidoDni(filtro.getNombre(), filtro.getApellido(), filtro.getDni());
             }
         }
-        List<RolEntity> rols = rolRepository.findAll();
+        List<Rol> rols = rolService.listarRoles();
         model.addAttribute("usuarios", usuarios);
         model.addAttribute("filtro", filtro);
         model.addAttribute("rols", rols);
@@ -73,29 +73,29 @@ public class AdminController extends BaseController{
         return strTo;
     }
 
-//    @GetMapping("/borrar")
-//    public String borrarUsuario (@RequestParam("id") Integer id, HttpSession session) {
-//        String strTo = "redirect:/users/";
-//        if(!estaAutenticado(session)){
-//            strTo = "redirect:/";
-//        }
-//        UserEntity usuario = userRepository.findById(id).get();
-//        this.userRepository.delete(usuario);
-//        return strTo;
-//    }
-//
-//    @GetMapping("/editarUsuario")
-//    public String editarUsuario (@RequestParam("id") Integer id,Model model, HttpSession session) {
-//        String strTo = "editarUsuario";
-//        if(!estaAutenticado(session)){
-//            strTo = "redirect:/";
-//        } else {
-//            UserEntity usuario = userRepository.findById(id).get();
-//            model.addAttribute("usuario", usuario);
-//        }
-//        return strTo;
-//    }
-//
+    @GetMapping("/borrar")
+    public String borrarUsuario (@RequestParam("id") Integer id, HttpSession session) {
+        String strTo = "redirect:/users/";
+        if(!estaAutenticado(session)){
+            strTo = "redirect:/";
+        }
+        this.userService.borrarUsuario(id);
+
+        return strTo;
+    }
+
+    @GetMapping("/editarUsuario")
+    public String editarUsuario (@RequestParam("id") Integer id,Model model, HttpSession session) {
+        String strTo = "editarUsuario";
+        if(!estaAutenticado(session)){
+            strTo = "redirect:/";
+        } else {
+            User usuario = userService.BuscarPorId(id);
+            model.addAttribute("usuario", usuario);
+        }
+        return strTo;
+    }
+
 //    @GetMapping("/crearUsuario")
 //    public String crearUsuario (Model model, HttpSession session) {
 //        String strTo = "crearUsuario";

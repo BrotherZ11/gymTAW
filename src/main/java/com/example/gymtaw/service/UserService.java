@@ -31,4 +31,22 @@ public class UserService extends DTOService<User, UserEntity>{
         List<UserEntity> usuarios = this.userRepository.findUserEntitiesByIdRol(rol);
         return this.entidadesADTO(usuarios);
     }
+
+    public List<User> listarUsuariosPorNombreApellidoDni(String nombre, String apellido, String dni) {
+        List<UserEntity> usuarios = this.userRepository.findUserEntitiesByNameSurnameDni(nombre, apellido, dni);
+        return this.entidadesADTO(usuarios);
+    }
+
+    public User BuscarPorId (Integer id) {
+        UserEntity usuario = this.userRepository.findById(id).orElse(null);
+        if (usuario != null) {
+            return usuario.toDTO();
+        } else {
+            return null;
+        }
+    }
+
+    public void borrarUsuario (Integer id) {
+        this.userRepository.deleteById(id);
+    }
 }
