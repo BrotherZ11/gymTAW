@@ -1,3 +1,5 @@
+//Gonzalo Muñoz Rubio
+
 package com.example.gymtaw.controller;
 
 import com.example.gymtaw.dao.RolRepository;
@@ -19,7 +21,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/users")
-public class UserController extends BaseController{
+public class AdminController extends BaseController{
     @Autowired
     UserRepository userRepository;
     @Autowired

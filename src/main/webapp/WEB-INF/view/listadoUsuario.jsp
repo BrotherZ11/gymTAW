@@ -2,7 +2,7 @@
 <%@ page import="com.example.gymtaw.entity.UserEntity" %>
 <%@ page import="java.util.List" %><%--
   Created by IntelliJ IDEA.
-  User: gonla
+  User: Gonzalo Muñoz Rubio
   Date: 29/04/2024
   Time: 11:56
   To change this template use File | Settings | File Templates.

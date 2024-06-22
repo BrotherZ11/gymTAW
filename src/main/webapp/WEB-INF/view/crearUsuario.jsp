@@ -1,7 +1,7 @@
 <%@ page import="com.example.gymtaw.entity.UserEntity" %>
 <%@ page import="com.example.gymtaw.entity.UserEntity" %><%--
   Created by IntelliJ IDEA.
-  User: Usuario
+  User: Gonzalo Muñoz Rubio
   Date: 05/05/2024
   Time: 18:35
   To change this template use File | Settings | File Templates.
