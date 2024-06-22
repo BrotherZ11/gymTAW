@@ -22,6 +22,7 @@ public class HomeController extends BaseController {
 
     @GetMapping("/cliente")
     public String doHomeCliente (Model model, HttpSession session) {
+        if(!estaAutenticado(session)) return  "redirect:/";
         return "home_client";
     }
 

@@ -28,11 +28,9 @@ public class LoginController extends BaseController {
                 strTo = "redirect:/users/";
             } else if(rol.getType().equals("crosstraining") || rol.getType().equals("bodybuilding")){
                 strTo = "redirect:/home/trainer";
-            } /*else if(usuario.getPermiso() == ...){
-                strTo = "redirect:";
             } else {
-                strTo = "redirect:";
-            }*/           
+                strTo = "redirect:/home/cliente";
+            }
         } else {
             model.addAttribute("usuario", new Usuario());
         }
@@ -55,11 +53,9 @@ public class LoginController extends BaseController {
                 strTo = "redirect:/users/";
             } else if(rol.getType().equals("crosstraining")){
                 strTo = "redirect:/home/trainer";
-            } /*else if(usuario.getPermiso() == ...){
-                strTo = "redirect:";
             } else {
-                strTo = "redirect:";
-            }*/
+                strTo = "redirect:/home/cliente";
+            }
         }
         return strTo;
     }

@@ -5,10 +5,12 @@ package com.example.gymtaw.controller;
 import com.example.gymtaw.dao.RolRepository;
 import com.example.gymtaw.dao.UserHasTrainerRepository;
 import com.example.gymtaw.dao.UserRepository;
+import com.example.gymtaw.dto.User;
 import com.example.gymtaw.entity.RolEntity;
 import com.example.gymtaw.entity.UserEntity;
 import com.example.gymtaw.entity.UserHasTrainerEntity;
 import com.example.gymtaw.entity.UserHasTrainerEntityId;
+import com.example.gymtaw.service.UserService;
 import com.example.gymtaw.ui.Filtro;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +25,7 @@ import java.util.List;
 @RequestMapping("/users")
 public class AdminController extends BaseController{
     @Autowired
-    UserRepository userRepository;
+    protected UserService userService;
     @Autowired
     RolRepository rolRepository;
     @Autowired
@@ -35,7 +37,7 @@ public class AdminController extends BaseController{
         if(!estaAutenticado(session)){
             strTo = "redirect:/";
         } else {
-            List<UserEntity> usuarios = userRepository.findAll();
+            List<User> usuarios = userService.listarUsuarios();
             List<RolEntity> roles = rolRepository.findAll();
             model.addAttribute("usuarios", usuarios);
             model.addAttribute("filtro", new Filtro());

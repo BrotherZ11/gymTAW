@@ -6,6 +6,8 @@ import com.example.gymtaw.entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService {
 
@@ -18,5 +20,14 @@ public class UserService {
         } else {
             return null;
         }
+    }
+
+    public List<User> listarUsuarios() {
+        List<UserEntity> usuarios = this.userRepository.findAll();
+        List<User> usuariosDTO = new ArrayList<>();
+        for (UserEntity usuario : usuarios) {
+            usuariosDTO.add(usuario.toDTO());
+        }
+        return usuariosDTO;
     }
 }
