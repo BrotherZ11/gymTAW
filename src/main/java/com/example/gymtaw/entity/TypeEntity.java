@@ -1,5 +1,6 @@
 package com.example.gymtaw.entity;
 
+import com.example.gymtaw.dto.Type;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -39,4 +40,10 @@ public class TypeEntity {
     )
     private Set<SessionEntity> sessions = new LinkedHashSet<>();
 
+    public Type toDTO() {
+        Type type = new Type();
+        type.setId(id);
+        type.setName(name);
+        return type;
+    }
 }

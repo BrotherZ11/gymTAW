@@ -1,7 +1,12 @@
 package com.example.gymtaw.controller;
 
 import com.example.gymtaw.dao.*;
+import com.example.gymtaw.dto.Exercise;
+import com.example.gymtaw.dto.User;
+import com.example.gymtaw.dto.Valoracion;
 import com.example.gymtaw.entity.*;
+import com.example.gymtaw.service.UserService;
+import com.example.gymtaw.service.ValoracionService;
 import com.example.gymtaw.ui.FiltroEjercicio;
 import com.example.gymtaw.ui.FiltroValoracion;
 import jakarta.servlet.http.HttpSession;
@@ -34,13 +39,16 @@ public class ClienteController extends BaseController{
     ExerciseRepository exerciseRepository;
 
     @Autowired
+    Exercise exerciseRepository;
+
+    @Autowired
     ClientExerciseRepository clientExerciseRepository;
 
     @Autowired
-    UserRepository userRepository;
+    protected UserService userService;
 
     @Autowired
-    ValoracionRepository valoracionRepository;
+    ValoracionService valoracionService;
 
     @GetMapping("/entrenamientos")
     public String doListar(Model model, HttpSession session) {
@@ -48,7 +56,8 @@ public class ClienteController extends BaseController{
         if(!estaAutenticado(session)){
             strTo = "redirect:/";
         } else{
-            UserEntity usuario = (UserEntity) session.getAttribute("usuario");
+            User usuario = (User) session.getAttribute("usuario");
+
 
             List<RoutineEntity> rutinas = routineRepository.getRoutinesByClient(usuario.getId());
             model.addAttribute("rutinas", rutinas);
@@ -64,7 +73,7 @@ public class ClienteController extends BaseController{
         if(!estaAutenticado(session)){
             strTo = "redirect:/";
         } else{
-            UserEntity usuario = (UserEntity) session.getAttribute("usuario");
+            User usuario = (User) session.getAttribute("usuario");
 
             List<SessionEntity> sesiones = sessionRepository.getSessionsByIdRoutine(idRutina);
             model.addAttribute("sesiones", sesiones);
@@ -111,7 +120,7 @@ public class ClienteController extends BaseController{
             strTo="redirect:/home/cliente/valorar";
         }
         ExerciseEntity exercise = exerciseRepository.findById(idEjercicio).orElse(new ExerciseEntity());
-        UserEntity usuario = (UserEntity) session.getAttribute("usuario");
+        User usuario = (User) session.getAttribute("usuario");
         // Busca o crea la valoracion para el ejercicio
         List<ValoracionEntity> val = exercise.getValoracions();
         boolean valoracionExists = false;
@@ -139,7 +148,7 @@ public class ClienteController extends BaseController{
             newValoracion.setUser(userRepository.findById(usuario.getId()).orElse(new UserEntity()));
             newValoracion.setExercise(exercise);
             newValoracion.setDone((byte) 1);
-            valoracionRepository.save(newValoracion);
+            valoracionService.guardarValoracion(usuario, idEjercicio, );
         }
 
         return strTo;
@@ -200,10 +209,11 @@ public class ClienteController extends BaseController{
         if(idSesion==-1){
             strTo="redirect:/home/cliente/valorar";
         }
-        UserEntity usuario = (UserEntity) session.getAttribute("usuario");
-
-        ExerciseEntity exercise = exerciseRepository.findById(exerciseId)
+        User usuario = (User) session.getAttribute("usuario");
+        usuario = userService.listarByUserId(usuario.getId());
+        ExerciseEntity exercisea = exerciseRepository.findById(exerciseId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid exercise Id:" + exerciseId));
+        Exercise exercise =
 
         // Find or create the valoracion entity for this exercise
         List<ValoracionEntity> val = exercise.getValoracions();
@@ -220,18 +230,7 @@ public class ClienteController extends BaseController{
         }
 
         if (!valoracionExists) {
-            ValoracionEntity nuevaValoracion = new ValoracionEntity();
-            ValoracionEntityId valoracionEntityId = new ValoracionEntityId();
-            valoracionEntityId.setUserId(usuario.getId());
-            valoracionEntityId.setExerciseId(exerciseId);
-
-            nuevaValoracion.setId(valoracionEntityId);
-            nuevaValoracion.setUser(usuario);
-            nuevaValoracion.setExercise(exercise);
-            nuevaValoracion.setStars(stars);
-            nuevaValoracion.setDone((byte) 1); // Marking the rating as done
-
-            valoracionRepository.save(nuevaValoracion);
+            valoracionService.guardarValoracionNoExiste(usuario, exerciseId, stars, exercise);
         }
 
 
@@ -245,7 +244,7 @@ public class ClienteController extends BaseController{
         if(!estaAutenticado(session)){
             strTo = "redirect:/";
         } else{
-            UserEntity usuario = (UserEntity) session.getAttribute("usuario");
+            User usuario = (User) session.getAttribute("usuario");
             List<RoutineEntity> rutinas = routineRepository.getRoutinesByClient(usuario.getId());
             model.addAttribute("rutinas", rutinas);
 
@@ -276,7 +275,7 @@ public class ClienteController extends BaseController{
         if(!estaAutenticado(session)){
             strTo = "redirect:/";
         } else{
-            UserEntity usuario = (UserEntity) session.getAttribute("usuario");
+            User usuario = (User) session.getAttribute("usuario");
             List<Integer> exerciseIds = clientExerciseRepository.findExerciseIdByClientId(usuario.getId());
             List<ExerciseEntity> ejercicios = new ArrayList<>();
 

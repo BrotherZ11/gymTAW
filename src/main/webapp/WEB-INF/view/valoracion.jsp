@@ -1,12 +1,13 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.example.gymtaw.entity.*" %>
+<%@ page import="com.example.gymtaw.dto.User" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     List<ExerciseEntity> ejercicios = (List<ExerciseEntity>) request.getAttribute("ejercicios");
     Integer idSesion = -1;
     Integer idRutina = -1;
-    UserEntity usuario= (UserEntity) session.getAttribute("usuario");
+    User usuario= (User) session.getAttribute("usuario");
 %>
 <html>
 <head>

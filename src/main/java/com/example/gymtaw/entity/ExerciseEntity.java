@@ -1,19 +1,19 @@
 package com.example.gymtaw.entity;
 
+import com.example.gymtaw.dto.DTO;
+import com.example.gymtaw.dto.Exercise;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "exercise")
-public class ExerciseEntity {
+public class ExerciseEntity implements DTO<Exercise> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -41,4 +41,26 @@ public class ExerciseEntity {
     @OneToMany(mappedBy = "exercise")
     private List<ValoracionEntity> valoracions = new ArrayList<>();
 
+    public Exercise toDTO() {
+        Exercise exercise = new Exercise();
+        exercise.setId(id);
+        exercise.setName(name);
+        exercise.setDescription(description);
+        exercise.setVideo(video);
+        exercise.setTypeIdtype(this.typeIdtype.toDTO());
+
+        List<ClientExerciseEntityId> clientExercises = new ArrayList<>();
+        this.clientExercises.forEach(clientExerciseEntity -> clientExercises.add(clientExerciseEntity.getId()));
+        exercise.setClientExercises(clientExercises);
+
+        List<ExerciseHasSessionEntityId> exerciseHasSessions = new ArrayList<>();
+        this.exerciseHasSessions.forEach(exerciseHasSessionEntity -> {exerciseHasSessions.add(exerciseHasSessionEntity.getId());});
+        exercise.setExerciseHasSessions(exerciseHasSessions);
+
+        List<ValoracionEntityId> valoracions = new ArrayList<>();
+        this.valoracions.forEach(ValoracionEntity -> {valoracions.add(ValoracionEntity.getId());});
+        exercise.setValoracions(valoracions);
+
+        return exercise;
+    }
 }
