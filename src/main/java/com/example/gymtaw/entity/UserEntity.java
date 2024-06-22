@@ -59,17 +59,17 @@ public class UserEntity {
 
     @ManyToMany
     @JoinTable(
-            name = "user_client_trainer",
-            joinColumns = @JoinColumn(name = "client_id"),
+            name = "user_has_trainer",
+            joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "trainer_id")
     )
     private Set<UserEntity> trainers = new LinkedHashSet<>();
 
     @ManyToMany
     @JoinTable(
-            name = "user_client_trainer",
+            name = "user_has_trainer",
             joinColumns = @JoinColumn(name = "trainer_id"),
-            inverseJoinColumns = @JoinColumn(name = "client_id")
+            inverseJoinColumns = @JoinColumn(name = "user_id")
     )
     private Set<UserEntity> clients = new LinkedHashSet<>();
 
