@@ -1,6 +1,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ page import="com.example.gymtaw.entity.UserEntity" %>
-<%@ page import="java.util.List" %><%--
+<%@ page import="java.util.List" %>
+<%@ page import="com.example.gymtaw.dto.User" %><%--
   Created by IntelliJ IDEA.
   User: Gonzalo Muñoz Rubio
   Date: 29/04/2024
@@ -10,7 +10,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
-    List<UserEntity> listaUsuarios =(List<UserEntity>)request.getAttribute("usuarios");
+    List<User> listaUsuarios =(List<User>)request.getAttribute("usuarios");
 %>
 <html>
 <head>
@@ -45,7 +45,7 @@
         </tr>
 
         <%
-            for (UserEntity usuario: listaUsuarios) {
+            for (User usuario: listaUsuarios) {
         %>
         <tr>
             <td><%= usuario.getDni() %></td>
@@ -53,16 +53,16 @@
             <td><%= usuario.getSurname() %></td>
             <td><a href="/users/borrar?id=<%= usuario.getId() %>">Borrar</a> </td>
             <td><a href="/users/editarUsuario?id=<%= usuario.getId() %>">Editar</a> </td>
-            <%if(usuario.getIdRol().getId() == 3){%>
+            <%if(usuario.getRol().getId() == 3){%>
                 <td>Administrador</td>
-            <%}else if(usuario.getIdRol().getId() == 4){%>
+            <%}else if(usuario.getRol().getId() == 4){%>
                 <td><a href="/users/asignar?id=<%=usuario.getId()%>">Asignar entrenadores</a></td>
             <%}else{%>
                 <td><a href="/users/asignar?id=<%=usuario.getId()%>">Asignar clientes</a></td>
             <%}%>
-            <%if(usuario.getIdRol().getId() == 3){%>
+            <%if(usuario.getRol().getId() == 3){%>
             <td>Administrador</td>
-            <%}else if(usuario.getIdRol().getId() == 4){%>
+            <%}else if(usuario.getRol().getId() == 4){%>
             <td><a href="/users/desasignar?id=<%=usuario.getId()%>">Desasignar entrenadores</a></td>
             <%}else{%>
             <td><a href="/users/desasignar?id=<%=usuario.getId()%>">Desasignar clientes</a></td>
