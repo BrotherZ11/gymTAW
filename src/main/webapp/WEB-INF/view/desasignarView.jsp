@@ -15,7 +15,7 @@
     <title>Desasignación</title>
 </head>
 <body>
-<h2><%if(usuario.getIdRolEntity().getId() == 4){%>
+<h2><%if(usuario.getIdRol().getId() == 4){%>
     Desasignar entrenadores a <%=usuario.getName() + " " + usuario.getSurname()%>
     <%} else {%>
     Desasignar clientes a <%=usuario.getName() + " " + usuario.getSurname()%>
@@ -25,7 +25,7 @@
     <input type="hidden" name="idUsuario" value="<%=usuario.getId()%>"/>
     <table border="1">
         <tr>
-            <td><%if(usuario.getIdRolEntity().getId() == 4){%>
+            <td><%if(usuario.getIdRol().getId() == 4){%>
                 Entrenadores asignados:
                 <%} else {%>
                 Clientes asignados:

@@ -73,7 +73,8 @@ public class UserController extends BaseController{
         if(!estaAutenticado(session)){
             strTo = "redirect:/";
         }
-        userRepository.deleteById(id);
+        UserEntity usuario = userRepository.findById(id).get();
+        this.userRepository.delete(usuario);
         return strTo;
     }
 
