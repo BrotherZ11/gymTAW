@@ -59,18 +59,15 @@ public class UserService extends DTOService<User, UserEntity>{
         this.userRepository.deleteById(id);
     }
 
-<<<<<<< Updated upstream
-=======
+
     public void guardarEdicionUsuario(User usuario) {
         UserEntity usuarioEntity = this.userRepository.findById(usuario.getId()).orElse(new UserEntity());
         usuarioEntity.setName(usuario.getName());
         usuarioEntity.setSurname(usuario.getSurname());
         usuarioEntity.setDni(usuario.getDni());
-        usuarioEntity.setEmail(usuario.getEmail());
         usuarioEntity.setPhone(usuario.getPhone());
         usuarioEntity.setAge(usuario.getAge());
         usuarioEntity.setGender(usuario.getGender());
         this.userRepository.save(usuarioEntity);
     }
->>>>>>> Stashed changes
 }

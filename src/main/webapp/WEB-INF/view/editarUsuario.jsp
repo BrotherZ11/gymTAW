@@ -17,34 +17,34 @@
 <body>
 <h1>Información del usuario</h1>
 <form:form method="post" action="/users/guardarEdicion" modelAttribute="usuario">
-    <form:input type="hidden" name="id" path="${id}"/>
+    <form:hidden path="id"/>
     <table border="0">
         <tr>
             <td>Nombre:</td>
-            <td><form:input type="text" name="nombre" size="100" maxlength="100"  path="${name}"/> </td>
+            <td><form:input type="text" path="name" size="100" maxlength="100"/></td>
         </tr>
         <tr>
             <td>Apellido:</td>
-            <td><form:input type="text" name="apellido" size="4"  maxlength="100" path="${surname}" /></td>
+            <td><form:input type="text" path="surname" size="100" maxlength="100"/></td>
         </tr>
         <tr>
-            <td> DNI: </td>
-            <td><form:input type ="text" name ="dni" size="4" maxlength="9" path="${dni}"/></td>
+            <td>DNI:</td>
+            <td><form:input type="text" path="dni" size="9" maxlength="9"/></td>
         </tr>
         <tr>
-            <td> Teléfono: </td>
-            <td><form:input type ="text" name ="telefono" size="4" maxlength="12" path="${phone}"/></td>
+            <td>Teléfono:</td>
+            <td><form:input type="text" path="phone" size="12" maxlength="12"/></td>
         </tr>
         <tr>
-            <td> Edad: </td>
-            <td><form:input type ="number" name ="edad" size="4" maxlength="3" path="${age}"/></td>
+            <td>Edad:</td>
+            <td><form:input type="number" path="age" size="3" maxlength="3"/></td>
         </tr>
         <tr>
-            <td> Género: </td>
-            <td><form:input type ="text" name ="genero" size="4" maxlength="100" path="${gender}"/></td>
+            <td>Género:</td>
+            <td><form:input type="text" path="gender" size="100" maxlength="100"/></td>
         </tr>
         <tr>
-            <td colspan="2"> <button>Enviar</button></td>
+            <td colspan="2"><button type="submit">Enviar</button></td>
         </tr>
     </table>
 </form:form>
