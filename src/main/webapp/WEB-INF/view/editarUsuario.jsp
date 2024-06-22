@@ -1,5 +1,5 @@
-<%@ page import="com.example.gymtaw.entity.UserEntity" %>
-<%@ page import="com.example.gymtaw.entity.UserEntity" %><%--
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ page import="com.example.gymtaw.dto.User" %><%--
   Created by IntelliJ IDEA.
   User: Gonzalo Muñoz Rubio
   Date: 05/05/2024
@@ -8,11 +8,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    UserEntity usuario = (UserEntity) request.getAttribute("usuario");
-    String nombre = usuario.getName();
-    String apellido = usuario.getSurname();
-    String dni = usuario.getDni();
-
+    User usuario = (User) request.getAttribute("usuario");
 %>
 <html>
 <head>
@@ -20,16 +16,16 @@
 </head>
 <body>
 <h1>Información del usuario</h1>
-<form method="post" action="/users/guardarEdicion">
-    <input type="hidden" name="id" value="<%= usuario.getId() %>">
+<form:form method="post" action="/users/guardarEdicion" modelAttribute="usuario">
+    <form:input type="hidden" name="id" path="${id}"/>
     <table border="0">
         <tr>
             <td>Nombre:</td>
-            <td><input type="text" name="nombre" size="100" maxlength="100" value="<%= nombre %>" /> </td>
+            <td><form:input type="text" name="nombre" size="100" maxlength="100"  path="${name}"/> </td>
         </tr>
         <tr>
             <td>Apellido:</td>
-            <td><input type="text" name="apellido" size="4"  maxlength="100" value="<%= apellido %>" /></td>
+            <td><form:input type="text" name="apellido" size="4"  maxlength="100" path="${surname}" /></td>
         </tr>
         <tr>
             <td> DNI: </td>
@@ -51,6 +47,6 @@
             <td colspan="2"> <button>Enviar</button></td>
         </tr>
     </table>
-</form>
+</form:form>
 </body>
 </html>
