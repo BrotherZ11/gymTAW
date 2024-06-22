@@ -1,17 +1,18 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="java.util.List" %>
-<%@ page import="com.example.gymtaw.entity.RoutineEntity" %>
-<%@ page import="com.example.gymtaw.entity.TypeEntity" %>
-<%@ page import="com.example.gymtaw.entity.UserEntity" %>
+<%@ page import="com.example.gymtaw.dto.Routine" %>
+<%@ page import="com.example.gymtaw.dto.User" %>
+<%@ page import="com.example.gymtaw.dto.Type" %>
+
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    List<RoutineEntity> listaRutinasCliente = (List<RoutineEntity>) request.getAttribute("listaRutinasCliente");
-    List<RoutineEntity> listaRutinasSinAsignar = (List<RoutineEntity>) request.getAttribute("listaRutinasSinAsignar");
-    UserEntity usuario = (UserEntity) session.getAttribute("usuario");
-    UserEntity cliente = (UserEntity) session.getAttribute("cliente");
+    List<Routine> listaRutinasCliente = (List<Routine>) request.getAttribute("listaRutinasCliente");
+    List<Routine> listaRutinasSinAsignar = (List<Routine>) request.getAttribute("listaRutinasSinAsignar");
+    User usuario = (User) session.getAttribute("usuario");
+    User cliente = (User) session.getAttribute("cliente");
     Integer idCliente = (Integer) request.getAttribute("idCliente");
-    List<TypeEntity> tipos = (List<TypeEntity>) request.getAttribute("tipos");
+    List<Type> tipos = (List<Type>) request.getAttribute("tipos");
     String filtro = request.getParameter("filtro");
     if (filtro == null) filtro = "";
 %>
@@ -28,11 +29,11 @@
 <form:form method="post" action="/home/trainer/routine_client_filtrar" modelAttribute="filtro">
     Nombre de la rutina: <form:input path="nombre" />
     <%
-        if ("crosstraining".equals(usuario.getIdRol().getType())) {
+        if ("crosstraining".equals(usuario.getRol().getType())) {
     %>
     Tipos de la rutina:
     <%
-        for(TypeEntity tipo : tipos){
+        for(Type tipo : tipos){
     %>
     <form:checkbox value="<%=tipo%>" label="<%=tipo.getName()%>" path="tipos"/>
     <%
@@ -49,7 +50,7 @@
     <label>Selecciona una rutina: </label>
     <select id="rutinas" name="idRutina">
         <%
-            for(RoutineEntity rutina: listaRutinasSinAsignar){
+            for(Routine rutina: listaRutinasSinAsignar){
         %>
         <option value=<%=rutina.getId()%>><%=rutina.getName()%></option>
         <%
@@ -84,7 +85,7 @@
     </tr>
     <%
     }else{
-        for(RoutineEntity r : listaRutinasCliente){
+        for(Routine r : listaRutinasCliente){
     %>
     <tr>
         <td><%=r.getName()%></td>

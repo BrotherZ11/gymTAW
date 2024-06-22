@@ -3,6 +3,7 @@ package com.example.gymtaw.controller;
 import com.example.gymtaw.dto.*;
 import com.example.gymtaw.entity.ValoracionEntity;
 import com.example.gymtaw.service.*;
+import com.example.gymtaw.ui.FiltroRutina;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -79,7 +80,6 @@ public class ClientController extends BaseController{
         return strTo;
     }
 
-    /*
     //Redirecciones de la pestaña de rutinas
     @GetMapping("/routine_client")
     public String doRoutineClient (@RequestParam("idCliente") Integer idCliente,
@@ -90,14 +90,14 @@ public class ClientController extends BaseController{
             strTo = "redirect:/";
         } else {
 
-            UserEntity usuario = (UserEntity) session.getAttribute("usuario");
+            User usuario = (User) session.getAttribute("usuario");
 
-            UserEntity cliente = userRepository.findById(idCliente).orElse(null);
+            User cliente = userService.BuscarPorId(idCliente);
             session.setAttribute("cliente", cliente);
 
-            List<RoutineEntity> rutinasCliente = routineRepository.getRoutinesByIdEntrenadorAndIdCliente(usuario.getId(), cliente.getId());
-            List<RoutineEntity> rutinasSinAsignar = routineRepository.getRoutinesByIdEntrenadorNoCliente(usuario.getId());
-            List<TypeEntity> tipos = typeRepository.findAll();
+            List<Routine> rutinasCliente = routineService.listarRutinasPorEntrenadorYCliente(usuario.getId(), cliente.getId());
+            List<Routine> rutinasSinAsignar = routineService.listarRutinasSinAsignarPorEntrenador(usuario.getId());
+            List<Type> tipos = typeService.cogerTipos();
 
             model.addAttribute("listaRutinasCliente", rutinasCliente);
             model.addAttribute("listaRutinasSinAsignar", rutinasSinAsignar);
@@ -107,6 +107,7 @@ public class ClientController extends BaseController{
         }
         return strTo;
     }
+    /*
 
     @PostMapping("/routine_client_filtrar")
     public String doRoutineClientFiltrar (@ModelAttribute("filtro") FiltroRutina filtro,
