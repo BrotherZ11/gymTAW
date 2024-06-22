@@ -19,7 +19,17 @@ public class RoutineHasSessionService extends DTOService<RoutineHasSession, Rout
         return this.entidadesADTO(sesiones);
     }
 
-/*    public void borrarRutina(List<RoutineHasSession> sesionesABorrar) {
-        routineHasSessionRepository.deleteAll(sesionesABorrar);
-    }*/
+    public void borrarSesionesPorRutina(Integer idRutina){
+        List<RoutineHasSessionEntity> sesiones = this.routineHasSessionRepository.getSessionsRoutineByIdRoutine(idRutina);
+        routineHasSessionRepository.deleteAll(sesiones);
+    }
+
+    public void actualizarSesiones(Integer idRutina, Set<Integer> sesiones) {
+        routineHasSessionRepository.deleteByRoutineId(idRutina);
+        sesiones.forEach(sessionId -> {
+            RoutineHasSessionEntity entity = new RoutineHasSessionEntity(new RoutineHasSessionEntityId(idRutina, sessionId));
+            entity.setSession(sessionRepository.findById(sessionId).orElse(null));
+            routineHasSessionRepository.save(entity);
+        });
+    }
 }

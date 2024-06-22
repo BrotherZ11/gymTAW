@@ -2,17 +2,12 @@ package com.example.gymtaw.service;
 
 import com.example.gymtaw.dao.*;
 import com.example.gymtaw.dto.Routine;
-import com.example.gymtaw.dto.Session;
-import com.example.gymtaw.dto.User;
 import com.example.gymtaw.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class RoutineService extends DTOService<Routine, RoutineEntity>{
@@ -71,6 +66,7 @@ public class RoutineService extends DTOService<Routine, RoutineEntity>{
         routineRepository.deleteById(id);
     }
 
+
     public void guardarRutina(Routine rutina, Integer idEntrenador) {
         UserEntity trainer = userRepository.findById(idEntrenador).orElse(null);
         RoutineEntity routine = new RoutineEntity();
@@ -80,6 +76,11 @@ public class RoutineService extends DTOService<Routine, RoutineEntity>{
         routine.setDate(rutina.getDate());
         routine.setIdtrainer(trainer);
         routineRepository.save(routine);
+    }
+
+    public void actualizarSesionesRutina(Integer idRutina, Set<Integer> sesiones, Set<Integer> tipos) {
+        routineSessionService.actualizarSesiones(idRutina, sesiones);
+        routineTypeService.actualizarTipos(idRutina, tipos);
     }
 
 

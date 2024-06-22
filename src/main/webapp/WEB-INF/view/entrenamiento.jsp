@@ -2,11 +2,12 @@
 <%@ page import="com.example.gymtaw.entity.SessionEntity" %>
 <%@ page import="com.example.gymtaw.entity.RoutineHasSessionEntity" %>
 <%@ page import="com.example.gymtaw.dto.RoutineHasSession" %>
+<%@ page import="com.example.gymtaw.dto.Session" %>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     List<RoutineHasSession> listaSesionRutina = (List<RoutineHasSession>) request.getAttribute("listaSesionRutina");
-    List<SessionEntity> listaCompleta = (List<SessionEntity>) request.getAttribute("listaCompleta");
+    List<Session> listaCompleta = (List<Session>) request.getAttribute("listaCompleta");
 
 %>
 <html>
@@ -43,7 +44,7 @@
                 <select id="sesiones<%=i%>" name="idSesion<%=i%>">
                     <option value="-1">Sin sesion</option>
                     <%
-                        for(SessionEntity sesion: listaCompleta){
+                        for(Session sesion: listaCompleta){
                             String isSelected = "";
                             if (sesionRutina.getSession().getId().equals(sesion.getId())) {
                                 isSelected = "selected";
@@ -65,7 +66,7 @@
                 <select id="sesiones<%=i%>" name="idSesion<%=i%>">
                     <option value="-1" selected>Sin sesion</option>
                     <%
-                        for(SessionEntity sesion: listaCompleta){
+                        for(Session sesion: listaCompleta){
                     %>
                     <option value="<%=sesion.getId()%>"><%=sesion.getName()%></option>
                     <%

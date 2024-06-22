@@ -26,4 +26,9 @@ public class SessionService extends DTOService<Session, SessionEntity>{
         List<SessionEntity> sesiones = sessionRepository.findSessionBySessionId(idSesion);
         return this.entidadesADTO(sesiones);
     }
+
+    public List<Session> buscarSesionesByEntrenador(Integer idEntrenador) {
+        List<SessionEntity> sesiones = sessionRepository.getSessionsByIdEntrenador(idEntrenador);
+        return this.entidadesADTO(sesiones);
+    }
 }
