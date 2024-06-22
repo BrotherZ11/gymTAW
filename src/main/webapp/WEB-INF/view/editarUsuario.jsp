@@ -29,19 +29,19 @@
         </tr>
         <tr>
             <td> DNI: </td>
-            <td><input type ="text" name ="dni" size="4" maxlength="9" value="<%= dni%>"></td>
+            <td><form:input type ="text" name ="dni" size="4" maxlength="9" path="${dni}"/></td>
         </tr>
         <tr>
             <td> Teléfono: </td>
-            <td><input type ="text" name ="telefono" size="4" maxlength=12 value="<%= usuario.getPhone()%>"></td>
+            <td><form:input type ="text" name ="telefono" size="4" maxlength="12" path="${phone}"/></td>
         </tr>
         <tr>
             <td> Edad: </td>
-            <td><input type ="number" name ="edad" size="4" maxlength="3" value="<%= usuario.getAge()%>"></td>
+            <td><form:input type ="number" name ="edad" size="4" maxlength="3" path="${age}"/></td>
         </tr>
         <tr>
             <td> Género: </td>
-            <td><input type ="text" name ="genero" size="4" maxlength="100" value="<%= usuario.getGender()%>"></td>
+            <td><form:input type ="text" name ="genero" size="4" maxlength="100" path="${gender}"/></td>
         </tr>
         <tr>
             <td colspan="2"> <button>Enviar</button></td>

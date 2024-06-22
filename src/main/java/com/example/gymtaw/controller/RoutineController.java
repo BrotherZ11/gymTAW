@@ -47,8 +47,13 @@ public class RoutineController extends BaseController{
     public String doListar (Model model, HttpSession session) {
         if(!estaAutenticado(session)) return  "redirect:/";
         else{
+<<<<<<< Updated upstream
             User usuario = (User) session.getAttribute("usuario");
             List<Routine> rutinas = routineService.listarRutinasEntrenador(usuario.getId());
+=======
+            UserEntity usuario = (UserEntity) session.getAttribute("usuario");
+            List<Routine> rutinas = routineService.listarRutinas(usuario.getId());
+>>>>>>> Stashed changes
             User user = userService.BuscarPorId(usuario.getId());
             String rol = user.getRol().getType();
             List<Type> tipos = typeService.cogerTipos();
@@ -68,7 +73,11 @@ public class RoutineController extends BaseController{
             User usuario = (User) session.getAttribute("usuario");
 
             List<Routine> rutinas = null;
+<<<<<<< Updated upstream
             List<Type> tipos = typeService.cogerTipos();
+=======
+            List<TypeEntity> tipos = typeRepository.findAll();
+>>>>>>> Stashed changes
             User entrenador = userService.BuscarPorId(usuario.getId());
             String rol = entrenador.getRol().getType();
 

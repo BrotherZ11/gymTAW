@@ -108,29 +108,16 @@ public class AdminController extends BaseController{
 //        return strTo;
 //    }
 //
-//    @PostMapping("/guardarEdicion")
-//    public String doGuardarEdicion (@RequestParam("id") Integer id,
-//                             @RequestParam("nombre") String nombre,
-//                             @RequestParam("apellido") String apellido,
-//                             @RequestParam("edad") Integer edad,
-//                             @RequestParam("telefono") String telefono,
-//                             @RequestParam("genero") String genero,
-//                             HttpSession session) {
-//
-//        String strTo = "redirect:/users/";
-//        if (!estaAutenticado(session)) {
-//            strTo = "redirect:/";
-//        } else {
-//            UserEntity usuario = this.userRepository.findById(id).orElse(new UserEntity());
-//            usuario.setName(nombre);
-//            usuario.setSurname(apellido);
-//            usuario.setAge(edad);
-//            usuario.setPhone(telefono);
-//            usuario.setGender(genero);
-//            this.userRepository.save(usuario);
-//        }
-//        return strTo;
-//    }
+    @PostMapping("/guardarEdicion")
+    public String doGuardarEdicion (@ModelAttribute("usuario") User usuario, HttpSession session) {
+        String strTo = "redirect:/users/";
+        if (!estaAutenticado(session)) {
+            strTo = "redirect:/";
+        } else {
+            this.userService.guardarEdicionUsuario(usuario);
+        }
+        return strTo;
+    }
 //
 //    @PostMapping("/guardarCreacion")
 //    public String doGuardarCreacion (@RequestParam("id") Integer id,
