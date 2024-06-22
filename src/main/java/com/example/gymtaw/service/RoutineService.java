@@ -38,9 +38,14 @@ public class RoutineService extends DTOService<Routine, RoutineEntity>{
     @Autowired
     private TypeRepository typeRepository;
 
-    public List<Routine> listarRutinas(Integer trainerId) {
+    public List<Routine> listarRutinasEntrenador(Integer trainerId) {
         List<RoutineEntity> routines = routineRepository.getRoutinesbyEntrenador(trainerId);
         return this.entidadesADTO(routines);
+    }
+
+    public List<Routine> listarRutinasCliente(Integer clienteId) {
+        List<RoutineEntity> rutinas = routineRepository.getRoutinesByClient(clienteId);
+        return this.entidadesADTO(rutinas);
     }
 
     public List<Routine> listarRutinas(String nombre, Integer id) {

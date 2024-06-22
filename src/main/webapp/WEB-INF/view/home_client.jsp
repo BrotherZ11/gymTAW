@@ -11,7 +11,7 @@
 <a href="/salir">Cerrar sesion</a> <!-- Corrected link to logout -->
 <div>
     <a href="/home/cliente/entrenamientos">Entrenamientos</a>
-    <a href="/home/cliente/valorar?idCliente=<%=idCliente%>">Valoraciones</a> <!-- Corrected link to routines -->
+    <a href="/home/cliente/valorar">Valoraciones</a> <!-- Corrected link to routines -->
 </div>
 </body>
 </html>

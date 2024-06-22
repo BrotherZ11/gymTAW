@@ -1,5 +1,6 @@
 package com.example.gymtaw.entity;
 
+import com.example.gymtaw.dto.RoutineHasSession;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,4 +27,11 @@ public class ExerciseHasSessionEntity {
     @JoinColumn(name = "session_id", nullable = false)
     private SessionEntity session;
 
+    public ExerciseHasSessionEntity toDTO() {
+        ExerciseHasSessionEntity exerciseHasSessionEntity = new ExerciseHasSessionEntity();
+        exerciseHasSessionEntity.setId(this.id.toDTO());
+        exerciseHasSessionEntity.setExercise(this.exercise);
+        exerciseHasSessionEntity.setSession(this.session);
+        return exerciseHasSessionEntity;
+    }
 }

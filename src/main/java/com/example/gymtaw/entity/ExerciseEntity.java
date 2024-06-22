@@ -1,5 +1,6 @@
 package com.example.gymtaw.entity;
 
+import com.example.gymtaw.dto.Exercise;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -41,4 +42,20 @@ public class ExerciseEntity {
     @OneToMany(mappedBy = "exercise")
     private List<ValoracionEntity> valoracions = new ArrayList<>();
 
+    public Exercise toDTO() {
+        Exercise exercise = new Exercise();
+        exercise.setId(id);
+        exercise.setName(name);
+        exercise.setDescription(description);
+        exercise.setVideo(video);
+
+        List<Integer> typeIdtype = new ArrayList<>();
+        for(TypeEntity type : this.typeIdtype){
+            typeIdtype.add(type.getId());
+        }
+        exercise.setTypeIdtype(typeIdtype);
+
+
+        return exercise;
+    }
 }

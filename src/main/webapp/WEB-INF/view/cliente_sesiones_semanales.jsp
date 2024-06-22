@@ -1,13 +1,12 @@
 <%@ page import="java.util.List" %>
-<%@ page import="com.example.gymtaw.entity.SessionEntity" %>
-<%@ page import="com.example.gymtaw.entity.RoutineHasSessionEntity" %>
-<%@ page import="com.example.gymtaw.entity.ExerciseEntity" %>
+<%@ page import="com.example.gymtaw.dto.Session" %>
+<%@ page import="com.example.gymtaw.dto.RoutineHasSession" %>
 
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    List<SessionEntity> sesiones = (List<SessionEntity>) request.getAttribute("sesiones");
-    List<RoutineHasSessionEntity> sesionRutina = (List<RoutineHasSessionEntity>) request.getAttribute("sesionRutina");
+    List<Session> sesiones = (List<Session>) request.getAttribute("sesiones");
+    List<RoutineHasSession> sesionRutina = (List<RoutineHasSession>) request.getAttribute("sesionRutina");
     Integer idCliente= (Integer) request.getAttribute("idCliente");
     Integer idRutina= (Integer) request.getAttribute("idRutina");
 %>
@@ -37,7 +36,7 @@
             for(int i = 1; i <= 7; i++){
                 boolean found = false;
                 for(int j = 0; j < sesiones.size(); j++){
-                    if(sesionRutina.get(j).getDay() == i){
+                    if(sesionRutina.get(j).getId().getDay() == i){
                         found = true;
         %>
         <td><%= sesiones.get(j).getName() %></td>
@@ -60,7 +59,7 @@
             for(int i = 1; i <= 7; i++){
                 boolean found = false;
                 for(int j = 0; j < sesiones.size(); j++){
-                    if(sesionRutina.get(j).getDay() == i){
+                    if(sesionRutina.get(j).getId().getDay() == i){
                         found = true;
         %>
         <td><a href="/home/cliente/ejercicio?idSesion=<%= sesiones.get(j).getId() %>&idRutina=<%=idRutina%>&idCliente=<%=idCliente%>">Ver</a></td>

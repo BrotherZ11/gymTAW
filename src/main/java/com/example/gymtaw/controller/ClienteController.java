@@ -1,7 +1,11 @@
 package com.example.gymtaw.controller;
 
 import com.example.gymtaw.dao.*;
+import com.example.gymtaw.dto.*;
 import com.example.gymtaw.entity.*;
+import com.example.gymtaw.service.RoutineHasSessionService;
+import com.example.gymtaw.service.RoutineService;
+import com.example.gymtaw.service.SessionService;
 import com.example.gymtaw.ui.FiltroEjercicio;
 import com.example.gymtaw.ui.FiltroValoracion;
 import jakarta.servlet.http.HttpSession;
@@ -22,10 +26,19 @@ public class ClienteController extends BaseController{
     RoutineRepository routineRepository;
 
     @Autowired
+    RoutineService routineService;
+
+    @Autowired
     RoutineHasSessionRepository routineHasSessionRepository;
 
     @Autowired
+    RoutineHasSessionService routineHasSessionService;
+
+    @Autowired
     SessionRepository sessionRepository;
+
+    @Autowired
+    SessionService sessionService;
 
     @Autowired
     ExerciseHasSessionRepository exerciseHasSessionRepository;
@@ -48,9 +61,9 @@ public class ClienteController extends BaseController{
         if(!estaAutenticado(session)){
             strTo = "redirect:/";
         } else{
-            UserEntity usuario = (UserEntity) session.getAttribute("usuario");
+            User usuario = (User) session.getAttribute("usuario");
 
-            List<RoutineEntity> rutinas = routineRepository.getRoutinesByClient(usuario.getId());
+            List<Routine> rutinas = routineService.listarRutinasCliente(usuario.getId());
             model.addAttribute("rutinas", rutinas);
 
         }
@@ -64,12 +77,14 @@ public class ClienteController extends BaseController{
         if(!estaAutenticado(session)){
             strTo = "redirect:/";
         } else{
-            UserEntity usuario = (UserEntity) session.getAttribute("usuario");
+            User usuario = (User) session.getAttribute("usuario");
 
-            List<SessionEntity> sesiones = sessionRepository.getSessionsByIdRoutine(idRutina);
+            List<Session> sesiones = sessionService.listarSesionByIdRutina(idRutina);
             model.addAttribute("sesiones", sesiones);
-            List<RoutineHasSessionEntity> sesionRutina = routineHasSessionRepository.getSessionsRoutineByIdRoutine(idRutina);
+
+            List<RoutineHasSession> sesionRutina = routineHasSessionService.getSessionsRoutineByIdRoutine(idRutina);
             model.addAttribute("sesionRutina", sesionRutina);
+
             model.addAttribute("idCliente", usuario.getId());
             model.addAttribute("idRutina", idRutina);
         }
@@ -85,8 +100,11 @@ public class ClienteController extends BaseController{
             strTo = "redirect:/";
         } else{
 
-            List<SessionEntity> sesiones = sessionRepository.findSessionBySessionId(idSesion);
+            List<Session> sesiones = sessionService.buscarSesionesByIdSesion(idSesion);
             model.addAttribute("sesiones", sesiones);
+
+            List<Exercise> ejercicios =
+
             List<ExerciseEntity> ejercicios = exerciseHasSessionRepository.getExercisesByIdSession(idSesion);
             model.addAttribute("ejercicios", ejercicios);
             model.addAttribute("idSesion", idSesion);

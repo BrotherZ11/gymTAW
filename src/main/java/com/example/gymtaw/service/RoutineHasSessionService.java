@@ -14,7 +14,7 @@ public class RoutineHasSessionService extends DTOService<RoutineHasSession, Rout
    @Autowired
    private RoutineHasSessionRepository routineHasSessionRepository;
 
-    public List<RoutineHasSession> cogersesionesderutina(Integer idRutina){
+    public List<RoutineHasSession> getSessionsRoutineByIdRoutine(Integer idRutina){
         List<RoutineHasSessionEntity> sesiones = this.routineHasSessionRepository.getSessionsRoutineByIdRoutine(idRutina);
         return this.entidadesADTO(sesiones);
     }

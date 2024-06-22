@@ -1,8 +1,6 @@
 package com.example.gymtaw.dto;
 
-import com.example.gymtaw.entity.ExerciseHasSessionEntity;
-import com.example.gymtaw.entity.RoutineHasSessionEntity;
-import com.example.gymtaw.entity.TypeEntity;
+import com.example.gymtaw.entity.*;
 import lombok.Data;
 
 import java.util.LinkedHashSet;
@@ -13,7 +11,7 @@ public class Session {
     private Integer id;
     private String name;
     private Integer trainerId;
-    private Set<ExerciseHasSessionEntity> exerciseHasSessions = new LinkedHashSet<>();
-    private Set<RoutineHasSessionEntity> routineHasSessions = new LinkedHashSet<>();
-    private Set<TypeEntity> types = new LinkedHashSet<>();
+    private Set<Integer> exerciseHasSessions = new LinkedHashSet<>();
+    private Set<RoutineHasSessionEntityId> routineHasSessions = new LinkedHashSet<>();
+    private Set<Integer> types = new LinkedHashSet<>();
 }

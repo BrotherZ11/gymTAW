@@ -53,4 +53,5 @@ public class UserService extends DTOService<User, UserEntity>{
     public void borrarUsuario (Integer id) {
         this.userRepository.deleteById(id);
     }
+
 }

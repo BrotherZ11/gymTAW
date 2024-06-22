@@ -42,10 +42,21 @@ public class SessionEntity implements DTO<Session> {
         Session session = new Session();
         session.setId(this.getId());
         session.setName(this.getName());
-        session.setExerciseHasSessions(this.getExerciseHasSessions());
-        session.setRoutineHasSessions(this.getRoutineHasSessions());
-        session.setTypes(this.getTypes());
         session.setTrainerId(this.getIdtrainer().getId());
+
+        Set<Integer> exerciseHasSessions = new LinkedHashSet<>();
+        this.exerciseHasSessions.forEach(exerciseHasSessionEntity -> {exerciseHasSessions.add(exerciseHasSessionEntity.getExercise().getId());});
+        session.setExerciseHasSessions(exerciseHasSessions);
+
+        Set<RoutineHasSessionEntityId> routineHasSessions = new LinkedHashSet<>();
+        this.routineHasSessions.forEach(routineHasSessionEntity -> {routineHasSessions.add(routineHasSessionEntity.getId());});
+        session.setRoutineHasSessions(routineHasSessions);
+
+        Set<Integer> types = new LinkedHashSet<>();
+        this.types.forEach(typeEntity -> {types.add(typeEntity.getId());});
+        session.setTypes(types);
+
+
         return session;
     }
 }

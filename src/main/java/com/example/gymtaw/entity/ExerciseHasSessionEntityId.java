@@ -38,4 +38,11 @@ public class ExerciseHasSessionEntityId implements Serializable {
         return Objects.hash(exerciseId, sessionId, order);
     }
 
+    public ExerciseHasSessionEntityId toDTO() {
+        ExerciseHasSessionEntityId exerciseHasSessionEntityId = new ExerciseHasSessionEntityId();
+        exerciseHasSessionEntityId.setExerciseId(exerciseId);
+        exerciseHasSessionEntityId.setSessionId(sessionId);
+        exerciseHasSessionEntityId.setOrder(order);
+        return exerciseHasSessionEntityId;
+    }
 }
