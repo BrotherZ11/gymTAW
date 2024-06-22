@@ -9,6 +9,7 @@
     List<RoutineEntity> listaRutinasCliente = (List<RoutineEntity>) request.getAttribute("listaRutinasCliente");
     List<RoutineEntity> listaRutinasSinAsignar = (List<RoutineEntity>) request.getAttribute("listaRutinasSinAsignar");
     UserEntity usuario = (UserEntity) session.getAttribute("usuario");
+    UserEntity cliente = (UserEntity) session.getAttribute("cliente");
     Integer idCliente = (Integer) request.getAttribute("idCliente");
     List<TypeEntity> tipos = (List<TypeEntity>) request.getAttribute("tipos");
     String filtro = request.getParameter("filtro");
@@ -19,10 +20,11 @@
     <title>Rutinas del Cliente</title>
 </head>
 <body>
-<h1> Rutinas del Cliente </h1>
-<h2> TAW </h2>
-<a href="/home/trainer">Home  </a>
-<a href="/home//clients">Atrás</a>
+<div align="right">
+    <a href="/salir">Log out</a>
+</div>
+<h1> Rutinas de <%=cliente.getName()%> <%=cliente.getSurname()%></h1>
+<p><a href="/home/trainer">Home</a> / <a href="clients">Clientes</a> / Rutinas <%=cliente.getName()%> <%=cliente.getSurname()%></p><br>
 <form:form method="post" action="/home/trainer/routine_client_filtrar" modelAttribute="filtro">
     Nombre de la rutina: <form:input path="nombre" />
     <%

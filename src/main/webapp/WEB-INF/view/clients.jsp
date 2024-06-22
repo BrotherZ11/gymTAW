@@ -13,8 +13,11 @@
     <title>Clientes</title>
 </head>
 <body>
+<div align="right">
+    <a href="/salir">Log out</a>
+</div>
 <h1> Clientes </h1>
-<h2> TAW </h2>
+<p><a href="/home/trainer">Home</a> / Clientes </p><br>
 <form:form method="post" action="/rutina_bodybuilding/filtrar" modelAttribute="filtro">
     Nombre de la rutina: <form:input path="titulo" />
     <form:button>Filtrar</form:button>
@@ -48,7 +51,7 @@
             <td><%= cliente.getName() %></td>
             <td><%= cliente.getSurname() %></td>
             <td><a href="routine_client?idCliente=<%= cliente.getId() %>">Rutina</a> </td>
-            <td><a href="/users/editarUsuario?id=<%= cliente.getId() %>">Valoración</a> </td>
+            <td><a href="valoraciones_client?idCliente=<%= cliente.getId() %>">Valoración</a> </td>
         </tr>
         <%
             }

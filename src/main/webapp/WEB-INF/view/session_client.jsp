@@ -1,20 +1,26 @@
 <%@ page import="java.util.List" %>
 <%@ page import="com.example.gymtaw.entity.SessionEntity" %>
 <%@ page import="com.example.gymtaw.entity.RoutineHasSessionEntity" %>
+<%@ page import="com.example.gymtaw.entity.UserEntity" %>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     List<SessionEntity> listaSesiones = (List<SessionEntity>) request.getAttribute("listaSesiones");
     List<RoutineHasSessionEntity> listaSesionesDias = (List<RoutineHasSessionEntity>) request.getAttribute("listaSesionesDias");
-    String filtro = request.getParameter("filtro");
-    if (filtro == null) filtro = "";
+    Integer idRutina = (Integer) request.getAttribute("idRutina");
+    String nombreRutina = (String) request.getAttribute("nombreRutina");
+    UserEntity cliente = (UserEntity) session.getAttribute("cliente");
 %>
 <html>
 <head>
-    <title>Entrenamiento</title>
+    <title>Sesiones</title>
 </head>
 <body>
-<h1>Entrenamiento de la rutina: </h1>
+<div align="right">
+    <a href="/salir">Log out</a>
+</div>
+<h1>Sesiones de <%=cliente.getName()%> <%=cliente.getSurname()%> </h1>
+<p><a href="/home/trainer">Home</a> / <a href="clients">Clientes</a> / <a href="routine_client?idCliente=<%=cliente.getId()%>">Rutinas <%=cliente.getName()%> <%=cliente.getSurname()%></a> / <%=nombreRutina%></p><br>
     <table border="1 ">
         <tr>
             <th>DIA</th>
@@ -56,7 +62,7 @@
                             && listaSesionesDias.size() > index
                             && listaSesionesDias.get(index).getId().getDay() == i){
             %>
-            <td><a href="/home/trainer/exercise_client?idSesion=<%=listaSesiones.get(index).getId()%>">Ver</a></td>
+            <td><a href="/home/trainer/exercise_client?idSesion=<%=listaSesiones.get(index).getId()%>&idRutina=<%=idRutina%>">Ver</a></td>
             <%
                     }else{
             %>

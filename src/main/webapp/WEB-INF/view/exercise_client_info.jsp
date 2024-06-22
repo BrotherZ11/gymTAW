@@ -1,6 +1,6 @@
-<%@ page import="com.example.gymtaw.entity.RoutineEntity" %>
 <%@ page import="java.util.Date" %>
-<%@ page import="java.time.LocalDate" %><%--
+<%@ page import="java.time.LocalDate" %>
+<%@ page import="com.example.gymtaw.entity.*" %><%--
   Created by IntelliJ IDEA.
   User: dzarz
   Date: 29/04/2024
@@ -9,41 +9,79 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    RoutineEntity rutina = (RoutineEntity) request.getAttribute("rutina");
-    boolean esEditar = (rutina.getId() != -1);
-    String nombre = "", descripcion = "";
-    LocalDate fecha = LocalDate.now();
-
-    if (esEditar) {
-        nombre = rutina.getName();
-        descripcion = rutina.getDescription() + "";
-        fecha = rutina.getDate().atStartOfDay().toLocalDate();
-    }
+    UserEntity cliente = (UserEntity) session.getAttribute("cliente");
+    ExerciseEntity ejercicio = (ExerciseEntity) request.getAttribute("ejercicio");
+    Integer idSesion = (Integer) request.getAttribute("idSesion");
+    Integer idRutina = (Integer) request.getAttribute("idRutina");
+    ClientExerciseEntity ejercicioCliente = (ClientExerciseEntity) request.getAttribute("ejercicioCliente");
 %>
 <html>
 <head>
-    <title>Datos de la rutina</title>
+    <title>Datos del ejercicio</title>
 </head>
 <body>
-<h1>Datos de la rutina</h1>
-<a href="/home/trainer/rutina">Cancelar</a>
-<form method="post" action="guardar">
-    <input type="hidden" name="id" value="<%= rutina.getId() %>">
+<div align="right">
+    <a href="/salir">Log out</a>
+</div>
+<h1>Datos del ejercicio <%=ejercicio.getName()%></h1>
+<a href="/home/trainer">Home</a><br/>
+<a href="exercise_client?idSesion=<%=idSesion%>">Atras</a>
+<form method="post" action="/home/trainer/guardar_ejercicio">
+    <input type="hidden" name="idEjercicio" value="<%= ejercicio.getId() %>">
+    <input type="hidden" name="idSesion" value="<%=idSesion%>">
+    <input type="hidden" name="idRutina" value="<%= idRutina %>">
     <table border="0">
+        <%
+            if(ejercicioCliente!=null){
+        %>
         <tr>
-            <td>Nombre:</td>
-            <td><input type="text" name="nombre" size="100" maxlength="100" value="<%= nombre %>" /> </td>
+            <td>Repeticiones:</td>
+            <td><input type="text" name="reps" size="100" maxlength="100" value="<%= ejercicioCliente.getReps() %>" /> </td>
         </tr>
         <tr>
-            <td>Descripcion:</td>
-            <td><input type="text" name="descripcion" size="100"  maxlength="100" value="<%= descripcion %>" /></td>
+            <td>Sets:</td>
+            <td><input type="text" name="sets" size="100"  maxlength="100" value="<%= ejercicioCliente.getSets() %>" /></td>
         </tr>
         <tr>
-            <td>Fecha de Creación:</td>
-            <td><input type="date" name="fecha" size="100"  maxlength="100" value="<%= fecha %>" /></td>
+            <td>Peso:</td>
+            <td><input type="text" name="peso" size="100"  maxlength="100" value="<%= ejercicioCliente.getWeight() %>" /></td>
         </tr>
         <tr>
-            <td colspan="2"> <button>Enviar</button></td>
+            <td>Calorias:</td>
+            <td><input type="number" name="calorias" size="100"  maxlength="100" value="<%= ejercicioCliente.getCalories() %>" /></td>
+        </tr>
+        <tr>
+            <td>Distancia:</td>
+            <td><input type="number" name="distancia" size="100"  maxlength="100" value="<%= ejercicioCliente.getDistance() %>" /></td>
+        </tr>
+        <%
+            }else{
+        %>
+        <tr>
+            <td>Repeticiones:</td>
+            <td><input type="text" name="reps" size="100" maxlength="100" value="" /> </td>
+        </tr>
+        <tr>
+            <td>Sets:</td>
+            <td><input type="text" name="sets" size="100"  maxlength="100" value="" /></td>
+        </tr>
+        <tr>
+            <td>Peso:</td>
+            <td><input type="text" name="peso" size="100"  maxlength="100" value="" /></td>
+        </tr>
+        <tr>
+            <td>Calorias:</td>
+            <td><input type="number" name="calorias" size="100"  maxlength="100" value="0,0" /></td>
+        </tr>
+        <tr>
+            <td>Distancia:</td>
+            <td><input type="number" name="distancia" size="100"  maxlength="100" value="0,0" /></td>
+        </tr>
+        <%
+            }
+        %>
+        <tr>
+            <td colspan="2"> <button>Guardar</button></td>
         </tr>
     </table>
 </form>
