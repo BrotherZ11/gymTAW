@@ -1,10 +1,10 @@
 <%@ page import="java.util.Date" %>
 <%@ page import="java.time.LocalDate" %>
-<%@ page import="com.example.gymtaw.entity.UserEntity" %>
-<%@ page import="com.example.gymtaw.entity.ExerciseEntity" %>
-<%@ page import="com.example.gymtaw.entity.ClientExerciseEntity" %>
-<%@ page import="com.example.gymtaw.entity.ValoracionEntity" %>
-<%@ page import="java.util.List" %><%--
+<%@ page import="java.util.List" %>
+<%@ page import="com.example.gymtaw.dto.User" %>
+<%@ page import="com.example.gymtaw.dto.Exercise" %>
+<%@ page import="com.example.gymtaw.dto.ClientExercise" %>
+<%@ page import="com.example.gymtaw.dto.Valoracion" %><%--
   Created by IntelliJ IDEA.
   User: dzarz
   Date: 29/04/2024
@@ -13,10 +13,10 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    UserEntity cliente = (UserEntity) request.getAttribute("cliente");
-    List<ExerciseEntity> ejercicios = (List<ExerciseEntity>) request.getAttribute("ejercicios");
-    List<ClientExerciseEntity> ejerciciosCliente = (List<ClientExerciseEntity>) request.getAttribute("ejerciciosCliente");
-    List<ValoracionEntity> valoraciones = (List<ValoracionEntity>) request.getAttribute("valoraciones");
+    User cliente = (User) request.getAttribute("cliente");
+    List<Exercise> ejercicios = (List<Exercise>) request.getAttribute("ejercicios");
+    List<ClientExercise> ejerciciosCliente = (List<ClientExercise>) request.getAttribute("ejerciciosCliente");
+    List<Valoracion> valoraciones = (List<Valoracion>) request.getAttribute("valoraciones");
 %>
 <html>
 <head>
@@ -30,7 +30,7 @@
 <p><a href="/home/trainer">Home</a> / <a href="clients">Clientes</a> / Valoraciones <%=cliente.getName()%> <%=cliente.getSurname()%></p><br>
 <%
     int i = 0;
-    for(ClientExerciseEntity ejercicioCliente : ejerciciosCliente){
+    for(ClientExercise ejercicioCliente : ejerciciosCliente){
 %>
 <table border="1">
     <tr>

@@ -1,8 +1,8 @@
 package com.example.gymtaw.controller;
 
-import com.example.gymtaw.dao.*;
-import com.example.gymtaw.dto.User;
-import com.example.gymtaw.service.UserService;
+import com.example.gymtaw.dto.*;
+import com.example.gymtaw.entity.ValoracionEntity;
+import com.example.gymtaw.service.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,31 +16,28 @@ import java.util.List;
 public class ClientController extends BaseController{
 
     @Autowired
-    RoutineRepository routineRepository;
+    RoutineService routineService;
 
     @Autowired
-    SessionRepository sessionRepository;
+    SessionService sessionService;
 
     @Autowired
-    ExerciseRepository exerciseRepository;
+    ExerciseService exerciseService;
 
     @Autowired
-    RoutineHasSessionRepository routineHasSessionRepository;
+    RoutineHasSessionService routineHasSessionService;
 
     @Autowired
-    TypeRepository typeRepository;
-
-    @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    ClientExerciseRepository clientExerciseRepository;
-
-    @Autowired
-    ValoracionRepository valoracionRepository;
+    TypeService typeService;
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    ClientExerciseService clientExerciseService;
+
+    @Autowired
+    ValoracionService valoracionService;
 
     @GetMapping("/clients")
     public String doListar (Model model, HttpSession session) {
@@ -57,7 +54,7 @@ public class ClientController extends BaseController{
     }
 
     //Redirecciones de la pestaña de valoraciones
-    /*
+
     @GetMapping("/valoraciones_client")
     public String doValoracionesClient(@RequestParam("idCliente") Integer idCliente,
                                        Model model,
@@ -67,11 +64,11 @@ public class ClientController extends BaseController{
             strTo = "redirect:/";
         } else {
 
-            UserEntity cliente = userRepository.findById(idCliente).orElse(null);
+            User cliente = userService.BuscarPorId(idCliente);
 
-            List<ExerciseEntity> ejercicios = exerciseRepository.getExerciseEntitiesByIdClienteAndHaveReview(idCliente);
-            List<ClientExerciseEntity> ejerciciosCliente = clientExerciseRepository.getClientExerciseEntitiesByIdClienteAndHaveReview(idCliente);
-            List<ValoracionEntity> valoraciones = valoracionRepository.findValoracionEntitiesByIdCliente(idCliente);
+            List<Exercise> ejercicios = exerciseService.findExercisesWithAReviewByIdClient(idCliente);
+            List<ClientExercise> ejerciciosCliente = clientExerciseService.findClientExercisesWithAReviewByIdClient(idCliente);
+            List<Valoracion> valoraciones = valoracionService.findValoracionEntitiesByIdClient(idCliente);
 
             model.addAttribute("ejercicios", ejercicios);
             model.addAttribute("ejerciciosCliente", ejerciciosCliente);
@@ -82,6 +79,7 @@ public class ClientController extends BaseController{
         return strTo;
     }
 
+    /*
     //Redirecciones de la pestaña de rutinas
     @GetMapping("/routine_client")
     public String doRoutineClient (@RequestParam("idCliente") Integer idCliente,

@@ -4,8 +4,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     List<User> lista = (List<User>) request.getAttribute("lista");
-    String filtro = request.getParameter("filtro");
-    if (filtro == null) filtro = "";
 %>
 <html>
 <head>
@@ -17,10 +15,6 @@
 </div>
 <h1> Clientes </h1>
 <p><a href="/home/trainer">Home</a> / Clientes </p><br>
-<form:form method="post" action="/rutina_bodybuilding/filtrar" modelAttribute="filtro">
-    Nombre de la rutina: <form:input path="titulo" />
-    <form:button>Filtrar</form:button>
-</form:form>
 <div>
     <table border="1 ">
 
