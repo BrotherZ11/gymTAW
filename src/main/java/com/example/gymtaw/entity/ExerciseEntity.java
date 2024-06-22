@@ -5,10 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Getter
 @Setter
@@ -34,13 +31,13 @@ public class ExerciseEntity {
     private TypeEntity typeIdtype;
 
     @OneToMany(mappedBy = "exercise")
-    private List<ClientExerciseEntity> clientExercises = new ArrayList<>();
+    private Set<ClientExerciseEntity> clientExercises = new HashSet<>();
 
     @OneToMany(mappedBy = "exercise")
-    private List<ExerciseHasSessionEntity> exerciseHasSessions = new ArrayList<>();
+    private Set<ExerciseHasSessionEntity> exerciseHasSessions = new HashSet<>();
 
     @OneToMany(mappedBy = "exercise")
-    private List<ValoracionEntity> valoracions = new ArrayList<>();
+    private Set<ValoracionEntity> valoracions = new HashSet<>();
 
     public Exercise toDTO() {
         Exercise exercise = new Exercise();
@@ -48,13 +45,19 @@ public class ExerciseEntity {
         exercise.setName(name);
         exercise.setDescription(description);
         exercise.setVideo(video);
+        exercise.setTypeIdtype(typeIdtype.toDTO());
 
-        List<Integer> typeIdtype = new ArrayList<>();
-        for(TypeEntity type : this.typeIdtype){
-            typeIdtype.add(type.getId());
-        }
-        exercise.setTypeIdtype(typeIdtype);
+        Set<ClientExerciseEntityId> clientExercises = new LinkedHashSet<>();
+        this.clientExercises.forEach(clientExercise -> {clientExercise.getId();});
+        exercise.setClientExercises(clientExercises);
 
+        Set<Integer> exerciseHasSessions = new LinkedHashSet<>();
+        this.exerciseHasSessions.forEach(exerciseHasSessionEntity -> {exerciseHasSessions.add(exerciseHasSessionEntity.getSession().getId());});
+        exercise.setExerciseHasSessions(exerciseHasSessions);
+
+        Set<ValoracionEntityId> valoracions = new LinkedHashSet<>();
+        this.valoracions.forEach(valoracionEntityId -> {valoracionEntityId.getId();});
+        exercise.setValoracions(valoracions);
 
         return exercise;
     }
