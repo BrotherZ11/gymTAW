@@ -10,7 +10,6 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface RoutineHasSessionRepository extends JpaRepository<RoutineHasSessionEntity,Integer> {
-
     @Query("select rs from RoutineHasSessionEntity rs where rs.routine.id = :idRutina order by rs.id.day")
     public List<RoutineHasSessionEntity> getSessionsRoutineByIdRoutine(@Param("idRutina") Integer idRutina);
 }

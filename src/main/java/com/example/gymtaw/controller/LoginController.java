@@ -32,7 +32,7 @@ public class LoginController extends BaseController {
                 strTo = "redirect:";
             } else {
                 strTo = "redirect:";
-            }*/
+            }*/           
         } else {
             model.addAttribute("usuario", new Usuario());
         }

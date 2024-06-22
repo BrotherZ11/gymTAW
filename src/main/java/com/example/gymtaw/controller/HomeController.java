@@ -20,4 +20,9 @@ public class HomeController extends BaseController {
 
     }
 
+    @GetMapping("/cliente")
+    public String doHomeCliente (Model model, HttpSession session) {
+        return "home_client";
+    }
+
 }

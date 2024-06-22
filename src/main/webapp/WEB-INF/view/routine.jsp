@@ -1,4 +1,4 @@
-<%@ page import="com.example.gymtaw.entity.RoutineEntity" %>
+s<%@ page import="com.example.gymtaw.entity.RoutineEntity" %>
 <%@ page import="java.util.Date" %>
 <%@ page import="java.time.LocalDate" %><%--
   Created by IntelliJ IDEA.

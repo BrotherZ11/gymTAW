@@ -21,4 +21,9 @@ public interface SessionRepository extends JpaRepository<SessionEntity, Integer>
             "where session.idTrainer = :idEntrenador", nativeQuery = true)
     public List<SessionEntity> getSessionsByIdEntrenador(@Param("idEntrenador") Integer idEntrenador);
 
+    @Query(value = "select s from SessionEntity s where s.id = :idSesion")
+    public List<SessionEntity> findSessionBySessionId(@Param("idSesion") Integer idSesion);
+
+    @Query(value = "select s from SessionEntity s join  ExerciseHasSessionEntity es on s.id = es.session.id where es.exercise.id = :exerciseId")
+    SessionEntity getSessionsByIdEjercicio(@Param("exerciseId") Integer exerciseId);
 }

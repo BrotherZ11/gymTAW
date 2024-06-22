@@ -21,6 +21,9 @@ public interface RoutineRepository extends JpaRepository<RoutineEntity, Integer>
     public List<RoutineEntity> getRoutinesByIdEntrenadorAndIdCliente(@Param("idEntrenador") Integer idEntrenador,
                                                                      @Param("idCliente") Integer idCliente);
 
+    @Query("SELECT r FROM RoutineEntity r WHERE r.idclient.id = :idCliente")
+    List<RoutineEntity> getRoutinesByClient(@Param("idCliente") Integer idCliente);
+    
     @Query ("select r from RoutineEntity r where r.idtrainer.id = :idEntrenador and r.idclient IS NULL")
     public List<RoutineEntity> getRoutinesByIdEntrenadorNoCliente(@Param("idEntrenador") Integer idEntrenador);
 
