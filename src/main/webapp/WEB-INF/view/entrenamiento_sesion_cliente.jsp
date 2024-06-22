@@ -37,11 +37,8 @@
         <th></th>
     </tr>
     <% for (Exercise e : ejercicios) { %>
-
     <tr>
-
         <td><a href="/home/cliente/ejercicioIndividual?idEjercicio=<%= e.getId() %>&idRutina=<%=idRutina%>&idSesion=<%=idSesion%>"><%= e.getName() %></a></td>
-
         <td><%= e.getDescription() != null ? e.getDescription() : "N/A" %></td>
         <td><%= e.getVideo() != null ? e.getVideo() : "N/A" %></td>
         <td align="center">
@@ -52,7 +49,7 @@
                     for (Valoracion v : valoraciones) {
                         if (v.getDone() == 1 && v.getUser().getId().equals(idCliente) && v.getExercise().getId().equals(e.getId())) {
                             isDone = true;
-
+                            break;  // Exit loop once match is found
                         }
                     }
                 }
@@ -69,44 +66,27 @@
         </td>
         <%
             boolean valorado = false;
-            if (valoraciones != null) {
+            Integer estrellas = null;
 
+            if (valoraciones != null) {
                 for (Valoracion v : valoraciones) {
                     if (v.getDone() == 1 && v.getUser().getId().equals(idCliente) && v.getExercise().getId().equals(e.getId())) {
                         if (v.getStars() != null) {
                             valorado = true;
-        %>
-        <td align="center"><%= v.getStars() %></td>
-        <%
-        } else {
-        %>
-
-        <%
+                            estrellas = v.getStars();
+                            break;  // Exit loop once match is found
                         }
-                       // break;
                     }
                 }
             }
-            if (!isDone) {
         %>
-        <td align="center">Completar para valorar</td>
-        <%
-        } else if (!valorado) {
-
-        %>
-        <td align="center"><a href="valorarEjercicio?idEjercicio=<%= e.getId() %>&idSesion=<%=s.getId()%>&idRutina=<%=idRutina%>">Valorar</a></td>
-        <%
-                 }
-        %>
-
-
-
-        <td>
-            <%if(valorado){
-
-            %>
-        <a href="valorarEjercicio?idEjercicio=<%= e.getId() %>&idSesion=<%=s.getId()%>&idRutina=<%=idRutina%>">Editar valoracion</a>
-            <%}else{%>
+        <td align="center"><%= valorado ? estrellas : "Completar para valorar" %></td>
+        <td align="center">
+            <% if (isDone && !valorado) { %>
+            <a href="valorarEjercicio?idEjercicio=<%= e.getId() %>&idSesion=<%=s.getId()%>&idRutina=<%=idRutina%>">Valorar</a>
+            <% } else if (valorado) { %>
+            <a href="valorarEjercicio?idEjercicio=<%= e.getId() %>&idSesion=<%=s.getId()%>&idRutina=<%=idRutina%>">Editar valoracion</a>
+            <% } else { %>
             -
             <% } %>
         </td>

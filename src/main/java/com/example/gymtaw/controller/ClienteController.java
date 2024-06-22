@@ -234,14 +234,8 @@ public class ClienteController extends BaseController{
             List<Routine> rutinas = routineService.listarRutinasCliente(usuario.getId());
             model.addAttribute("rutinas", rutinas);
 
-            List<Integer> exerciseIntegersByClientId = clientExerciseService.findExerciseIdByClientId(usuario.getId());
+            List<Exercise> ejercicios = exerciseService.findAllExercisesByUsuarioId(usuario.getId());
 
-            Exercise ejercicio = new Exercise();
-            List<Exercise> ejercicios = new ArrayList<>();
-            for(Integer id : exerciseIntegersByClientId){
-                ejercicio = exerciseService.findByidEjercicio(id);
-                ejercicios.add(ejercicio);
-            }
             List<Valoracion> valoraciones = valoracionService.getValoracionesByExercises(ejercicios);
 
             model.addAttribute("valoraciones", valoraciones);
