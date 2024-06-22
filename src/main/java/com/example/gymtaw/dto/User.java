@@ -15,7 +15,7 @@ public class User {
     private String phone;
     private Integer age;
     private String gender;
-    private Rol idRol;
+    private Rol Rol;
     private Set<Integer> userExercises;
     private Set<Integer> clientRoutines;
     private Set<Integer> trainerRoutines;

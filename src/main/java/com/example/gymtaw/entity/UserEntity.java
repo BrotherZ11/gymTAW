@@ -89,11 +89,23 @@ public class UserEntity implements DTO<User> {
         user.setPhone(this.phone);
         user.setAge(this.age);
         user.setGender(this.gender);
-        user.setIdRol(this.idRol.toDTO());
-        this.clientExercises.forEach(clientExerciseEntity -> user.getUserExercises().add(clientExerciseEntity.getExercise().getId()));
-        this.routinesClient.forEach(routineEntity -> user.getClientRoutines().add(routineEntity.getId()));
-        this.routinesTrainer.forEach(routineEntity -> user.getTrainerRoutines().add(routineEntity.getId()));
-        this.sessions.forEach(sessionEntity -> user.getSessions().add(sessionEntity.getId()));
+        user.setRol(this.idRol.toDTO());
+
+        Set<Integer> exercises = new LinkedHashSet<>();
+        this.clientExercises.forEach(clientExerciseEntity -> exercises.add(clientExerciseEntity.getExercise().getId()));
+        user.setUserExercises(exercises);
+
+        Set<Integer> clientRout = new LinkedHashSet<>();
+        this.routinesClient.forEach(routineEntity -> clientRout.add(routineEntity.getId()));
+        user.setClientRoutines(clientRout);
+
+        Set<Integer> trainerRout = new LinkedHashSet<>();
+        this.routinesTrainer.forEach(routineEntity -> trainerRout.add(routineEntity.getId()));
+        user.setTrainerRoutines(trainerRout);
+
+        Set<Integer> sessions = new LinkedHashSet<>();
+        this.sessions.forEach(sessionEntity -> sessions.add(sessionEntity.getId()));
+        user.setSessions(sessions);
 
         return user;
     }

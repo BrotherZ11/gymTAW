@@ -28,6 +28,11 @@ public class RolEntity implements DTO<Rol> {
         Rol rol = new Rol();
         rol.setId(this.id);
         rol.setType(this.type);
+
+        Set<Integer> users = new LinkedHashSet<>();
+        this.users.forEach(user -> users.add(user.getId()));
+        rol.setUsers(users);
+
         return rol;
     }
 }

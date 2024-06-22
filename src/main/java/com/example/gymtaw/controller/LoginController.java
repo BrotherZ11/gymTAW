@@ -1,9 +1,8 @@
 package com.example.gymtaw.controller;
 
-import com.example.gymtaw.dao.RolRepository;
-import com.example.gymtaw.dao.UserRepository;
-import com.example.gymtaw.entity.RolEntity;
-import com.example.gymtaw.entity.UserEntity;
+import com.example.gymtaw.dto.Rol;
+import com.example.gymtaw.dto.User;
+import com.example.gymtaw.service.UserService;
 import com.example.gymtaw.ui.Usuario;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,17 +16,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class LoginController extends BaseController {
 
     @Autowired
-    protected UserRepository userRepository;
-
-    @Autowired
-    protected RolRepository rolRepository;
+    protected UserService userService;
 
     @GetMapping("/")
     public String doLogin (Model model, HttpSession session) {
         String strTo = "login";
         if (estaAutenticado(session)) {
-            UserEntity usuario = (UserEntity) session.getAttribute("usuario");
-            RolEntity rol = this.rolRepository.findById(usuario.getIdRol().getId()).get();
+            User usuario = (User) session.getAttribute("usuario");
+            Rol rol = usuario.getRol();
             if(rol.getType().equals("admin")){
                 strTo = "redirect:/users/";
             } else if(rol.getType().equals("crosstraining") || rol.getType().equals("bodybuilding")){
@@ -47,12 +43,13 @@ public class LoginController extends BaseController {
     public String doAutentica (@ModelAttribute("usuario") Usuario usuario,
                                Model model, HttpSession session) {
         String strTo = "redirect:";
-        UserEntity user = this.userRepository.autenticacion(usuario.getUser(), usuario.getPassword());
+        User user = this.userService.autenticar(usuario.getUser(), usuario.getPassword());
+
         if (user == null) {
             model.addAttribute("error", "Usuario o contraseña incorrectos");
             strTo = this.doLogin(model, session);
         } else {
-            RolEntity rol = this.rolRepository.findById(user.getIdRol().getId()).get();
+            Rol rol = user.getRol();
             session.setAttribute("usuario", user);
              if(rol.getType().equals("admin")){
                 strTo = "redirect:/users/";
