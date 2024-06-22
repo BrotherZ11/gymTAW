@@ -45,9 +45,9 @@ public class RoutineController extends BaseController{
     public String doListar (Model model, HttpSession session) {
         if(!estaAutenticado(session)) return  "redirect:/";
         else{
-            Integer idEntrenador = (Integer) session.getAttribute("idEntrenador");
-            List<RoutineEntity> rutinas = routineRepository.getRoutinesbyEntrenador(idEntrenador);
-            UserEntity user = userRepository.getById(idEntrenador);
+            UserEntity usuario = (UserEntity) session.getAttribute("usuario");
+            List<RoutineEntity> rutinas = routineRepository.getRoutinesbyEntrenador(usuario.getId());
+            UserEntity user = userRepository.getById(usuario.getId());
             String rol = user.getIdRol().getType();
             List<TypeEntity> tipos = typeRepository.findAll();
             model.addAttribute("tipos", tipos);
@@ -63,14 +63,15 @@ public class RoutineController extends BaseController{
     public String doListar (@ModelAttribute("filtro") FiltroRutina filtro, Model model, HttpSession session) {
         if(!estaAutenticado(session)) return  "redirect:/";
         else{
-            Integer idEntrenador = (Integer) session.getAttribute("idEntrenador");
+            UserEntity usuario = (UserEntity) session.getAttribute("usuario");
+
             List<RoutineEntity> rutinas = null;
             List<TypeEntity> tipos = typeRepository.findAll();
-            UserEntity entrenador = userRepository.findById(idEntrenador).orElse(null);
+            UserEntity entrenador = userRepository.findById(usuario.getId()).orElse(null);
             String rol = entrenador.getIdRol().getType();
 
-            if(filtro.estaVacioTipos()) rutinas = routineRepository.findByFiltro(filtro.getNombre(), idEntrenador);
-            else rutinas = routineRepository.findByFiltroNombreYTipo(filtro.getNombre(), filtro.getTipos(), idEntrenador);
+            if(filtro.estaVacioTipos()) rutinas = routineRepository.findByFiltro(filtro.getNombre(), usuario.getId());
+            else rutinas = routineRepository.findByFiltroNombreYTipo(filtro.getNombre(), filtro.getTipos(), usuario.getId());
 
             model.addAttribute("lista", rutinas);
             model.addAttribute("tipos", tipos);
@@ -95,12 +96,13 @@ public class RoutineController extends BaseController{
     public String doVer (@RequestParam("idRutina") Integer idRutina, HttpSession session, Model model) {
         if(!estaAutenticado(session)) return  "redirect:/";
         else{
-            Integer idEntrenador = (Integer) session.getAttribute("idEntrenador");
+            UserEntity usuario = (UserEntity) session.getAttribute("usuario");
             List<RoutineHasSessionEntity> sessionRoutineEntities = routineHasSessionRepository.getSessionsRoutineByIdRoutine(idRutina);
-            List<SessionEntity> sessionCompleteEntities = sessionRepository.getSessionsByIdEntrenador(idEntrenador);
+            List<SessionEntity> sessionCompleteEntities = sessionRepository.getSessionsByIdEntrenador(usuario.getId());
             model.addAttribute("listaSesionRutina", sessionRoutineEntities);
             model.addAttribute("listaCompleta", sessionCompleteEntities);
             model.addAttribute("idRutina", idRutina);
+
             // Guardar idRutina
             session.setAttribute("idRutina", idRutina);
             return "entrenamiento";
@@ -204,8 +206,8 @@ public class RoutineController extends BaseController{
                              HttpSession session){
         if(!estaAutenticado(session)) return "redirect:/";
         else {
-            Integer idEntrenador = (Integer) session.getAttribute("idEntrenador");
-            UserEntity entrenador = userRepository.findById(idEntrenador).orElse(null);
+            UserEntity usuario = (UserEntity) session.getAttribute("usuario");
+            UserEntity entrenador = userRepository.findById(usuario.getId()).orElse(null);
             RoutineEntity rutina = this.routineRepository.findById(idRutina).orElse(new RoutineEntity());
             rutina.setName(nombre);
             rutina.setDescription(descripcion);

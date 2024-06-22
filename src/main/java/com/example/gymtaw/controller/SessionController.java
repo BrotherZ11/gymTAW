@@ -81,9 +81,9 @@ public class SessionController extends BaseController{
                             HttpSession session) {
         if(!estaAutenticado(session)) return "redirect:/";
         else{
-            Integer idEntrenador = (Integer) session.getAttribute("idEntrenador");
+            UserEntity usuario = (UserEntity) session.getAttribute("usuario");
             Integer idRutina = (Integer) session.getAttribute("idRutina");
-            UserEntity entrenador = userRepository.findById(idEntrenador).orElse(null);
+            UserEntity entrenador = userRepository.findById(usuario.getId()).orElse(null);
             SessionEntity sesion = (idSesion != null) ? this.sessionRepository.findById(idSesion).orElse(new SessionEntity()) : new SessionEntity();
 
             sesion.setName(nombre);
