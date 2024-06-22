@@ -41,6 +41,11 @@ public class UserService extends DTOService<User, UserEntity>{
         return this.entidadesADTO(usuarios);
     }
 
+    public List<User> listarClientesPorEntrenador(Integer idEntrenador) {
+        List<UserEntity> clientes = this.userRepository.findClientsAssignedToTrainer(idEntrenador);
+        return this.entidadesADTO(clientes);
+    }
+
     public User BuscarPorId (Integer id) {
         UserEntity usuario = this.userRepository.findById(id).orElse(null);
         if (usuario != null) {

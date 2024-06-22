@@ -1,8 +1,8 @@
 package com.example.gymtaw.controller;
 
 import com.example.gymtaw.dao.*;
-import com.example.gymtaw.entity.*;
-import com.example.gymtaw.ui.FiltroRutina;
+import com.example.gymtaw.dto.User;
+import com.example.gymtaw.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,14 +10,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/home/trainer")
 public class ClientController extends BaseController{
-
-    @Autowired
-    ClientRepository clientRepository;
 
     @Autowired
     RoutineRepository routineRepository;
@@ -43,14 +39,17 @@ public class ClientController extends BaseController{
     @Autowired
     ValoracionRepository valoracionRepository;
 
+    @Autowired
+    UserService userService;
+
     @GetMapping("/clients")
     public String doListar (Model model, HttpSession session) {
         String strTo = "clients";
         if (!estaAutenticado(session)) {
             strTo = "redirect:/";
         } else {
-            UserEntity usuario = (UserEntity) session.getAttribute("usuario");
-            List<UserEntity> clients = clientRepository.getClientesByEntrenador(usuario.getId());
+            User usuario = (User) session.getAttribute("usuario");
+            List<User> clients = userService.listarClientesPorEntrenador(usuario.getId());
             model.addAttribute("lista", clients);
             session.removeAttribute("cliente");
         }
@@ -58,6 +57,7 @@ public class ClientController extends BaseController{
     }
 
     //Redirecciones de la pestaña de valoraciones
+    /*
     @GetMapping("/valoraciones_client")
     public String doValoracionesClient(@RequestParam("idCliente") Integer idCliente,
                                        Model model,
@@ -298,4 +298,5 @@ public class ClientController extends BaseController{
         }
         return strTo;
     }
+     */
 }

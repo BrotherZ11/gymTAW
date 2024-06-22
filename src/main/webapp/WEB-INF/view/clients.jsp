@@ -1,10 +1,9 @@
 <%@ page import="java.util.List" %>
-<%@ page import="com.example.gymtaw.entity.UserEntity" %>
-<%@ page import="com.example.gymtaw.entity.UserEntity" %>
+<%@ page import="com.example.gymtaw.dto.User" %>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    List<UserEntity> lista = (List<UserEntity>) request.getAttribute("lista");
+    List<User> lista = (List<User>) request.getAttribute("lista");
     String filtro = request.getParameter("filtro");
     if (filtro == null) filtro = "";
 %>
@@ -44,7 +43,7 @@
         </tr>
         <%
         }else{
-            for (UserEntity cliente: lista) {
+            for (User cliente: lista) {
         %>
         <tr>
             <td><%= cliente.getDni() %></td>
