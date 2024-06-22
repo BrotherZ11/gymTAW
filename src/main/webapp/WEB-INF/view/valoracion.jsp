@@ -42,7 +42,6 @@
     <button type="submit">Filtrar</button>
 </form:form>
 
-
 <h1>Valoraciones de ejercicios</h1>
 <% if (!ejercicios.isEmpty()) { %>
 <table border="1">
@@ -55,7 +54,7 @@
         <th>Review</th>
         <th></th>
     </tr>
-    <%for(Exercise e : ejercicios){%>
+    <% for (Exercise e : ejercicios) { %>
     <tr>
         <td><a href="/home/cliente/ejercicioIndividual?idEjercicio=<%= e.getId() %>&idRutina=<%=idRutina%>&idSesion=<%=idSesion%>"><%= e.getName()%></a></td>
         <td><%=e.getDescription()%></td>
@@ -64,10 +63,9 @@
             <%
                 boolean isDone = false;
 
-
                 if (valoraciones != null) {
                     for (Valoracion v : valoraciones) {
-                        if (v.getDone() == 1 && v.getUser().getId().equals(usuario.getId())) {
+                        if (v.getDone() == 1 && v.getUser().getId().equals(usuario.getId()) && v.getExercise().getId().equals(e.getId())) {
                             isDone = true;
                             break;
                         }
@@ -78,84 +76,54 @@
                 <input type="hidden" name="idEjercicio" value="<%= e.getId() %>" />
                 <input type="hidden" name="idSesion" value="<%= idSesion %>" />
                 <input type="hidden" name="idRutina" value="<%= idRutina %>" />
-
                 <input type="checkbox" name="done" value="1" <% if (isDone) { %>checked disabled<% } else { %> onchange="this.form.submit()"<% } %> />
             </form>
         </td>
-
         <%
             boolean valorado = false;
-            if (valoraciones != null) {
+            Integer estrellas = null;
+            String review = "No tienes review aún.";
 
+            if (valoraciones != null) {
                 for (Valoracion v : valoraciones) {
-                    if (v.getDone() == 1 && v.getUser().getId().equals(usuario.getId())) {
+                    if (v.getDone() == 1 && v.getUser().getId().equals(usuario.getId()) && v.getExercise().getId().equals(e.getId())) {
                         if (v.getStars() != null) {
                             valorado = true;
-        %>
-        <td align="center"><%= v.getStars() %></td>
-        <%
-        } else {
-        %>
-
-        <%
+                            estrellas = v.getStars();
+                        }
+                        if (v.getReview() != null) {
+                            review = v.getReview();
                         }
                         break;
                     }
                 }
             }
-            if (!isDone) {
         %>
-        <td align="center">Completar para valorar</td>
-        <%
-        } else if (!valorado) {
-
-        %>
-        <td align="center"><a href="valorarEjercicio?idEjercicio=<%= e.getId() %>&idSesion=<%=idSesion%>&idRutina=<%=idRutina%>">Valorar</a></td>
-        <%
-            }
-        %>
+        <td align="center"><%= valorado ? estrellas : "Completar para valorar" %></td>
         <td>
             <% if (isDone) { %>
-            <%
-                if (valoraciones != null) {
-                    for (Valoracion v : valoraciones) {
-                        if (v.getUser().getId().equals(usuario.getId())) {
-                            String review = v.getReview();
-                            if (review == null) {
-                                review = "No tienes review aún.";
-                            }
-            %>
             <form method="post" action="/home/cliente/guardarReview">
-
-                <input type="hidden" id="userId" name="userId" value="<%= v.getId().getUserId() %>">
-                <input type="hidden" id="exerciseId" name="exerciseId" value="<%= v.getId().getExerciseId() %>">
+                <input type="hidden" id="userId" name="userId" value="<%= usuario.getId() %>">
+                <input type="hidden" id="exerciseId" name="exerciseId" value="<%= e.getId() %>">
                 <input type="text" name="review" value="<%= review %>"/>
                 <button type="submit">Guardar</button>
             </form>
-            <%
-                        }
-                    }
-                }
-            %>
             <% } else { %>
             -
             <% } %>
         </td>
-
         <td>
-            <%if(valorado==true){
-            %>
+            <% if (valorado) { %>
             <a href="valorarEjercicio?idEjercicio=<%= e.getId() %>&idSesion=<%=idSesion%>&idRutina=<%=idRutina%>">Editar valoracion</a>
-            <%}else{%>
+            <% } else { %>
             -
             <% } %>
         </td>
-
     </tr>
-    <%}%>
+    <% } %>
 </table>
-<%}else{%>
+<% } else { %>
 <h3>No hay ejercicios con esa valoración.</h3>
-<%}%>
+<% } %>
 </body>
 </html>

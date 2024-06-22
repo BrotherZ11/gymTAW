@@ -4,6 +4,7 @@ import com.example.gymtaw.dao.ClientExerciseRepository;
 import com.example.gymtaw.dao.ExerciseRepository;
 import com.example.gymtaw.dto.Exercise;
 import com.example.gymtaw.dto.User;
+import com.example.gymtaw.dto.Valoracion;
 import com.example.gymtaw.entity.ExerciseEntity;
 import com.example.gymtaw.entity.ValoracionEntity;
 import com.example.gymtaw.ui.FiltroEjercicio;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class ExerciseService extends DTOService<Exercise, ExerciseEntity>{
@@ -72,6 +74,7 @@ public class ExerciseService extends DTOService<Exercise, ExerciseEntity>{
                 }
                 if (addEjercicioALista) {
                     ejercicios.add(ejercicio.toDTO());
+
                 }
             }
         }
@@ -88,6 +91,11 @@ public class ExerciseService extends DTOService<Exercise, ExerciseEntity>{
 
     public List<Exercise> findExercisesWithAReviewByIdClient(Integer idCliente){
         List<ExerciseEntity> ejercicios = exerciseRepository.getExerciseEntitiesByIdClienteAndHaveReview(idCliente);
+        return this.entidadesADTO(ejercicios);
+    }
+
+    public List<Exercise> findAllExercisesByUsuarioId(Integer id) {
+        List<ExerciseEntity> ejercicios = exerciseRepository.getExerciseEntitiesByIdClienteAndHaveReview(id);
         return this.entidadesADTO(ejercicios);
     }
 }

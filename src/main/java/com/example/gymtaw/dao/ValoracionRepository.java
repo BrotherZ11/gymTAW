@@ -14,6 +14,9 @@ public interface ValoracionRepository extends JpaRepository<ValoracionEntity, Va
     @Query("SELECT v FROM ValoracionEntity v WHERE v.exercise.id = :id")
     List<ValoracionEntity> getValoracionesByExercise(Integer id);
 
+    @Query("SELECT v FROM ValoracionEntity v WHERE v.exercise.id = :id")
+    ValoracionEntity getValoracionByExercise(Integer id);
+
     @Query("select v from ValoracionEntity v where v.user.id = :idCliente order by v.exercise.id")
     List<ValoracionEntity> findValoracionEntitiesByIdCliente(Integer idCliente);
 
