@@ -1,7 +1,8 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="com.example.gymtaw.entity.RoutineEntity" %>
 <%@ page import="java.util.List" %>
-<%@ page import="com.example.gymtaw.entity.TypeEntity" %><%--
+<%@ page import="com.example.gymtaw.entity.TypeEntity" %>
+<%@ page import="com.example.gymtaw.dto.Routine" %><%--
   Created by IntelliJ IDEA.
   User: dzarz
   Date: 29/04/2024
@@ -10,7 +11,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    List<RoutineEntity> lista = (List<RoutineEntity>) request.getAttribute("lista");
+    List<Routine> lista = (List<Routine>) request.getAttribute("lista");
     List<TypeEntity> tipos = (List<TypeEntity>) request.getAttribute("tipos");
     String filtro = request.getParameter("filtro");
     String rol = (String) request.getAttribute("rol");
@@ -53,7 +54,7 @@
 
     </tr>
     <%
-        for(RoutineEntity r : lista){
+        for(Routine r : lista){
     %>
     <tr>
         <td><%=r.getName()%></td>

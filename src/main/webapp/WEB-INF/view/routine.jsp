@@ -1,6 +1,8 @@
-s<%@ page import="com.example.gymtaw.entity.RoutineEntity" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ page import="com.example.gymtaw.entity.RoutineEntity" %>
 <%@ page import="java.util.Date" %>
-<%@ page import="java.time.LocalDate" %><%--
+<%@ page import="java.time.LocalDate" %>
+<%@ page import="com.example.gymtaw.dto.Routine" %><%--
   Created by IntelliJ IDEA.
   User: dzarz
   Date: 29/04/2024
@@ -8,18 +10,6 @@ s<%@ page import="com.example.gymtaw.entity.RoutineEntity" %>
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%
-    RoutineEntity rutina = (RoutineEntity) request.getAttribute("rutina");
-    boolean esEditar = (rutina.getId() != -1);
-    String nombre = "", descripcion = "";
-    LocalDate fecha = LocalDate.now();
-
-    if (esEditar) {
-        nombre = rutina.getName();
-        descripcion = rutina.getDescription() + "";
-        fecha = rutina.getDate().atStartOfDay().toLocalDate();
-    }
-%>
 <html>
 <head>
     <title>Datos de la rutina</title>
@@ -27,25 +17,25 @@ s<%@ page import="com.example.gymtaw.entity.RoutineEntity" %>
 <body>
 <h1>Datos de la rutina</h1>
 <a href="/home/trainer/rutina">Cancelar</a>
-<form method="post" action="guardar">
-    <input type="hidden" name="idRutina" value="<%= rutina.getId() %>">
+<form:form method="post" action="guardar" modelAttribute="rutina">
+    <form:hidden path="id" />
     <table border="0">
         <tr>
             <td>Nombre:</td>
-            <td><input type="text" name="nombre" size="100" maxlength="100" value="<%= nombre %>" /> </td>
+            <td><form:input path="name" /></td>
         </tr>
         <tr>
             <td>Descripcion:</td>
-            <td><input type="text" name="descripcion" size="100"  maxlength="100" value="<%= descripcion %>" /></td>
+            <td><form:input path="description"/></td>
         </tr>
         <tr>
             <td>Fecha de Creación:</td>
-            <td><input type="date" name="fecha" size="100"  maxlength="100" value="<%= fecha %>" /></td>
+            <td><form:input path="date" type="date"/></td>
         </tr>
         <tr>
             <td colspan="2"> <button>Enviar</button></td>
         </tr>
     </table>
-</form>
+</form:form>
 </body>
 </html>

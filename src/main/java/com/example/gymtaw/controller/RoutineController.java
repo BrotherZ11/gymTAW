@@ -1,7 +1,11 @@
 package com.example.gymtaw.controller;
 
 import com.example.gymtaw.dao.*;
+import com.example.gymtaw.dto.Routine;
+import com.example.gymtaw.dto.User;
 import com.example.gymtaw.entity.*;
+import com.example.gymtaw.service.RoutineService;
+import com.example.gymtaw.service.UserService;
 import com.example.gymtaw.ui.FiltroRutina;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +25,7 @@ import java.util.Set;
 public class RoutineController extends BaseController{
 
     @Autowired
-    RoutineRepository routineRepository;
+    RoutineService routineService;
 
     @Autowired
     RoutineHasSessionRepository routineHasSessionRepository;
@@ -30,7 +34,7 @@ public class RoutineController extends BaseController{
     SessionRepository sessionRepository;
 
     @Autowired
-    UserRepository userRepository;
+    UserService userService;
 
     @Autowired
     TypeHasRoutineRepository typeHasRoutineRepository;
@@ -46,9 +50,9 @@ public class RoutineController extends BaseController{
         if(!estaAutenticado(session)) return  "redirect:/";
         else{
             UserEntity usuario = (UserEntity) session.getAttribute("usuario");
-            List<RoutineEntity> rutinas = routineRepository.getRoutinesbyEntrenador(usuario.getId());
-            UserEntity user = userRepository.getById(usuario.getId());
-            String rol = user.getIdRol().getType();
+            List<Routine> rutinas = routineService.listarRutinas(usuario.getId());
+            User user = userService.buscarUsuario(usuario.getId());
+            String rol = user.getRol().getType();
             List<TypeEntity> tipos = typeRepository.findAll();
             model.addAttribute("tipos", tipos);
             model.addAttribute("lista", rutinas);
@@ -65,13 +69,14 @@ public class RoutineController extends BaseController{
         else{
             UserEntity usuario = (UserEntity) session.getAttribute("usuario");
 
-            List<RoutineEntity> rutinas = null;
+            List<Routine> rutinas = null;
             List<TypeEntity> tipos = typeRepository.findAll();
-            UserEntity entrenador = userRepository.findById(usuario.getId()).orElse(null);
-            String rol = entrenador.getIdRol().getType();
+            User entrenador = userService.buscarUsuario(usuario.getId());
+            String rol = entrenador.getRol().getType();
 
-            if(filtro.estaVacioTipos()) rutinas = routineRepository.findByFiltro(filtro.getNombre(), usuario.getId());
-            else rutinas = routineRepository.findByFiltroNombreYTipo(filtro.getNombre(), filtro.getTipos(), usuario.getId());
+            if(filtro.estaVacioTipos()) rutinas = routineService.listarRutinas(filtro.getNombre(), usuario.getId());
+
+            //else rutinas = routineRepository.findByFiltroNombreYTipo(filtro.getNombre(), filtro.getTipos(), usuario.getId());
 
             model.addAttribute("lista", rutinas);
             model.addAttribute("tipos", tipos);
@@ -86,7 +91,7 @@ public class RoutineController extends BaseController{
     public String doBorrar (@RequestParam("idRutina") Integer idRutina, HttpSession session) {
         if(!estaAutenticado(session)) return  "redirect:/";
         else{
-            this.routineRepository.deleteById(idRutina);
+            this.routineService.borrarRutina(idRutina);
             return "redirect:/home/trainer/rutina";
         }
 
@@ -127,7 +132,7 @@ public class RoutineController extends BaseController{
             //Creo la lista de tipos de rutina
             Set<TypeEntity> tiposRutina = new HashSet<>();
 
-            RoutineEntity routine = routineRepository.findById(idRutina).orElse(null);
+            Routine routine = routineService.buscarRutina(idRutina);
 
             // Guardar las nuevas sesiones
             for (int i = 1; i <= 7; i++) {
@@ -143,7 +148,7 @@ public class RoutineController extends BaseController{
 
                     RoutineHasSessionEntity sessionRoutineEntity = new RoutineHasSessionEntity();
                     sessionRoutineEntity.setId(routineHasSessionId);
-                    sessionRoutineEntity.setRoutine(routine);
+                    // sessionRoutineEntity.setRoutine(routine);
                     sessionRoutineEntity.setSession(sesion);
                     routineHasSessionRepository.save(sessionRoutineEntity);
 
@@ -163,7 +168,7 @@ public class RoutineController extends BaseController{
 
                 TypeHasRoutineEntity typeHasRoutineEntity = new TypeHasRoutineEntity();
                 typeHasRoutineEntity.setId(typeHasRoutineEntityId);
-                typeHasRoutineEntity.setRoutineIdroutine(routine);
+               // typeHasRoutineEntity.setRoutineIdroutine(routine);
                 typeHasRoutineEntity.setTypeIdtype(tipo);
                 typeHasRoutineRepository.save(typeHasRoutineEntity);
             }
@@ -178,9 +183,7 @@ public class RoutineController extends BaseController{
     public String doNuevo (Model model, HttpSession session) {
         if(!estaAutenticado(session)) return "redirect:/";
         else{
-            RoutineEntity rutina = new RoutineEntity();
-            rutina.setId(-1);
-            model.addAttribute("rutina", rutina);
+            model.addAttribute("rutina", new Routine());
             return "routine";
         }
 
@@ -191,7 +194,7 @@ public class RoutineController extends BaseController{
     public String doEditar (@RequestParam("idRutina") Integer idRutina, Model model, HttpSession session) {
         if(!estaAutenticado(session)) return "redirect:/";
         else{
-            RoutineEntity rutina = this.routineRepository.findById(idRutina).orElse(null);
+            Routine rutina = this.routineService.buscarRutina(idRutina);
             model.addAttribute("rutina", rutina);
             return "routine";
         }
@@ -199,21 +202,12 @@ public class RoutineController extends BaseController{
     }
 
     @PostMapping("/guardar")
-    public String doGuardar (@RequestParam("idRutina") Integer idRutina,
-                             @RequestParam("nombre") String nombre,
-                             @RequestParam("descripcion") String descripcion,
-                             @RequestParam("fecha") LocalDate fecha,
+    public String doGuardar (@ModelAttribute("rutina") Routine rutina,
                              HttpSession session){
         if(!estaAutenticado(session)) return "redirect:/";
         else {
-            UserEntity usuario = (UserEntity) session.getAttribute("usuario");
-            UserEntity entrenador = userRepository.findById(usuario.getId()).orElse(null);
-            RoutineEntity rutina = this.routineRepository.findById(idRutina).orElse(new RoutineEntity());
-            rutina.setName(nombre);
-            rutina.setDescription(descripcion);
-            rutina.setDate(Date.valueOf(fecha).toLocalDate());
-            rutina.setIdtrainer(entrenador);
-            this.routineRepository.save(rutina);
+            User usuario = (User) session.getAttribute("usuario");
+            this.routineService.guardarRutina(rutina, usuario.getId());
 
             return "redirect:/home/trainer/rutina";
         }
