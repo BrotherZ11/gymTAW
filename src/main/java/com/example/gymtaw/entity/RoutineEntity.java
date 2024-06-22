@@ -1,20 +1,23 @@
 package com.example.gymtaw.entity;
 
+import com.example.gymtaw.dto.DTO;
+import com.example.gymtaw.dto.Routine;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.*;
+
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.stereotype.Service;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "routine")
-public class RoutineEntity {
+public class RoutineEntity implements DTO<Routine> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idroutine", nullable = false)
@@ -48,4 +51,25 @@ public class RoutineEntity {
             inverseJoinColumns = @JoinColumn(name = "type_idtype"))
     private Set<TypeEntity> types = new LinkedHashSet<>();
 
+    public Routine toDTO() {
+        Routine dto = new Routine();
+        dto.setId(this.getId());
+        dto.setName(this.getName());
+        dto.setDescription(this.getDescription());
+        dto.setDate(this.getDate());
+        dto.setTrainerId(this.getIdtrainer().getId());
+        Set<Integer> sessionIds = new LinkedHashSet<>();
+        for(RoutineHasSessionEntity sesion: this.routineHasSessions){
+            sessionIds.add(sesion.getSession().getId());
+        }
+        dto.setSessions(sessionIds);
+
+        Set<Integer> typesIds = new LinkedHashSet<>();
+        for(TypeEntity type: this.types){
+            typesIds.add(type.getId());
+        }
+        dto.setTypes(typesIds);
+
+        return dto;
+    }
 }
