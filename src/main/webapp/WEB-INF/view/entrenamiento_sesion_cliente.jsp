@@ -37,6 +37,7 @@
         <th></th>
     </tr>
     <% for (Exercise e : ejercicios) { %>
+
     <tr>
 
         <td><a href="/home/cliente/ejercicioIndividual?idEjercicio=<%= e.getId() %>&idRutina=<%=idRutina%>&idSesion=<%=idSesion%>"><%= e.getName() %></a></td>
@@ -49,9 +50,9 @@
 
                 if (valoraciones != null) {
                     for (Valoracion v : valoraciones) {
-                        if (v.getDone() == 1 && v.getUser().getId().equals(idCliente)) {
+                        if (v.getDone() == 1 && v.getUser().getId().equals(idCliente) && v.getExercise().getId().equals(e.getId())) {
                             isDone = true;
-                            break;
+
                         }
                     }
                 }
@@ -60,7 +61,10 @@
                 <input type="hidden" name="idEjercicio" value="<%= e.getId() %>" />
                 <input type="hidden" name="idSesion" value="<%= idSesion %>" />
                 <input type="hidden" name="idRutina" value="<%= idRutina %>" />
-                <input type="checkbox" name="done" value="1" <% if (isDone) { %>checked disabled<% } else { %> onchange="this.form.submit()"<% } %> />
+                <input type="checkbox" name="done" value="1" <% if (isDone) { %>checked disabled<% } %> />
+                <% if (!isDone) { %>
+                <button type="submit">Guardar</button>
+                <% } %>
             </form>
         </td>
         <%
@@ -68,7 +72,7 @@
             if (valoraciones != null) {
 
                 for (Valoracion v : valoraciones) {
-                    if (v.getDone() == 1 && v.getUser().getId().equals(idCliente)) {
+                    if (v.getDone() == 1 && v.getUser().getId().equals(idCliente) && v.getExercise().getId().equals(e.getId())) {
                         if (v.getStars() != null) {
                             valorado = true;
         %>
@@ -79,7 +83,7 @@
 
         <%
                         }
-                        break;
+                       // break;
                     }
                 }
             }
@@ -94,6 +98,9 @@
         <%
                  }
         %>
+
+
+
         <td>
             <%if(valorado){
 

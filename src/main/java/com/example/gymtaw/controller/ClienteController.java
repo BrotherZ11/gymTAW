@@ -127,7 +127,7 @@ public class ClienteController extends BaseController{
     public String guardarComplecion(@RequestParam("idRutina") Integer idRutina,
                                     @RequestParam("idSesion") Integer idSesion,
                                     @RequestParam("idEjercicio") Integer idEjercicio,
-                                    @RequestParam(value = "done", required = false) String done,
+                                    @RequestParam(value = "done", required = false) Integer done,
                                     Model model, HttpSession session) {
 
         String strTo="redirect:/home/cliente/ejercicio?idSesion=" + idSesion + "&idRutina=" + idRutina ;
@@ -137,11 +137,23 @@ public class ClienteController extends BaseController{
         if(idSesion==-1){
             strTo="redirect:/home/cliente/valorar";
         }
+
+
         Exercise exercise = exerciseService.findByidEjercicio(idEjercicio);
 
         User usuario = (User) session.getAttribute("usuario");
+//        valoracionService.updateCompletionStatus(idEjercicio, usuario, done);
 
-        valoracionService.buscarOCrearValoracion(exercise, usuario, done, idEjercicio);
+       valoracionService.buscarOCrearValoracion(exercise, usuario, String.valueOf(done), idEjercicio);
+
+        // Refresh data after updating
+        List<Session> sesiones = sessionService.listarSesionByIdRutina(idRutina);
+        List<Exercise> ejercicios = exerciseService.getExercisesByIdSession(idSesion);
+        List<Valoracion> valoraciones = valoracionService.getValoracionesByExercises(ejercicios);
+
+        model.addAttribute("sesiones", sesiones);
+        model.addAttribute("ejercicios", ejercicios);
+        model.addAttribute("valoraciones", valoraciones);
 
 
         return strTo;

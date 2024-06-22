@@ -41,6 +41,7 @@ public class ValoracionEntity  implements DTO<Valoracion> {
         Valoracion valoracion = new Valoracion();
         valoracion.setId(this.id.toDTO());
         valoracion.setUser(this.user.toDTO());
+        valoracion.setExercise(this.exercise.toDTO());
         valoracion.setReview(this.review);
         valoracion.setStars(this.stars);
         valoracion.setDone(this.done);
