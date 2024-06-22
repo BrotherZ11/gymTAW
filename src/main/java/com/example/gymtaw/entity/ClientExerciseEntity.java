@@ -1,5 +1,7 @@
 package com.example.gymtaw.entity;
 
+import com.example.gymtaw.dto.ClientExercise;
+import com.example.gymtaw.dto.DTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +12,7 @@ import org.hibernate.annotations.OnDeleteAction;
 @Setter
 @Entity
 @Table(name = "client_exercise")
-public class ClientExerciseEntity {
+public class ClientExerciseEntity implements DTO<ClientExercise> {
     @EmbeddedId
     private ClientExerciseEntityId id;
 
@@ -39,5 +41,18 @@ public class ClientExerciseEntity {
 
     @Column(name = "distance")
     private Double distance;
+
+    public ClientExercise toDTO() {
+        ClientExercise clientExercise = new ClientExercise();
+        clientExercise.setId(this.id.toDTO());
+        clientExercise.setUser(this.user.toDTO());
+        clientExercise.setExercise(this.exercise.toDTO());
+        clientExercise.setReps(this.reps);
+        clientExercise.setSets(this.sets);
+        clientExercise.setWeight(this.weight);
+        clientExercise.setCalories(this.calories);
+        clientExercise.setDistance(this.distance);
+        return clientExercise;
+    }
 
 }

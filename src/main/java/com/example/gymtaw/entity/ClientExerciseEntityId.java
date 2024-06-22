@@ -1,5 +1,6 @@
 package com.example.gymtaw.entity;
 
+import com.example.gymtaw.dto.ClientExerciseId;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.Getter;
@@ -34,4 +35,10 @@ public class ClientExerciseEntityId implements Serializable {
         return Objects.hash(exerciseId, userId);
     }
 
+    public ClientExerciseId toDTO() {
+        ClientExerciseId clientExerciseEntityId = new ClientExerciseId();
+        clientExerciseEntityId.setExerciseId(this.exerciseId);
+        clientExerciseEntityId.setUserId(this.userId);
+        return clientExerciseEntityId;
+    }
 }

@@ -1,5 +1,6 @@
 <%@ page import="com.example.gymtaw.entity.ExerciseEntity" %>
-<%@ page import="com.example.gymtaw.entity.ValoracionEntity" %><%--
+<%@ page import="com.example.gymtaw.entity.ValoracionEntity" %>
+<%@ page import="com.example.gymtaw.dto.Exercise" %><%--
   Created by IntelliJ IDEA.
   User: W10
   Date: 19/06/2024
@@ -8,7 +9,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    ExerciseEntity ejercicio = (ExerciseEntity) request.getAttribute("ejercicio");
+    Exercise ejercicio = (Exercise) request.getAttribute("ejercicio");
     Integer idSesion = (Integer) request.getAttribute("idSesion");
     Integer idRutina = (Integer) request.getAttribute("idRutina");
 %>

@@ -1,6 +1,8 @@
 package com.example.gymtaw.entity;
 
+import com.example.gymtaw.dto.DTO;
 import com.example.gymtaw.dto.Exercise;
+import com.example.gymtaw.dto.Routine;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,7 +13,7 @@ import java.util.*;
 @Setter
 @Entity
 @Table(name = "exercise")
-public class ExerciseEntity {
+public class ExerciseEntity  implements DTO<Exercise> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)

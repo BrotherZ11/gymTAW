@@ -15,7 +15,7 @@
     <title>Sesiones de Cliente</title>
 </head>
 <body>
-<a href="http://localhost:8080/home/cliente/entrenamientos?idCliente=<%= idCliente %>">Volver atrás</a>
+<a href="http://localhost:8080/home/cliente/entrenamientos">Volver atrás</a>
 <h1> Sesiones del Cliente </h1>
 <h2> TAW </h2>
 
@@ -62,7 +62,7 @@
                     if(sesionRutina.get(j).getId().getDay() == i){
                         found = true;
         %>
-        <td><a href="/home/cliente/ejercicio?idSesion=<%= sesiones.get(j).getId() %>&idRutina=<%=idRutina%>&idCliente=<%=idCliente%>">Ver</a></td>
+        <td><a href="/home/cliente/ejercicio?idSesion=<%= sesiones.get(j).getId() %>&idRutina=<%=idRutina%>">Ver</a></td>
         <%
                     //break;
                 }

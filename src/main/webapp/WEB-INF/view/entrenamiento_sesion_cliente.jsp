@@ -1,19 +1,19 @@
 <%@ page import="java.util.List" %>
 <%@ page import="com.example.gymtaw.entity.*" %>
+<%@ page import="java.util.Set" %>
+<%@ page import="com.example.gymtaw.dto.Session" %>
+<%@ page import="com.example.gymtaw.dto.Exercise" %>
+<%@ page import="com.example.gymtaw.dto.User" %>
+<%@ page import="com.example.gymtaw.dto.Valoracion" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    List<SessionEntity> sesiones = (List<SessionEntity>) request.getAttribute("sesiones");
-    List<ExerciseEntity> ejercicios = (List<ExerciseEntity>) request.getAttribute("ejercicios");
+    List<Session> sesiones = (List<Session>) request.getAttribute("sesiones");
+    List<Exercise> ejercicios = (List<Exercise>) request.getAttribute("ejercicios");
+    List<Valoracion> valoraciones = (List<Valoracion>) request.getAttribute("valoraciones");
     Integer idSesion = (Integer) request.getAttribute("idSesion");
     Integer idRutina = (Integer) request.getAttribute("idRutina");
-    Integer idCliente=0;
-    for (SessionEntity s : sesiones) {
-        for (ExerciseHasSessionEntity es : s.getExerciseHasSessions()) {
-            for (ClientExerciseEntity ec : es.getExercise().getClientExercises()) {
-                idCliente = ec.getUser().getId();
-            }
-        }
-    }
+    User usuario= (User) request.getAttribute("usuario");
+    Integer idCliente = usuario.getId();
 %>
 <html>
 <head>
@@ -24,7 +24,7 @@
 <h1>Sesiones del Cliente</h1>
 
 <% if (sesiones != null) { %>
-<% for (SessionEntity s : sesiones) { %>
+<% for (Session s : sesiones) { %>
 <h2><%= s.getName() %></h2>
 <% if (ejercicios != null) { %>
 <table border="1">
@@ -36,7 +36,7 @@
         <th>Valoración</th>
         <th></th>
     </tr>
-    <% for (ExerciseEntity e : ejercicios) { %>
+    <% for (Exercise e : ejercicios) { %>
     <tr>
 
         <td><a href="/home/cliente/ejercicioIndividual?idEjercicio=<%= e.getId() %>&idRutina=<%=idRutina%>&idSesion=<%=idSesion%>"><%= e.getName() %></a></td>
@@ -46,14 +46,9 @@
         <td align="center">
             <%
                 boolean isDone = false;
-                List<ValoracionEntity> val = e.getValoracions();
 
-                for( ExerciseHasSessionEntity es : s.getExerciseHasSessions()){
-                    for(ClientExerciseEntity ec : es.getExercise().getClientExercises()){
-                        idCliente = ec.getUser().getId();
-                    }}
-                if (val != null) {
-                    for (ValoracionEntity v : val) {
+                if (valoraciones != null) {
+                    for (Valoracion v : valoraciones) {
                         if (v.getDone() == 1 && v.getUser().getId().equals(idCliente)) {
                             isDone = true;
                             break;
@@ -70,9 +65,9 @@
         </td>
         <%
             boolean valorado = false;
-            if (val != null) {
+            if (valoraciones != null) {
 
-                for (ValoracionEntity v : val) {
+                for (Valoracion v : valoraciones) {
                     if (v.getDone() == 1 && v.getUser().getId().equals(idCliente)) {
                         if (v.getStars() != null) {
                             valorado = true;
@@ -94,11 +89,6 @@
         <%
         } else if (!valorado) {
 
-            for( ExerciseHasSessionEntity es : s.getExerciseHasSessions()){
-                for(ClientExerciseEntity ec : es.getExercise().getClientExercises()){
-                    idCliente = ec.getUser().getId();
-                }}
-
         %>
         <td align="center"><a href="valorarEjercicio?idEjercicio=<%= e.getId() %>&idSesion=<%=s.getId()%>&idRutina=<%=idRutina%>">Valorar</a></td>
         <%
@@ -107,10 +97,6 @@
         <td>
             <%if(valorado==true){
 
-            for( ExerciseHasSessionEntity es : s.getExerciseHasSessions()){
-                for(ClientExerciseEntity ec : es.getExercise().getClientExercises()){
-                    idCliente =  ec.getUser().getId();
-                }}
             %>
         <a href="valorarEjercicio?idEjercicio=<%= e.getId() %>&idSesion=<%=s.getId()%>&idRutina=<%=idRutina%>">Editar valoracion</a>
             <%}else{%>

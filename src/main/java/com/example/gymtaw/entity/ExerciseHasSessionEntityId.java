@@ -1,5 +1,8 @@
 package com.example.gymtaw.entity;
 
+import com.example.gymtaw.dto.DTO;
+import com.example.gymtaw.dto.ExerciseHasSessionId;
+import com.example.gymtaw.dto.RoutineHasSessionId;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.Getter;
@@ -12,7 +15,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @Embeddable
-public class ExerciseHasSessionEntityId implements Serializable {
+public class ExerciseHasSessionEntityId implements Serializable, DTO<ExerciseHasSessionId> {
     private static final long serialVersionUID = -6353819351898563205L;
     @Column(name = "exercise_id", nullable = false)
     private Integer exerciseId;
@@ -38,8 +41,8 @@ public class ExerciseHasSessionEntityId implements Serializable {
         return Objects.hash(exerciseId, sessionId, order);
     }
 
-    public ExerciseHasSessionEntityId toDTO() {
-        ExerciseHasSessionEntityId exerciseHasSessionEntityId = new ExerciseHasSessionEntityId();
+    public ExerciseHasSessionId toDTO() {
+        ExerciseHasSessionId exerciseHasSessionEntityId = new ExerciseHasSessionId();
         exerciseHasSessionEntityId.setExerciseId(exerciseId);
         exerciseHasSessionEntityId.setSessionId(sessionId);
         exerciseHasSessionEntityId.setOrder(order);

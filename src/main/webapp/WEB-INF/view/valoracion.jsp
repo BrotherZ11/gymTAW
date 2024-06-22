@@ -1,6 +1,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.example.gymtaw.entity.*" %>
+<%@ page import="java.util.Set" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     List<ExerciseEntity> ejercicios = (List<ExerciseEntity>) request.getAttribute("ejercicios");
@@ -57,7 +58,7 @@
         <td align="center">
             <%
                 boolean isDone = false;
-                List<ValoracionEntity> val = e.getValoracions();
+                Set<ValoracionEntity> val = e.getValoracions();
 
 
                 if (val != null) {

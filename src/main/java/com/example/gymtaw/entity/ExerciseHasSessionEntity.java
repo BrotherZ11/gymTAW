@@ -1,5 +1,7 @@
 package com.example.gymtaw.entity;
 
+import com.example.gymtaw.dto.DTO;
+import com.example.gymtaw.dto.ExerciseHasSession;
 import com.example.gymtaw.dto.RoutineHasSession;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -11,7 +13,7 @@ import org.hibernate.annotations.OnDeleteAction;
 @Setter
 @Entity
 @Table(name = "exercise_has_session")
-public class ExerciseHasSessionEntity {
+public class ExerciseHasSessionEntity implements DTO<ExerciseHasSession> {
     @EmbeddedId
     private ExerciseHasSessionEntityId id;
 
@@ -27,11 +29,11 @@ public class ExerciseHasSessionEntity {
     @JoinColumn(name = "session_id", nullable = false)
     private SessionEntity session;
 
-    public ExerciseHasSessionEntity toDTO() {
-        ExerciseHasSessionEntity exerciseHasSessionEntity = new ExerciseHasSessionEntity();
-        exerciseHasSessionEntity.setId(this.id.toDTO());
-        exerciseHasSessionEntity.setExercise(this.exercise);
-        exerciseHasSessionEntity.setSession(this.session);
-        return exerciseHasSessionEntity;
+    public ExerciseHasSession toDTO() {
+        ExerciseHasSession exerciseHasSession = new ExerciseHasSession();
+        exerciseHasSession.setId(this.id.toDTO());
+        exerciseHasSession.setExercise(this.exercise.toDTO());
+        exerciseHasSession.setSession(this.session);
+        return exerciseHasSession;
     }
 }

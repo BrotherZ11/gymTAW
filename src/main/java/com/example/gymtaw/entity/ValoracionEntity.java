@@ -1,5 +1,6 @@
 package com.example.gymtaw.entity;
 
+import com.example.gymtaw.dto.*;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,7 +12,7 @@ import org.hibernate.annotations.OnDeleteAction;
 @Setter
 @Entity
 @Table(name = "valoracion")
-public class ValoracionEntity {
+public class ValoracionEntity  implements DTO<Valoracion> {
     @EmbeddedId
     private ValoracionEntityId id;
 
@@ -36,4 +37,13 @@ public class ValoracionEntity {
     @Column(name = "done", nullable = false)
     private Byte done;
 
+    public Valoracion toDTO() {
+        Valoracion valoracion = new Valoracion();
+        valoracion.setId(this.id.toDTO());
+        valoracion.setUser(this.user.toDTO());
+        valoracion.setReview(this.review);
+        valoracion.setStars(this.stars);
+        valoracion.setDone(this.done);
+        return valoracion;
+    }
 }

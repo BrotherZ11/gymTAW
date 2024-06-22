@@ -1,6 +1,8 @@
 <%@ page import="com.example.gymtaw.entity.ExerciseEntity" %>
 <%@ page import="com.example.gymtaw.entity.ClientExerciseEntity" %>
-<%@ page import="java.util.List" %><%--
+<%@ page import="java.util.List" %>
+<%@ page import="com.example.gymtaw.dto.Exercise" %>
+<%@ page import="com.example.gymtaw.dto.ClientExercise" %><%--
   Created by IntelliJ IDEA.
   User: marta
   Date: 16/06/2024
@@ -9,8 +11,8 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    ExerciseEntity ejercicio = (ExerciseEntity) request.getAttribute("ejercicio");
-    List<ClientExerciseEntity> clientExercise = (List<ClientExerciseEntity>) request.getAttribute("clientExercise");
+    Exercise ejercicio = (Exercise) request.getAttribute("ejercicio");
+    List<ClientExercise> clientExercise = (List<ClientExercise>) request.getAttribute("clientExercise");
     Integer idRutina = (Integer) request.getAttribute("idRutina");
     Integer idSesion = (Integer) request.getAttribute("idSesion");
 
@@ -28,7 +30,7 @@
 <%}%>
 <%
     if (ejercicio != null && clientExercise != null) {
-        for (ClientExerciseEntity ce : clientExercise) {
+        for (ClientExercise ce : clientExercise) {
 %>
 <h2><%=ejercicio.getName()%></h2>
 <table border="1">
