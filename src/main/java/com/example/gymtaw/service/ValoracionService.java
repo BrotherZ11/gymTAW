@@ -119,8 +119,8 @@ public class ValoracionService extends DTOService<Valoracion, ValoracionEntity>{
         }
     }
 
-    public List<Valoracion> findValoracionByIdClient(Integer idCliente){
-        List<ValoracionEntity> valoraciones = valoracionRepository.findValoracionEntitiesByIdCliente(idCliente);
+    public List<Valoracion> findValoracionByIdClientAndIdEntrenador(Integer idCliente, Integer idEntrenador){
+        List<ValoracionEntity> valoraciones = valoracionRepository.findValoracionEntitiesByIdClienteAndIdEntrenador(idCliente, idEntrenador);
         return this.entidadesADTO(valoraciones);
     }
 

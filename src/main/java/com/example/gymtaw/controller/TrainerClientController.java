@@ -69,7 +69,7 @@ public class TrainerClientController extends BaseController{
 
             List<Exercise> ejercicios = exerciseService.findExercisesWithAReviewByIdClient(idCliente);
             List<ClientExercise> ejerciciosCliente = clientExerciseService.findClientExercisesWithAReviewByIdClientAndIdETrainer(idCliente, usuario.getId());
-            List<Valoracion> valoraciones = valoracionService.findValoracionByIdClient(idCliente);
+            List<Valoracion> valoraciones = valoracionService.findValoracionByIdClientAndIdEntrenador(idCliente, usuario.getId());
 
             model.addAttribute("ejercicios", ejercicios);
             model.addAttribute("ejerciciosCliente", ejerciciosCliente);
