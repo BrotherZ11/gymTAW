@@ -262,7 +262,7 @@ public class TrainerClientController extends BaseController{
             User cliente = (User) session.getAttribute("cliente");
 
             ClientExercise clientExercise = clientExerciseService.saveClientExercise(idEjercicio, cliente.getId(), reps, sets, peso, calorias, distancia);
-            valoracionService.crearValoracionNueva(idEjercicio, cliente.getId());
+            valoracionService.crearValoracionNueva(cliente.getId(), idEjercicio);
 
             model.addAttribute("ejercicio", clientExercise);
         }
