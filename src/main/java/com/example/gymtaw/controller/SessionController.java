@@ -2,6 +2,7 @@ package com.example.gymtaw.controller;
 
 import com.example.gymtaw.dao.*;
 import com.example.gymtaw.entity.*;
+import com.example.gymtaw.service.SessionService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,6 +21,9 @@ import java.util.*;
 public class SessionController extends BaseController{
     @Autowired
     SessionRepository sessionRepository;
+
+    @Autowired
+    SessionService sessionService;
 
     @Autowired
     UserRepository userRepository;
@@ -138,7 +142,7 @@ public class SessionController extends BaseController{
         if(!estaAutenticado(session)) return  "redirect:/";
         else{
             Integer idRutina =(Integer) session.getAttribute("idRutina");
-            this.sessionRepository.deleteById(idSesion);
+            this.sessionService.borrarSesion(idSesion);
 
             return "redirect:/home/trainer/ver?idRutina=" + idRutina;
         }

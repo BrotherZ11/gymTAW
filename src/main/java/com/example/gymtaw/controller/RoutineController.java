@@ -1,6 +1,5 @@
 package com.example.gymtaw.controller;
 
-import com.example.gymtaw.dao.*;
 import com.example.gymtaw.dto.*;
 import com.example.gymtaw.service.*;
 import com.example.gymtaw.ui.FiltroRutina;
@@ -66,9 +65,8 @@ public class RoutineController extends BaseController{
             User entrenador = userService.BuscarPorId(usuario.getId());
             String rol = entrenador.getRol().getType();
 
-            if(filtro.estaVacioTipos()) rutinas = routineService.listarRutinas(filtro.getNombre(), usuario.getId());
-
-            //else rutinas = routineRepository.findByFiltroNombreYTipo(filtro.getNombre(), filtro.getTipos(), usuario.getId());
+            if(filtro.estaVacioTipos()) rutinas = routineService.filtrarRutinas(filtro.getNombre(), usuario.getId());
+            else rutinas = routineService.filtrarRutinasPorTipos(filtro.getNombre(), filtro.getTipos(), usuario.getId());
 
             model.addAttribute("lista", rutinas);
             model.addAttribute("tipos", tipos);

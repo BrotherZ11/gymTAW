@@ -2,7 +2,8 @@
 <%@ page import="com.example.gymtaw.entity.RoutineEntity" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.example.gymtaw.entity.TypeEntity" %>
-<%@ page import="com.example.gymtaw.dto.Routine" %><%--
+<%@ page import="com.example.gymtaw.dto.Routine" %>
+<%@ page import="com.example.gymtaw.dto.Type" %><%--
   Created by IntelliJ IDEA.
   User: dzarz
   Date: 29/04/2024
@@ -12,7 +13,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     List<Routine> lista = (List<Routine>) request.getAttribute("lista");
-    List<TypeEntity> tipos = (List<TypeEntity>) request.getAttribute("tipos");
+    List<Type> tipos = (List<Type>) request.getAttribute("tipos");
     String filtro = request.getParameter("filtro");
     String rol = (String) request.getAttribute("rol");
     if (filtro == null) filtro = "";
@@ -22,9 +23,13 @@
     <title>Rutinas</title>
 </head>
 <body>
+<div align="right">
+    <a href="/salir">Log out</a>
+</div>
 <h1> Rutinas </h1>
 <h2> TAW </h2>
 <a href="/home/trainer">Volver</a>
+
 <form:form method="post" action="/home/trainer/filtrar" modelAttribute="filtro">
     Nombre de la rutina: <form:input path="nombre" />
     <%
@@ -32,7 +37,7 @@
     %>
     Tipos de la rutina:
     <%
-        for(TypeEntity tipo : tipos){
+        for(Type tipo : tipos){
     %>
     <form:checkbox value="<%=tipo.getId()%>" label="<%=tipo.getName()%>" path="tipos"/>
     <%

@@ -40,4 +40,6 @@ public class SessionService extends DTOService<Session, SessionEntity>{
         List<SessionEntity> sesiones = sessionRepository.getSessionsByIdEntrenador(idEntrenador);
         return this.entidadesADTO(sesiones);
     }
+
+    public void borrarSesion(Integer idSesion) {sessionRepository.deleteById(idSesion);}
 }

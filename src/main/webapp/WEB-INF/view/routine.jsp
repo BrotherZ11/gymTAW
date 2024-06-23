@@ -15,7 +15,11 @@
     <title>Datos de la rutina</title>
 </head>
 <body>
+<div align="right">
+    <a href="/salir">Log out</a>
+</div>
 <h1>Datos de la rutina</h1>
+
 <a href="/home/trainer/rutina">Cancelar</a>
 <form:form method="post" action="guardar" modelAttribute="rutina">
     <form:hidden path="id" />
