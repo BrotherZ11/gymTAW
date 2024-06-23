@@ -32,15 +32,16 @@ public class ClientExerciseService extends DTOService<ClientExercise, ClientExer
         return this.entidadesADTO(clientExercises);
     }
 
-    public List<ClientExercise> findClientExercisesWithAReviewByIdClient(Integer idCliente){
-        List<ClientExerciseEntity> ejerciciosCliente = clientExerciseRepository.getClientExerciseEntitiesByIdClienteAndHaveReview(idCliente);
+    public List<ClientExercise> findClientExercisesWithAReviewByIdClientAndIdETrainer(Integer idCliente, Integer idEntrenador){
+        List<ClientExerciseEntity> ejerciciosCliente = clientExerciseRepository.getClientExerciseEntitiesByIdClienteIdTrainerAndHaveReview(idCliente, idEntrenador);
         return this.entidadesADTO(ejerciciosCliente);
     }
 
-    public ClientExercise findClientExerciseByIdExerciseAndIdCliente(Integer idEjercicio, Integer idCliente){
+    public ClientExercise findClientExerciseByIdExerciseIdClienteAndIdEntrenador(Integer idEjercicio, Integer idCliente, Integer idEntrenador){
         ClientExerciseEntityId clientExerciseId = new ClientExerciseEntityId();
         clientExerciseId.setExerciseId(idEjercicio);
         clientExerciseId.setUserId(idCliente);
+        clientExerciseId.setTrainerId(idEntrenador);
 
         ClientExerciseEntity clientExercise = clientExerciseRepository.findById(clientExerciseId).orElse(null);
         if (clientExercise != null) {
@@ -50,10 +51,11 @@ public class ClientExerciseService extends DTOService<ClientExercise, ClientExer
         }
     }
 
-    public ClientExercise saveClientExercise(Integer idEjercicio, Integer idCliente, String reps, String sets, String peso, Double calorias, Double distancia){
+    public ClientExercise saveClientExercise(Integer idEjercicio, Integer idCliente, Integer idEntrenador, String reps, String sets, String peso, Double calorias, Double distancia){
         ClientExerciseEntityId clientExerciseId = new ClientExerciseEntityId();
         clientExerciseId.setExerciseId(idEjercicio);
         clientExerciseId.setUserId(idCliente);
+        clientExerciseId.setTrainerId(idEntrenador);
 
         ClientExerciseEntity clientExercise = clientExerciseRepository.findById(clientExerciseId).orElse(null);
 
@@ -66,9 +68,11 @@ public class ClientExerciseService extends DTOService<ClientExercise, ClientExer
 
         ExerciseEntity ejercicio = exerciseRepository.findById(idEjercicio).orElse(null);
         UserEntity cliente = userRepository.findById(idCliente).orElse(null);
+        UserEntity entrenador = userRepository.findById(idEntrenador).orElse(null);
 
         clientExercise.setExercise(ejercicio);
         clientExercise.setUser(cliente);
+        clientExercise.setTrainer(entrenador);
         clientExercise.setId(clientExerciseId);
         clientExercise.setReps(reps);
         clientExercise.setSets(sets);

@@ -124,20 +124,23 @@ public class ValoracionService extends DTOService<Valoracion, ValoracionEntity>{
         return this.entidadesADTO(valoraciones);
     }
 
-    public void crearValoracionNueva(Integer idCliente, Integer idEjercicio){
-        ValoracionEntity valoracion = valoracionRepository.getValoracionesByExerciseAndCliente(idEjercicio, idCliente);
+    public void crearValoracionNueva(Integer idCliente, Integer idEjercicio, Integer idEntrenador){
+        ValoracionEntityId valoracionEntityId = new ValoracionEntityId();
+        valoracionEntityId.setExerciseId(idEjercicio);
+        valoracionEntityId.setUserId(idCliente);
+        valoracionEntityId.setTrainerId(idEntrenador);
+
+        ValoracionEntity valoracion = valoracionRepository.findById(valoracionEntityId).orElse(null);
         if(valoracion == null){
             ExerciseEntity ejercicio = exerciseRepository.findById(idEjercicio).orElse(null);
             UserEntity cliente = userRepository.findById(idCliente).orElse(null);
-
-            ValoracionEntityId valoracionEntityId = new ValoracionEntityId();
-            valoracionEntityId.setExerciseId(idEjercicio);
-            valoracionEntityId.setUserId(idCliente);
+            UserEntity entrenador = userRepository.findById(idEntrenador).orElse(null);
 
             valoracion = new ValoracionEntity();
             valoracion.setId(valoracionEntityId);
             valoracion.setExercise(ejercicio);
             valoracion.setUser(cliente);
+            valoracion.setTrainer(entrenador);
             valoracion.setDone((byte) 0);
 
             valoracionRepository.save(valoracion);

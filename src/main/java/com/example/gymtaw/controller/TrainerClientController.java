@@ -65,9 +65,10 @@ public class TrainerClientController extends BaseController{
         } else {
 
             User cliente = userService.BuscarPorId(idCliente);
+            User usuario = (User) session.getAttribute("usuario");
 
             List<Exercise> ejercicios = exerciseService.findExercisesWithAReviewByIdClient(idCliente);
-            List<ClientExercise> ejerciciosCliente = clientExerciseService.findClientExercisesWithAReviewByIdClient(idCliente);
+            List<ClientExercise> ejerciciosCliente = clientExerciseService.findClientExercisesWithAReviewByIdClientAndIdETrainer(idCliente, usuario.getId());
             List<Valoracion> valoraciones = valoracionService.findValoracionByIdClient(idCliente);
 
             model.addAttribute("ejercicios", ejercicios);
@@ -231,8 +232,9 @@ public class TrainerClientController extends BaseController{
             strTo = "redirect:/";
         } else {
             User cliente = (User) session.getAttribute("cliente");
+            User usuario = (User) session.getAttribute("usuario");
 
-            ClientExercise clientExercise = clientExerciseService.findClientExerciseByIdExerciseAndIdCliente(idEjercicio, cliente.getId());
+            ClientExercise clientExercise = clientExerciseService.findClientExerciseByIdExerciseIdClienteAndIdEntrenador(idEjercicio, cliente.getId(), usuario.getId());
             Exercise exercise = exerciseService.findByidEjercicio(idEjercicio);
 
             model.addAttribute("ejercicioCliente", clientExercise);
@@ -260,9 +262,10 @@ public class TrainerClientController extends BaseController{
         } else {
 
             User cliente = (User) session.getAttribute("cliente");
+            User usuario = (User) session.getAttribute("usuario");
 
-            ClientExercise clientExercise = clientExerciseService.saveClientExercise(idEjercicio, cliente.getId(), reps, sets, peso, calorias, distancia);
-            valoracionService.crearValoracionNueva(cliente.getId(), idEjercicio);
+            ClientExercise clientExercise = clientExerciseService.saveClientExercise(idEjercicio, cliente.getId(), usuario.getId(), reps, sets, peso, calorias, distancia);
+            valoracionService.crearValoracionNueva(cliente.getId(), idEjercicio, usuario.getId());
 
             model.addAttribute("ejercicio", clientExercise);
         }
