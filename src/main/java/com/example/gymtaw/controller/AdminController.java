@@ -5,17 +5,22 @@ package com.example.gymtaw.controller;
 import com.example.gymtaw.dao.RolRepository;
 import com.example.gymtaw.dao.UserHasTrainerRepository;
 import com.example.gymtaw.dao.UserRepository;
+import com.example.gymtaw.dto.Exercise;
 import com.example.gymtaw.dto.Rol;
+import com.example.gymtaw.dto.Type;
 import com.example.gymtaw.dto.User;
 import com.example.gymtaw.entity.RolEntity;
 import com.example.gymtaw.entity.UserEntity;
 import com.example.gymtaw.entity.UserHasTrainerEntity;
 import com.example.gymtaw.entity.UserHasTrainerEntityId;
+import com.example.gymtaw.service.ExerciseService;
 import com.example.gymtaw.service.RolService;
+import com.example.gymtaw.service.TypeService;
 import com.example.gymtaw.service.UserService;
 import com.example.gymtaw.ui.Filtro;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +36,9 @@ public class AdminController extends BaseController{
     @Autowired
     protected RolService rolService;
     @Autowired
-    UserHasTrainerRepository userTrainerRepository;
+    ExerciseService exerciseService;
+    @Autowired
+    TypeService typeService;
 
     @GetMapping("/")
     public String doListarUsuarios (Model model, HttpSession session) {
@@ -184,5 +191,74 @@ public class AdminController extends BaseController{
         }
         this.userService.desasignarUsuarios(idUsuario, usuariosDeasignar);
         return "redirect:/users/";
+    }
+
+    @GetMapping("/ejercicios")
+    public String doListarEjercicios(Model model, HttpSession session){
+        String strTo = "listadoEjercicios";
+        if(!estaAutenticado(session)){
+            strTo = "redirect:/";
+        } else {
+            List<Exercise> ejercicios = exerciseService.listarEjercicios();
+            model.addAttribute("ejercicios", ejercicios);
+        }
+        return strTo;
+    }
+
+    @GetMapping("/borrarEjercicio")
+    public String borrarEjercicio (@RequestParam("id") Integer id, HttpSession session) {
+        String strTo = "redirect:/users/ejercicios";
+        if(!estaAutenticado(session)){
+            strTo = "redirect:/";
+        }
+        this.exerciseService.borrarEjercicio(id);
+        return strTo;
+    }
+
+    @GetMapping("/editarEjercicio")
+    public String editarEjercicio (@RequestParam("id") Integer id,Model model, HttpSession session) {
+        String strTo = "editarEjercicio";
+        if(!estaAutenticado(session)){
+            strTo = "redirect:/";
+        } else {
+            Exercise ejercicio = exerciseService.findByidEjercicio(id);
+            model.addAttribute("ejercicio", ejercicio);
+        }
+        return strTo;
+    }
+
+    @GetMapping("/crearEjercicio")
+    public String crearEjercicio (Model model, HttpSession session) {
+        String strTo = "crearEjercicio";
+        if(!estaAutenticado(session)){
+            strTo = "redirect:/";
+        }
+        Exercise ejercicio = new Exercise();
+        List<Type> tipos = typeService.cogerTipos();
+        model.addAttribute("ejercicio", ejercicio);
+        model.addAttribute("tipos", tipos);
+        return strTo;
+    }
+
+    @PostMapping("/guardarEdicionEjercicio")
+    public String doGuardarEdicionEjercicio (@ModelAttribute("ejercicio") Exercise ejercicio, HttpSession session) {
+        String strTo = "redirect:/users/ejercicios";
+        if (!estaAutenticado(session)) {
+            strTo = "redirect:/";
+        } else {
+            this.exerciseService.guardarEdicionEjercicio(ejercicio);
+        }
+        return strTo;
+    }
+
+    @PostMapping("/guardarCreacionEjercicio")
+    public String doGuardarCreacionEjercicio (@ModelAttribute("ejercicio") Exercise ejercicio, HttpSession session) {
+        String strTo = "redirect:/users/ejercicios";
+        if (!estaAutenticado(session)) {
+            strTo = "redirect:/";
+        } else {
+            this.exerciseService.guardarCreacionEjercicio(ejercicio);
+        }
+        return strTo;
     }
 }

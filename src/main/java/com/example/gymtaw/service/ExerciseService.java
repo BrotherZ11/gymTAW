@@ -2,8 +2,10 @@ package com.example.gymtaw.service;
 //Marta Granado Rodríguez 80%, David Zarzavilla Borrego 10%, David Molina Lopez 10%
 import com.example.gymtaw.dao.ClientExerciseRepository;
 import com.example.gymtaw.dao.ExerciseRepository;
+import com.example.gymtaw.dao.TypeRepository;
 import com.example.gymtaw.dto.Exercise;
 import com.example.gymtaw.entity.ExerciseEntity;
+import com.example.gymtaw.entity.TypeEntity;
 import com.example.gymtaw.ui.FiltroEjercicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,7 @@ public class ExerciseService extends DTOService<Exercise, ExerciseEntity>{
     @Autowired
     ClientExerciseRepository clientExerciseRepository;
 
+<<<<<<< Updated upstream
     public List<Exercise> listarEjercicios(){
         List<ExerciseEntity> exer = exerciseRepository.findAll();
         return this.entidadesADTO(exer);
@@ -28,6 +31,14 @@ public class ExerciseService extends DTOService<Exercise, ExerciseEntity>{
     public List<Exercise> listarEjerciciosFuerza(){
         List<ExerciseEntity> exer = exerciseRepository.getExerciseFuerza();
         return this.entidadesADTO(exer);
+=======
+    @Autowired
+    TypeRepository typeRepository;
+
+    public List<Exercise> listarEjercicios() {
+        List<ExerciseEntity> ejercicios = exerciseRepository.findAll();
+        return this.entidadesADTO(ejercicios);
+>>>>>>> Stashed changes
     }
 
     public List<Exercise> getExercisesByIdSession(Integer idSesion){
@@ -83,5 +94,27 @@ public class ExerciseService extends DTOService<Exercise, ExerciseEntity>{
     public List<Exercise> findExercisesWithDataByIdSesion(Integer idSesion){
         List<ExerciseEntity> ejercicios = exerciseRepository.getExercisesByIdSessionWithData(idSesion);
         return this.entidadesADTO(ejercicios);
+    }
+
+    public void borrarEjercicio(Integer id) {
+        exerciseRepository.deleteById(id);
+    }
+
+    public void guardarEdicionEjercicio(Exercise ejercicio) {
+        ExerciseEntity exer = this.exerciseRepository.findById(ejercicio.getId()).get();
+        exer.setName(ejercicio.getName());
+        exer.setDescription(ejercicio.getDescription());
+        exer.setVideo(ejercicio.getVideo());
+        this.exerciseRepository.save(exer);
+    }
+
+    public void guardarCreacionEjercicio(Exercise ejercicio) {
+        ExerciseEntity exer = new ExerciseEntity();
+        exer.setName(ejercicio.getName());
+        exer.setDescription(ejercicio.getDescription());
+        exer.setVideo(ejercicio.getVideo());
+        TypeEntity type = this.typeRepository.findById(ejercicio.getTypeIdtype().getId()).get();
+        exer.setTypeIdtype(type);
+        this.exerciseRepository.save(exer);
     }
 }

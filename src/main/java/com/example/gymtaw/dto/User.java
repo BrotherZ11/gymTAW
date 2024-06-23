@@ -1,3 +1,4 @@
+//Gonzalo Muñoz Rubio
 package com.example.gymtaw.dto;
 
 import lombok.Data;
@@ -17,7 +18,6 @@ public class User {
     private Integer age;
     private String gender;
     private Rol Rol;
-    private Integer idRol;
     private Set<Integer> userExercises;
     private Set<Integer> clientRoutines;
     private Set<Integer> trainerRoutines;

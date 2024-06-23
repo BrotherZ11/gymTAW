@@ -1,4 +1,4 @@
-//David Zarzavilla 10%, David Molina 10%, Marta Granado, Gonzalo Muñoz 70%
+//David Zarzavilla 10%, David Molina 10%, Marta Granado 10%, Gonzalo Muñoz 70%
 package com.example.gymtaw.controller;
 
 import com.example.gymtaw.dto.Rol;

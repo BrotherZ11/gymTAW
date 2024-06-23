@@ -51,7 +51,7 @@
         </tr>
         <tr>
             <td>Rol:</td>
-            <td><form:radiobuttons path="idRol" items="${rols}" itemLabel="type" itemValue="id"></form:radiobuttons></td>
+            <td><form:radiobuttons path="Rol.id" items="${rols}" itemLabel="type" itemValue="id"></form:radiobuttons></td>
         </tr>
         <tr>
             <td colspan="2"><button type="submit">Enviar</button></td>

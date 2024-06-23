@@ -89,7 +89,7 @@ public class UserService extends DTOService<User, UserEntity>{
         usuarioEntity.setPhone(user.getPhone());
         usuarioEntity.setAge(user.getAge());
         usuarioEntity.setGender(user.getGender());
-        RolEntity rol = this.rolRepository.findById(user.getIdRol()).orElse(null);
+        RolEntity rol = this.rolRepository.findById(user.getRol().getId()).orElse(null);
         usuarioEntity.setIdRol(rol);
         this.userRepository.save(usuarioEntity);
     }

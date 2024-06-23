@@ -42,6 +42,7 @@
             <th></th>
             <th></th>
             <th></th>
+            <th></th>
         </tr>
 
         <%
@@ -73,7 +74,9 @@
         %>
     </table>
     <a href="/users/crearUsuario">Crear nuevo usuario</a>
+    <a href="/users/ejercicios">Ejercicios</a>
     <a href="/salir">Salir</a>
+
 </form>
 </body>
 
