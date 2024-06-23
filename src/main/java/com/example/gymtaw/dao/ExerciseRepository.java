@@ -1,5 +1,5 @@
 package com.example.gymtaw.dao;
-//Marta Granado Rodríguez 70%, David Zarzavilla Borrego 5%
+//Marta Granado Rodríguez 70%, David Zarzavilla Borrego 5%, Gonzalo Muñoz Rubio 10%, David Molina Lopez 15%
 import com.example.gymtaw.dto.Exercise;
 import com.example.gymtaw.entity.ExerciseEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
