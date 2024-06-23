@@ -1,5 +1,5 @@
 package com.example.gymtaw.dto;
-
+//Gonzalo Muñoz Rubio 100%
 import lombok.Data;
 
 import java.util.Set;

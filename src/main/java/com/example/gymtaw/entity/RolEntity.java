@@ -1,5 +1,5 @@
 package com.example.gymtaw.entity;
-
+//Gonzalo Muñoz Rubio
 import com.example.gymtaw.dto.DTO;
 import com.example.gymtaw.dto.Rol;
 import jakarta.persistence.*;

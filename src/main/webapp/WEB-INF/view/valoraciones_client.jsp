@@ -4,15 +4,11 @@
 <%@ page import="com.example.gymtaw.dto.User" %>
 <%@ page import="com.example.gymtaw.dto.Exercise" %>
 <%@ page import="com.example.gymtaw.dto.ClientExercise" %>
-<%@ page import="com.example.gymtaw.dto.Valoracion" %><%--
-  Created by IntelliJ IDEA.
-  User: dzarz
-  Date: 29/04/2024
-  Time: 15:08
-  To change this template use File | Settings | File Templates.
---%>
+<%@ page import="com.example.gymtaw.dto.Valoracion" %>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
+    //David Molina Lopez
     User cliente = (User) request.getAttribute("cliente");
     List<Exercise> ejercicios = (List<Exercise>) request.getAttribute("ejercicios");
     List<ClientExercise> ejerciciosCliente = (List<ClientExercise>) request.getAttribute("ejerciciosCliente");

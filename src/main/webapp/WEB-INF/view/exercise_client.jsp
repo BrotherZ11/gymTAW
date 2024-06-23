@@ -4,6 +4,7 @@
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
+    //David Molina Lopez
     List<Exercise> listaEjercicios = (List<Exercise>) request.getAttribute("listaEjercicios");
     List<Exercise> listaEjerciciosConDatos = (List<Exercise>) request.getAttribute("listaEjerciciosConDatos");
     Integer idSesion = (Integer) request.getAttribute("idSesion");

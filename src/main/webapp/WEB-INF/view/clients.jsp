@@ -3,6 +3,7 @@
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
+    //David Molina Lopez
     List<User> lista = (List<User>) request.getAttribute("lista");
 %>
 <html>

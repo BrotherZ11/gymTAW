@@ -18,7 +18,6 @@
     <div>
         <a href="trainer/clients">Clientes</a>
         <a href="trainer/rutina">Rutinas</a>
-        <a>Entrenamientos</a>
     </div>
 </body>
 </html>

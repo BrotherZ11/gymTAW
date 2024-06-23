@@ -1,4 +1,4 @@
-//David Zarzavilla Borrego
+//David Zarzavilla Borrego 100%
 package com.example.gymtaw.dto;
 
 import lombok.Data;

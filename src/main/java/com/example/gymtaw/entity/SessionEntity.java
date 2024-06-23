@@ -1,5 +1,5 @@
 package com.example.gymtaw.entity;
-
+//David Zarzavilla Borrego
 import com.example.gymtaw.dto.*;
 import jakarta.persistence.*;
 import lombok.Getter;

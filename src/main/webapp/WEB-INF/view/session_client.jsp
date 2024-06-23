@@ -5,6 +5,7 @@
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
+    //David Molina Lopez
     List<Session> listaSesiones = (List<Session>) request.getAttribute("listaSesiones");
     List<RoutineHasSession> listaSesionesDias = (List<RoutineHasSession>) request.getAttribute("listaSesionesDias");
     Integer idRutina = (Integer) request.getAttribute("idRutina");

@@ -1,5 +1,5 @@
 package com.example.gymtaw.dao;
-
+//David Molina Lopez 100%
 import com.example.gymtaw.entity.TypeHasRoutineEntity;
 import com.example.gymtaw.entity.TypeHasRoutineEntityId;
 import com.example.gymtaw.entity.TypeHasSessionEntity;

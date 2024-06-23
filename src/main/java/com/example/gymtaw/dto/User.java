@@ -1,4 +1,4 @@
-//Gonzalo Muñoz Rubio
+//Gonzalo Muñoz Rubio 100%
 package com.example.gymtaw.dto;
 
 import lombok.Data;

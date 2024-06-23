@@ -53,15 +53,6 @@ public class ExerciseService extends DTOService<Exercise, ExerciseEntity>{
         }
     }
 
-    public Exercise getExercisesByIdEjercicio(Integer idEjercicio) {
-        ExerciseEntity exer = exerciseRepository.getExercisesByIdEjercicio(idEjercicio);
-        if (exer != null) {
-            return exer.toDTO();
-        } else {
-            return null;
-        }
-    }
-
     public List<Exercise> filtrarValoraciones(Integer idUsuario, Integer stars) {
 
         List<ExerciseEntity> ejercicios = exerciseRepository.getExercisesByNumEstrellasEIdUsuario(idUsuario, stars);

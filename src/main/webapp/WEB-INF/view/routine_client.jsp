@@ -8,6 +8,7 @@
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
+    //David Molina Lopez
     List<Routine> listaRutinasCliente = (List<Routine>) request.getAttribute("listaRutinasCliente");
     List<Routine> listaRutinasSinAsignar = (List<Routine>) request.getAttribute("listaRutinasSinAsignar");
     User usuario = (User) session.getAttribute("usuario");
