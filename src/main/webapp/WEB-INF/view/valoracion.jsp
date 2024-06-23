@@ -58,7 +58,9 @@
     </tr>
     <% for (Exercise e : ejercicios) { %>
     <tr>
-        <td><a href="/home/cliente/ejercicioIndividual?idEjercicio=<%= e.getId() %>&idRutina=<%=idRutina%>&idSesion=<%=idSesion%>"><%= e.getName()%></a></td>
+        <td>
+            <a href="/home/cliente/ejercicioIndividual?idEjercicio=<%= e.getId() %>&idRutina=<%=idRutina%>&idSesion=<%=idSesion%>"><%= e.getName()%>
+            </a></td>
         <td><%=e.getDescription()%></td>
         <td><%=e.getVideo()%></td>
         <td align="center">

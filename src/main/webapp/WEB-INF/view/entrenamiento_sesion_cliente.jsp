@@ -1,13 +1,11 @@
 <%@ page import="java.util.List" %>
 <%@ page import="com.example.gymtaw.entity.*" %>
 <%@ page import="java.util.Set" %>
-<%@ page import="com.example.gymtaw.dto.Session" %>
-<%@ page import="com.example.gymtaw.dto.Exercise" %>
-<%@ page import="com.example.gymtaw.dto.User" %>
-<%@ page import="com.example.gymtaw.dto.Valoracion" %>
+<%@ page import="com.example.gymtaw.dto.*" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     //Marta Granado Rodríguez 100%
+    List<ClientExercise> clientExercises = (List<ClientExercise>) request.getAttribute("clientExercises");
     List<Session> sesiones = (List<Session>) request.getAttribute("sesiones");
     List<Exercise> ejercicios = (List<Exercise>) request.getAttribute("ejercicios");
     List<Valoracion> valoraciones = (List<Valoracion>) request.getAttribute("valoraciones");
@@ -37,9 +35,20 @@
         <th>Valoración</th>
         <th></th>
     </tr>
-    <% for (Exercise e : ejercicios) { %>
+    <% for (Exercise e : ejercicios) {
+        boolean encontradoEjercicio = false;
+        for(ClientExercise ce : clientExercises){
+            if(ce.getExercise().getId() == e.getId()){
+                encontradoEjercicio = true;
+            }
+        }
+    %>
     <tr>
-        <td><a href="/home/cliente/ejercicioIndividual?idEjercicio=<%= e.getId() %>&idRutina=<%=idRutina%>&idSesion=<%=idSesion%>"><%= e.getName() %></a></td>
+        <%if(encontradoEjercicio){%>
+        <td>
+            <a href="/home/cliente/ejercicioIndividual?idEjercicio=<%= e.getId() %>&idRutina=<%=idRutina%>&idSesion=<%=idSesion%>"><%= e.getName() %></a>
+        </td>
+
         <td><%= e.getDescription() != null ? e.getDescription() : "N/A" %></td>
         <td><%= e.getVideo() != null ? e.getVideo() : "N/A" %></td>
         <td align="center">
@@ -97,6 +106,14 @@
             -
             <% } %>
         </td>
+        <%}else{%>
+        <td><%=e.getName()%></td>
+        <td><%= e.getDescription() != null ? e.getDescription() : "N/A" %></td>
+        <td><%= e.getVideo() != null ? e.getVideo() : "N/A" %></td>
+        <td>Faltan datos para el ejercicio, no se puede completar.</td>
+        <td>Este ejercicio no es evaluable.</td>
+        <td>-</td>
+        <%}%>
     </tr>
     <% } %>
 </table>

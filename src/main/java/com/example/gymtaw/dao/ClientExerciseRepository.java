@@ -24,4 +24,7 @@ public interface ClientExerciseRepository extends JpaRepository<ClientExerciseEn
 
     @Query("select ce from ClientExerciseEntity ce join ValoracionEntity v on v.exercise.id = ce.exercise.id where v.user.id = :idCliente order by ce.exercise.id")
     public List<ClientExerciseEntity> getClientExerciseEntitiesByIdClienteAndHaveReview(Integer idCliente);
+
+    @Query("select ce from ClientExerciseEntity ce where ce.user.id = :id")
+    List<ClientExerciseEntity> getClientExercisesByIdCliente(Integer id);
 }
