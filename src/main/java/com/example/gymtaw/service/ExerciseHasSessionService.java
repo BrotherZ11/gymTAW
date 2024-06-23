@@ -22,6 +22,11 @@ public class ExerciseHasSessionService extends DTOService<ExerciseHasSession, Ex
     @Autowired
     private SessionRepository sessionRepository;
 
+    public List<ExerciseHasSession> listarOrdenado(Integer idSesion){
+        List<ExerciseHasSessionEntity> ejercicios = this.exerciseHasSessionRepository.findBySessionId(idSesion);
+        return entidadesADTO(ejercicios);
+    }
+
     public void borrarEjerciciosdeSesion(Integer idSesion){
         List<ExerciseHasSessionEntity> ejercicios = this.exerciseHasSessionRepository.getExercisesHasSessionByIdSession(idSesion);
         exerciseHasSessionRepository.deleteAll(ejercicios);

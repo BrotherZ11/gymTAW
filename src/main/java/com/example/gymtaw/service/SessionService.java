@@ -39,6 +39,15 @@ public class SessionService extends DTOService<Session, SessionEntity>{
         }
     }
 
+    public String obtenerNombreSesion(Integer idSesion){
+        SessionEntity sesion = sessionRepository.findById(idSesion).orElse(null);
+        if (sesion != null) {
+            return sesion.getName();
+        }else{
+            return null;
+        }
+    }
+
     public List<Session> listarSesionByIdRutina(Integer idRutina) {
         List<SessionEntity> sessions = sessionRepository.getSessionsByIdRoutine(idRutina);
         return this.entidadesADTO(sessions);

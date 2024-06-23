@@ -2,9 +2,11 @@ package com.example.gymtaw.controller;
 
 import com.example.gymtaw.dao.*;
 import com.example.gymtaw.dto.Exercise;
+import com.example.gymtaw.dto.ExerciseHasSession;
 import com.example.gymtaw.dto.Session;
 import com.example.gymtaw.dto.User;
 import com.example.gymtaw.entity.*;
+import com.example.gymtaw.service.ExerciseHasSessionService;
 import com.example.gymtaw.service.ExerciseService;
 import com.example.gymtaw.service.SessionService;
 import jakarta.servlet.http.HttpSession;
@@ -43,6 +45,9 @@ public class SessionController extends BaseController{
 
     @Autowired
     TypeHasSessionRepository typeHasSessionRepository;
+
+    @Autowired
+    ExerciseHasSessionService exerciseHasSessionService;
 
 
     @GetMapping("/crear_sesion")
@@ -108,6 +113,20 @@ public class SessionController extends BaseController{
             return "redirect:/home/trainer/ver?idRutina=" + idRutina;
         }
 
+    }
 
+    @GetMapping("/ver_sesion")
+    public String doVer(@RequestParam("idSesion") Integer idSesion, HttpSession session, Model model){
+        if(!estaAutenticado(session)) return  "redirect:/";
+        else{
+            Integer idRutina =(Integer) session.getAttribute("idRutina");
+            String nombreSesion = sessionService.obtenerNombreSesion(idSesion);
+            List<ExerciseHasSession> ejercicios = exerciseHasSessionService.listarOrdenado(idSesion);
+
+            model.addAttribute("listaEjercicios", ejercicios);
+            model.addAttribute("nombreSesion", nombreSesion);
+            model.addAttribute("idRutina", idRutina);
+            return "verSesion";
+        }
     }
 }

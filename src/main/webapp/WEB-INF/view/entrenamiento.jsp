@@ -13,6 +13,9 @@
     <title>Entrenamiento</title>
 </head>
 <body>
+<div align="right">
+    <a href="/salir">Log out</a>
+</div>
 <h1>Entrenamiento de la rutina: </h1>
 <a href="/home/trainer/rutina">Volver</a>
 <a href="crear_sesion">Nueva sesion ... </a>
@@ -88,7 +91,7 @@
                             found = true;
             %>
             <td>
-                <a href="exercise_client?idSesion=<%=sesionRutina.getSession().getId()%>">Ver</a>
+                <a href="ver_sesion?idSesion=<%=sesionRutina.getSession().getId()%>">Ver</a>
                 <a href="editar_sesion?idSesion=<%=sesionRutina.getSession().getId()%>">Editar</a>
                 <a href="borrar_sesion?idSesion=<%=sesionRutina.getSession().getId()%>">Borrar</a>
             </td>

@@ -30,6 +30,9 @@
     <title>Datos de la sesion</title>
 </head>
 <body>
+<div align="right">
+    <a href="/salir">Log out</a>
+</div>
 <h1>Datos de la sesion</h1>
 <a href="/home/trainer/ver?idRutina=<%=id%>">Cancelar</a>
 <form method="post" action="guardar_sesion">
