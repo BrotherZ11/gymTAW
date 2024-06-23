@@ -67,11 +67,21 @@ public class ValoracionService extends DTOService<Valoracion, ValoracionEntity>{
     }
 
 
-    public List<Valoracion> getValoracionesByExercises(List<Exercise> ejercicios) {
+    public List<Valoracion> getValoracionesByExercises(List<Exercise> ejercicios, User usuario) {
+        UserEntity user = userRepository.findById(usuario.getId()).orElseThrow(() -> new RuntimeException("User not found"));
         List<ValoracionEntity> valoraciones = new ArrayList<>();
         ValoracionEntity valoracion = new ValoracionEntity();
         for (Exercise exercise : ejercicios) {
           valoracion = valoracionRepository.getValoracionByExercise(exercise.getId());
+          if(valoracion == null){
+              ExerciseEntity ejer = exerciseRepository.findById(exercise.getId()).orElse(null);
+              valoracion = new ValoracionEntity();
+              ValoracionEntityId valoracionId = new ValoracionEntityId();
+              valoracion.setId(valoracionId);
+              valoracion.setUser(user);
+              valoracion.setExercise(ejer);
+              valoracion.setDone((byte) 0);
+          }
           valoraciones.add(valoracion);
         }
 

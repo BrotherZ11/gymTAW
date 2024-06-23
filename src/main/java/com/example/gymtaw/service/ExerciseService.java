@@ -25,6 +25,11 @@ public class ExerciseService extends DTOService<Exercise, ExerciseEntity>{
         return this.entidadesADTO(exer);
     }
 
+    public List<Exercise> listarEjerciciosFuerza(){
+        List<ExerciseEntity> exer = exerciseRepository.getExerciseFuerza();
+        return this.entidadesADTO(exer);
+    }
+
     public List<Exercise> getExercisesByIdSession(Integer idSesion){
         List<ExerciseEntity> exer = exerciseRepository.getExercisesByIdSession(idSesion);
         return this.entidadesADTO(exer);
