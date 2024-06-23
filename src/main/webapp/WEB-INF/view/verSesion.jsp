@@ -18,7 +18,7 @@
     <a href="/salir">Log out</a>
 </div>
 <h1> Ejercicios <%=nombreSesion%></h1>
-<a href="/home/trainer/ver?idRutina=<%=id%>">Cancelar</a>
+<a href="/home/trainer/ver?idRutina=<%=id%>">Volver</a>
 <table border="1 ">
 
     <tr>

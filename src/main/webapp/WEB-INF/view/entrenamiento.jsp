@@ -6,6 +6,7 @@
 <%
     List<RoutineHasSession> listaSesionRutina = (List<RoutineHasSession>) request.getAttribute("listaSesionRutina");
     List<Session> listaCompleta = (List<Session>) request.getAttribute("listaCompleta");
+    String nombreRutina = (String) request.getAttribute("nombreRutina");
 
 %>
 <html>
@@ -16,7 +17,7 @@
 <div align="right">
     <a href="/salir">Log out</a>
 </div>
-<h1>Entrenamiento de la rutina: </h1>
+<h1>Entrenamiento de la rutina: <%=nombreRutina%></h1>
 <a href="/home/trainer/rutina">Volver</a>
 <a href="crear_sesion">Nueva sesion ... </a>
 <form method="post" action="guardar_sesiones">

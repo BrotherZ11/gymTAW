@@ -88,16 +88,20 @@ public class RoutineService extends DTOService<Routine, RoutineEntity>{
         return this.entidadesADTO(routines);
     }
 
-/*    public List<Routine> listarRutinas(String nombre, Integer id, Set<Integer> types) {
-        List<RoutineEntity> routines = this.routineRepository.findByFiltro(nombre, id, types);
-        return this.entidadesADTO(routines);
-    }*/
-
     public Routine buscarRutina(Integer id) {
         RoutineEntity routine = routineRepository.findById(id).orElse(null);
         if (routine != null) {
             return routine.toDTO();
         } else {
+            return null;
+        }
+    }
+
+    public String obtenerNombreRutina(Integer idRutina){
+        RoutineEntity rutina = routineRepository.findById(idRutina).orElse(null);
+        if (rutina != null) {
+            return rutina.getName();
+        }else{
             return null;
         }
     }
