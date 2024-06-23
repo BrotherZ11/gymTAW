@@ -79,4 +79,9 @@ public class ClientExerciseService extends DTOService<ClientExercise, ClientExer
 
         return clientExercise.toDTO();
     }
+
+    public List<ClientExercise> findClientExerciseByIdIdCliente(Integer id) {
+        List<ClientExerciseEntity> clientExercises = clientExerciseRepository.getClientExercisesByIdCliente(id);
+        return this.entidadesADTO(clientExercises);
+    }
 }

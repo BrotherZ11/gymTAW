@@ -86,10 +86,12 @@ public class ClienteController extends BaseController{
             List<Session> sesiones = sessionService.buscarSesionesByIdSesion(idSesion);
             model.addAttribute("sesiones", sesiones);
 
+            List<ClientExercise> clientExercises = clientExerciseService.findClientExerciseByIdIdCliente(usuario.getId());
             List<Exercise> ejercicios = exerciseService.getExercisesByIdSession(idSesion);
 
             List<Valoracion> valoraciones = valoracionService.getValoracionesByUsuario(usuario);
 
+            model.addAttribute("clientExercises", clientExercises);
             model.addAttribute("valoraciones", valoraciones);
             model.addAttribute("usuario",usuario);
             model.addAttribute("ejercicios", ejercicios);
@@ -210,6 +212,8 @@ public class ClienteController extends BaseController{
             User usuario = (User) session.getAttribute("usuario");
             List<Routine> rutinas = routineService.listarRutinasCliente(usuario.getId());
             model.addAttribute("rutinas", rutinas);
+
+
 
             List<Exercise> ejercicios = exerciseService.findAllExercisesByUsuarioId(usuario.getId());
             List<Valoracion> valoraciones = valoracionService.getValoracionesByUsuario(usuario);
