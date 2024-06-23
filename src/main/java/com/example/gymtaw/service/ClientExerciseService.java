@@ -76,6 +76,7 @@ public class ClientExerciseService extends DTOService<ClientExercise, ClientExer
         clientExercise.setCalories(calorias);
         clientExercise.setDistance(distancia);
         clientExerciseRepository.save(clientExercise);
+
         return clientExercise.toDTO();
     }
 }
