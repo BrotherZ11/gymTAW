@@ -1,21 +1,15 @@
 package com.example.gymtaw.service;
-
+//Marta Granado Rodríguez 70%
 import com.example.gymtaw.dao.ClientExerciseRepository;
 import com.example.gymtaw.dao.ExerciseRepository;
 import com.example.gymtaw.dto.Exercise;
-import com.example.gymtaw.dto.User;
-import com.example.gymtaw.dto.Valoracion;
 import com.example.gymtaw.entity.ExerciseEntity;
-import com.example.gymtaw.entity.ValoracionEntity;
 import com.example.gymtaw.ui.FiltroEjercicio;
-import com.example.gymtaw.ui.FiltroValoracion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class ExerciseService extends DTOService<Exercise, ExerciseEntity>{
@@ -54,36 +48,13 @@ public class ExerciseService extends DTOService<Exercise, ExerciseEntity>{
         }
     }
 
-    public List<Exercise> filtrarValoraciones(List<Exercise> ejercicios, User usuario, FiltroValoracion filtro) {
+    public List<Exercise> filtrarValoraciones(Integer idUsuario, Integer stars) {
 
-        List<Integer> exerciseIds = clientExerciseRepository.findExerciseIdByClientId(usuario.getId());
-        // Iteramos por cada ejercicio para buscar el que tenga la valoracion que buscamos.
-        for (Integer exerciseId : exerciseIds) {
-            ExerciseEntity ejercicio = exerciseRepository.getExercisesByIdEjercicio(exerciseId);
-            if (ejercicio != null) {
-                Set<ValoracionEntity> valoraciones = ejercicio.getValoracions();
-                boolean addEjercicioALista = true;
-
-                // Vemos si el ejercicio tiene la misma valoracion que el filtro
-                if (filtro.getStars() != null && filtro.getStars() > 0) {
-                    addEjercicioALista = false; // Empieza asumiendo que no tiene la valoracion buscada
-
-                    for (ValoracionEntity valoracion : valoraciones) {
-                        if (valoracion.getUser().getId().equals(usuario.getId()) && valoracion.getDone() == 1) {
-                            if (valoracion.getStars() != null && valoracion.getStars() == filtro.getStars()) {
-                                addEjercicioALista = true; // Ha encontrado la valoracion
-                                break;
-                            }
-                        }
-                    }
-                }
-                if (addEjercicioALista) {
-                    ejercicios.add(ejercicio.toDTO());
-
-                }
-            }
+        List<ExerciseEntity> ejercicios = exerciseRepository.getExercisesByNumEstrellasEIdUsuario(idUsuario, stars);
+        if(stars == 0){
+            ejercicios = exerciseRepository.getExerciseEntitiesByIdClienteAndHaveReview(idUsuario);
         }
-        return ejercicios;
+        return this.entidadesADTO(ejercicios);
     }
 
     public List<Exercise> filtrarEjercicios( FiltroEjercicio filtroEj) {

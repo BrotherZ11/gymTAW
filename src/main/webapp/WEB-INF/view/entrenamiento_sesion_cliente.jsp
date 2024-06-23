@@ -7,6 +7,7 @@
 <%@ page import="com.example.gymtaw.dto.Valoracion" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
+    //Marta Granado Rodríguez 100%
     List<Session> sesiones = (List<Session>) request.getAttribute("sesiones");
     List<Exercise> ejercicios = (List<Exercise>) request.getAttribute("ejercicios");
     List<Valoracion> valoraciones = (List<Valoracion>) request.getAttribute("valoraciones");
@@ -80,12 +81,18 @@
                 }
             }
         %>
-        <td align="center"><%= valorado ? estrellas : "Completar para valorar" %></td>
         <td align="center">
             <% if (isDone && !valorado) { %>
-            <a href="valorarEjercicio?idEjercicio=<%= e.getId() %>&idSesion=<%=s.getId()%>&idRutina=<%=idRutina%>">Valorar</a>
+            <a href="valorarEjercicio?idEjercicio=<%= e.getId() %>&idSesion=<%=idSesion%>&idRutina=<%=idRutina%>">Valorar</a>
             <% } else if (valorado) { %>
-            <a href="valorarEjercicio?idEjercicio=<%= e.getId() %>&idSesion=<%=s.getId()%>&idRutina=<%=idRutina%>">Editar valoracion</a>
+            <%=estrellas%>
+            <% } else { %>
+            <p>Completar para valorar</p>
+            <% } %>
+        </td>
+        <td align="center">
+            <%if (valorado) { %>
+            <a href="valorarEjercicio?idEjercicio=<%= e.getId() %>&idSesion=<%=idSesion%>&idRutina=<%=idRutina%>">Editar valoracion</a>
             <% } else { %>
             -
             <% } %>

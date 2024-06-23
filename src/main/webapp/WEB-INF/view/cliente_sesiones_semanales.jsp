@@ -5,6 +5,7 @@
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
+    //Marta Granado Rodríguez 100%
     List<Session> sesiones = (List<Session>) request.getAttribute("sesiones");
     List<RoutineHasSession> sesionRutina = (List<RoutineHasSession>) request.getAttribute("sesionRutina");
     Integer idCliente= (Integer) request.getAttribute("idCliente");

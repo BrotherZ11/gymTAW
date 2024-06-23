@@ -1,5 +1,5 @@
 package com.example.gymtaw.dto;
-
+//Marta Granado Rodríguez 100%
 import com.example.gymtaw.entity.ClientExerciseEntityId;
 import com.example.gymtaw.entity.ExerciseHasSessionEntityId;
 import com.example.gymtaw.entity.ValoracionEntityId;

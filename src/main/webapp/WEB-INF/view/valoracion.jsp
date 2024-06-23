@@ -8,11 +8,13 @@
 <%@ page import="com.example.gymtaw.dto.ValoracionId" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
+    //Marta Granado Rodríguez 100%
     List<Exercise> ejercicios = (List<Exercise>) request.getAttribute("ejercicios");
     Integer idSesion = -1;
     Integer idRutina = -1;
     User usuario= (User) session.getAttribute("usuario");
     List<Valoracion> valoraciones = (List<Valoracion>) request.getAttribute("valoraciones");
+    Integer idCliente = usuario.getId();
 %>
 <html>
 <head>
@@ -26,7 +28,7 @@
 
     <label for="stars">Valoración:</label>
     <select id="stars" name="stars">
-        <option value="">Todas</option>
+        <option value="0">Todas</option>
         <option value="1" ${filtro.stars == 1 ? 'selected' : ''}>1 estrella</option>
         <option value="2" ${filtro.stars == 2 ? 'selected' : ''}>2 estrellas</option>
         <option value="3" ${filtro.stars == 3 ? 'selected' : ''}>3 estrellas</option>
@@ -65,9 +67,9 @@
 
                 if (valoraciones != null) {
                     for (Valoracion v : valoraciones) {
-                        if (v.getDone() == 1 && v.getUser().getId().equals(usuario.getId()) && v.getExercise().getId().equals(e.getId())) {
+                        if (v.getDone() == 1 && v.getUser().getId().equals(idCliente) && v.getExercise().getId().equals(e.getId())) {
                             isDone = true;
-                            break;
+                            break;  // Exit loop once match is found
                         }
                     }
                 }
@@ -76,30 +78,44 @@
                 <input type="hidden" name="idEjercicio" value="<%= e.getId() %>" />
                 <input type="hidden" name="idSesion" value="<%= idSesion %>" />
                 <input type="hidden" name="idRutina" value="<%= idRutina %>" />
-                <input type="checkbox" name="done" value="1" <% if (isDone) { %>checked disabled<% } else { %> onchange="this.form.submit()"<% } %> />
+                <input type="checkbox" name="done" value="1" <% if (isDone) { %>checked disabled<% } %> />
+                <% if (!isDone) { %>
+                <button type="submit">Guardar</button>
+                <% } %>
             </form>
         </td>
         <%
             boolean valorado = false;
             Integer estrellas = null;
-            String review = "No tienes review aún.";
+            String review = "No tienes reviews aún.";
 
             if (valoraciones != null) {
                 for (Valoracion v : valoraciones) {
-                    if (v.getDone() == 1 && v.getUser().getId().equals(usuario.getId()) && v.getExercise().getId().equals(e.getId())) {
+                    if (v.getDone() == 1 && v.getUser().getId().equals(idCliente) && v.getExercise().getId().equals(e.getId())) {
                         if (v.getStars() != null) {
                             valorado = true;
+                            System.out.println("llega");
                             estrellas = v.getStars();
+                            if (v.getReview() != null) {
+                                review = v.getReview();
+                            }
+                            break;  // Exit loop once match is found
                         }
-                        if (v.getReview() != null) {
-                            review = v.getReview();
-                        }
-                        break;
                     }
                 }
             }
+
+            System.out.println(valorado? "yes" : "no");
         %>
-        <td align="center"><%= valorado ? estrellas : "Completar para valorar" %></td>
+        <td align="center">
+            <% if (isDone && !valorado) { %>
+            <a href="valorarEjercicio?idEjercicio=<%= e.getId() %>&idSesion=<%=idSesion%>&idRutina=<%=idRutina%>">Valorar</a>
+            <% } else if (valorado) { %>
+            <%=estrellas%>
+            <% } else { %>
+            <p>Completar para valorar</p>
+            <% } %>
+        </td>
         <td>
             <% if (isDone) { %>
             <form method="post" action="/home/cliente/guardarReview">
@@ -113,7 +129,7 @@
             <% } %>
         </td>
         <td>
-            <% if (valorado) { %>
+            <%if (valorado) { %>
             <a href="valorarEjercicio?idEjercicio=<%= e.getId() %>&idSesion=<%=idSesion%>&idRutina=<%=idRutina%>">Editar valoracion</a>
             <% } else { %>
             -

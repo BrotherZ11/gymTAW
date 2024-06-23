@@ -1,8 +1,9 @@
 package com.example.gymtaw.controller;
 
+//Marta Granado Rodríguez 100%
+
 import com.example.gymtaw.dao.*;
 import com.example.gymtaw.dto.*;
-import com.example.gymtaw.entity.*;
 import com.example.gymtaw.service.*;
 import com.example.gymtaw.ui.FiltroEjercicio;
 import com.example.gymtaw.ui.FiltroValoracion;
@@ -12,10 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 
 @Controller
 @RequestMapping("/home/cliente")
@@ -259,10 +257,13 @@ public class ClienteController extends BaseController{
         } else{
             User usuario = (User) session.getAttribute("usuario");
 
-            List<Exercise> ejercicios = new ArrayList<>();
+            List<Exercise> ejercicios = exerciseService.filtrarValoraciones(usuario.getId(), filtro.getStars());
 
-            ejercicios = exerciseService.filtrarValoraciones(ejercicios, usuario, filtro);
+            List<Valoracion> valoraciones = valoracionService.getValoracionesByExercises(ejercicios);
 
+            model.addAttribute("valoraciones", valoraciones);
+            model.addAttribute("idSesion", -1);
+            model.addAttribute("idRutina", -1);
             model.addAttribute("ejercicios", ejercicios);
             model.addAttribute("filtro", filtro);
             model.addAttribute("filtroEj", new FiltroEjercicio());
@@ -278,10 +279,12 @@ public class ClienteController extends BaseController{
             strTo = "redirect:/";
         } else{
 
-            List<Exercise> ejercicios = new ArrayList<>();
+            List<Exercise> ejercicios = exerciseService.filtrarEjercicios(filtroEj);
+            List<Valoracion> valoraciones = valoracionService.getValoracionesByExercises(ejercicios);
 
-            ejercicios = exerciseService.filtrarEjercicios(filtroEj);
-
+            model.addAttribute("valoraciones", valoraciones);
+            model.addAttribute("idSesion", -1);
+            model.addAttribute("idRutina", -1);
             model.addAttribute("ejercicios", ejercicios);
             model.addAttribute("filtro", new FiltroValoracion());
             model.addAttribute("filtroEj", filtroEj);

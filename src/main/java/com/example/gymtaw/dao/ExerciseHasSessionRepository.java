@@ -19,4 +19,5 @@ public interface ExerciseHasSessionRepository extends JpaRepository<ExerciseHasS
 
     @Query(value = "SELECT e FROM ExerciseHasSessionEntity e where e.session.id = :id order by e.id.order")
     public List<ExerciseHasSessionEntity> getExercisesHasSessionByIdSession(@Param("id") Integer id);
+
 }

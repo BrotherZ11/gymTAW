@@ -23,7 +23,7 @@ public class UserEntity implements DTO<User> {
     private String email;
 
     @Column(name = "password", nullable = false, length = 250)
-    private String password;
+    private Integer password;
 
     @Column(name = "name", nullable = false, length = 45)
     private String name;
@@ -82,7 +82,7 @@ public class UserEntity implements DTO<User> {
         User user = new User();
         user.setId(this.id);
         user.setEmail(this.email);
-        user.setPassword(this.password);
+        user.setPasswordHash(this.password);
         user.setName(this.name);
         user.setSurname(this.surname);
         user.setDni(this.dni);

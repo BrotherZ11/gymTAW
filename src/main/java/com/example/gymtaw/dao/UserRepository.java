@@ -12,7 +12,7 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<UserEntity, Integer> {
 
     @Query("select u from UserEntity u where u.email = :user and u.password = :pwd")
-    UserEntity autenticacion (@Param("user") String user, @Param("pwd")String pwd);
+    UserEntity autenticacion (@Param("user") String user, @Param("pwd")Integer pwd);
 
     @Query("select u from UserEntity u where u.idRol.id = :rol")
     List<UserEntity> findUserEntitiesByIdRol(@Param("rol") int rol);
@@ -22,7 +22,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
 
     @Query("select u from UserEntity u where (u.idRol.id = 1 or u.idRol.id = 2) and " +
             "u.id not in (select ut.trainer.id from UserHasTrainerEntity ut where ut.user.id = :userId)")
-    List<UserEntity> findTrainersNotAssignedToUser(@Param("userId") Integer userId);
+    List<UserEntity> findTrainersNotAssignedToClient(@Param("userId") Integer userId);
 
     @Query("select u from UserEntity u where u.idRol.id = 4 and " +
      "u.id not  in (select ut.user.id from UserHasTrainerEntity ut where ut.trainer.id = :trainerId)")
@@ -30,7 +30,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
 
     @Query("select u from UserEntity u where (u.idRol.id = 1 or u.idRol.id = 2) and " +
             "u.id in (select ut.trainer.id from UserHasTrainerEntity ut where ut.user.id = :userId)")
-    List<UserEntity> findTrainersAssignedToUser(@Param("userId") int userId);
+    List<UserEntity> findTrainersAssignedToClient(@Param("userId") int userId);
 
     @Query("select u from UserEntity u where u.idRol.id = 4 and " +
             "u.id in (select ut.user.id from UserHasTrainerEntity ut where ut.trainer.id = :trainerId)")

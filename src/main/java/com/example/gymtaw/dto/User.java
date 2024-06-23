@@ -9,6 +9,7 @@ public class User {
     private Integer id = -1;
     private String email;
     private String password;
+    private Integer passwordHash;
     private String name;
     private String surname;
     private String dni;
@@ -16,6 +17,7 @@ public class User {
     private Integer age;
     private String gender;
     private Rol Rol;
+    private Integer idRol;
     private Set<Integer> userExercises;
     private Set<Integer> clientRoutines;
     private Set<Integer> trainerRoutines;
