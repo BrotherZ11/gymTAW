@@ -9,5 +9,5 @@ import lombok.Data;
 public class ExerciseHasSession {
     private ExerciseHasSessionId id;
     private Exercise exercise;
-    private SessionEntity session;
+    private Session session;
 }

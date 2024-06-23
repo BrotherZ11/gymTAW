@@ -1,7 +1,6 @@
 package com.example.gymtaw.entity;
 
-import com.example.gymtaw.dto.DTO;
-import com.example.gymtaw.dto.Session;
+import com.example.gymtaw.dto.*;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -48,13 +47,13 @@ public class SessionEntity implements DTO<Session> {
         this.exerciseHasSessions.forEach(exerciseHasSessionEntity -> {exerciseHasSessions.add(exerciseHasSessionEntity.getExercise().getId());});
         session.setExerciseHasSessions(exerciseHasSessions);
 
-        Set<RoutineHasSessionEntityId> routineHasSessions = new LinkedHashSet<>();
-        this.routineHasSessions.forEach(routineHasSessionEntity -> {routineHasSessions.add(routineHasSessionEntity.getId());});
+        Set<Integer> routineHasSessions = new LinkedHashSet<>();
+        this.routineHasSessions.forEach(routineHasSessionEntity -> {routineHasSessions.add(routineHasSessionEntity.getRoutine().getId());});
         session.setRoutineHasSessions(routineHasSessions);
 
-        Set<Integer> types = new LinkedHashSet<>();
+        /*Set<Integer> types = new LinkedHashSet<>();
         this.types.forEach(typeEntity -> {types.add(typeEntity.getId());});
-        session.setTypes(types);
+        session.setTypes(types);*/
 
 
         return session;

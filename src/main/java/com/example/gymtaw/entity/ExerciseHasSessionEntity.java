@@ -33,7 +33,7 @@ public class ExerciseHasSessionEntity implements DTO<ExerciseHasSession> {
         ExerciseHasSession exerciseHasSession = new ExerciseHasSession();
         exerciseHasSession.setId(this.id.toDTO());
         exerciseHasSession.setExercise(this.exercise.toDTO());
-        exerciseHasSession.setSession(this.session);
+        exerciseHasSession.setSession(this.session.toDTO());
         return exerciseHasSession;
     }
 }

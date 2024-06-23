@@ -2,6 +2,7 @@ package com.example.gymtaw.service;
 
 import com.example.gymtaw.dao.*;
 import com.example.gymtaw.dto.Routine;
+import com.example.gymtaw.dto.Session;
 import com.example.gymtaw.dto.Type;
 import com.example.gymtaw.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @Service
@@ -19,19 +21,22 @@ public class RoutineService extends DTOService<Routine, RoutineEntity>{
     private RoutineRepository routineRepository;
 
     @Autowired
-    private RoutineHasSessionRepository routineHasSessionRepository;
+    RoutineHasSessionService routineHasSessionService;
 
     @Autowired
-    private SessionRepository sessionRepository;
+    SessionRepository sessionRepository;
+
+    @Autowired
+    TypeHasRoutineService typeHasRoutineService;
 
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
-    private TypeHasRoutineRepository typeHasRoutineRepository;
+    private TypeService typeService;
 
     @Autowired
-    private TypeHasSessionRepository typeHasSessionRepository;
+    SessionService sessionService;
 
     @Autowired
     private TypeRepository typeRepository;
@@ -117,10 +122,30 @@ public class RoutineService extends DTOService<Routine, RoutineEntity>{
         routineRepository.save(routine);
     }
 
-/*    public void actualizarSesionesRutina(Integer idRutina, Set<Integer> sesiones, Set<Integer> tipos) {
-        routineSessionService.actualizarSesiones(idRutina, sesiones);
-        routineTypeService.actualizarTipos(idRutina, tipos);
-    }*/
+    public void actualizarSesionesRutina(Integer idRutina, Map<String, String> allParams) {
+        routineHasSessionService.borrarSesionesPorRutina(idRutina);
+        typeHasRoutineService.borrarTiposPorRutina(idRutina);
 
+        Set<TypeEntity> tiposRutina = new HashSet<>();
 
+        RoutineEntity routine = routineRepository.findById(idRutina).orElse(null);
+
+        for (int i = 1; i <= 7; i++) {
+            String sessionIdParam = allParams.get("idSesion" + i);
+            if (sessionIdParam != null && !sessionIdParam.equals("-1")) {
+                Integer idSesion = Integer.parseInt(sessionIdParam);
+                SessionEntity sesion = sessionRepository.getById(idSesion);
+
+                routineHasSessionService.guardarSesionEnRutina(routine, sesion, i);
+
+                List<TypeEntity> tiposSesion = typeService.getTypesBySessionId(sesion.getId());
+                tiposRutina.addAll(tiposSesion);
+            }
+        }
+
+        for (TypeEntity tipo : tiposRutina) {
+            typeHasRoutineService.guardarTipoEnRutina(idRutina, tipo, routine);
+        }
+    }
 }
+

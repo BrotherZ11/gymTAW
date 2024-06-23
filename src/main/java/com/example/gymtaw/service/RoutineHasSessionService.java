@@ -2,7 +2,11 @@ package com.example.gymtaw.service;
 
 import com.example.gymtaw.dao.RoutineHasSessionRepository;
 import com.example.gymtaw.dto.RoutineHasSession;
+import com.example.gymtaw.dto.Session;
+import com.example.gymtaw.entity.RoutineEntity;
 import com.example.gymtaw.entity.RoutineHasSessionEntity;
+import com.example.gymtaw.entity.RoutineHasSessionEntityId;
+import com.example.gymtaw.entity.SessionEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,4 +36,17 @@ public class RoutineHasSessionService extends DTOService<RoutineHasSession, Rout
             routineHasSessionRepository.save(entity);
         });
     }*/
+
+    public void guardarSesionEnRutina(RoutineEntity routine, SessionEntity sesion, int dia) {
+        RoutineHasSessionEntityId routineHasSessionId = new RoutineHasSessionEntityId();
+        routineHasSessionId.setDay(dia);
+        routineHasSessionId.setSessionId(sesion.getId());
+        routineHasSessionId.setRoutineId(routine.getId());
+
+        RoutineHasSessionEntity sessionRoutineEntity = new RoutineHasSessionEntity();
+        sessionRoutineEntity.setId(routineHasSessionId);
+        sessionRoutineEntity.setRoutine(routine);
+        sessionRoutineEntity.setSession(sesion);
+        routineHasSessionRepository.save(sessionRoutineEntity);
+    }
 }

@@ -58,6 +58,7 @@ public class RoutineEntity implements DTO<Routine> {
         dto.setDescription(this.getDescription());
         dto.setDate(this.getDate());
         dto.setTrainerId(this.getIdtrainer().getId());
+
         Set<Integer> sessionIds = new LinkedHashSet<>();
         for(RoutineHasSessionEntity sesion: this.routineHasSessions){
             sessionIds.add(sesion.getSession().getId());

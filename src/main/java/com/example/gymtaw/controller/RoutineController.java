@@ -2,7 +2,6 @@ package com.example.gymtaw.controller;
 
 import com.example.gymtaw.dao.*;
 import com.example.gymtaw.dto.*;
-import com.example.gymtaw.entity.*;
 import com.example.gymtaw.service.*;
 import com.example.gymtaw.ui.FiltroRutina;
 import jakarta.servlet.http.HttpSession;
@@ -11,12 +10,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Date;
-import java.time.LocalDate;
-import java.util.HashSet;
+
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+
 
 @Controller
 @RequestMapping("/home/trainer")
@@ -33,12 +30,6 @@ public class RoutineController extends BaseController{
 
     @Autowired
     UserService userService;
-
-    @Autowired
-    TypeHasRoutineRepository typeHasRoutineRepository;
-
-    @Autowired
-    TypeHasSessionRepository typeHasSessionRepository;
 
     @Autowired
     TypeService typeService;
@@ -116,69 +107,19 @@ public class RoutineController extends BaseController{
 
     }
 
-    /*@PostMapping("/guardar_sesiones")
+    @PostMapping("/guardar_sesiones")
     public String doGuardarRutinas (HttpSession session,
-                                    @RequestParam Map<String, String> allParams,
-                                    Model model) {
+                                    @RequestParam Map<String, String> allParams) {
         if(!estaAutenticado(session)) return  "redirect:/";
         else{
             Integer idRutina = (Integer) session.getAttribute("idRutina");
-            //Borramos las sesiones que habia y los tipos de esas sesiones en la rutina
-            List<RoutineHasSession> sesionesABorrar = routineHasSessionService.getSessionsRoutineByIdRoutine(idRutina);
-            List<TypeHasRoutineEntity> tiposRutinaABorrar = typeHasRoutineRepository.getTypeHasRoutineEntitiesByRoutineIdroutine(idRutina);
 
-            //routineHasSessionService.deleteAll(sesionesABorrar);
-            typeHasRoutineRepository.deleteAll(tiposRutinaABorrar);
-
-            //Creo la lista de tipos de rutina
-            Set<TypeEntity> tiposRutina = new HashSet<>();
-
-            Routine routine = routineService.buscarRutina(idRutina);
-
-            // Guardar las nuevas sesiones
-            for (int i = 1; i <= 7; i++) {
-                String sessionIdParam = allParams.get("idSesion" + i);
-                if (sessionIdParam != null && !sessionIdParam.equals("-1")) {
-                    Integer idSesion = Integer.parseInt(sessionIdParam);
-                    RoutineHasSessionEntityId routineHasSessionId = new RoutineHasSessionEntityId();
-                    routineHasSessionId.setDay(i);
-                    routineHasSessionId.setSessionId(idSesion);
-                    routineHasSessionId.setRoutineId(idRutina);
-
-                    SessionEntity sesion = sessionService.buscarSesionesByIdSesion(idSesion);
-
-                    RoutineHasSessionEntity sessionRoutineEntity = new RoutineHasSessionEntity();
-                    sessionRoutineEntity.setId(routineHasSessionId);
-                    // sessionRoutineEntity.setRoutine(routine);
-                    sessionRoutineEntity.setSession(sesion);
-                   // routineHasSessionRepository.save(sessionRoutineEntity);
-
-                    //Añado tipos de las sesiones a la lista para quitar duplicados
-                    List<TypeHasSessionEntity> tiposSesion = typeHasSessionRepository.getTypeHasRoutineEntitiesBySessionId(sesion.getId());
-                    for(TypeHasSessionEntity tipo : tiposSesion){
-                        tiposRutina.add(tipo.getTypeIdtype());
-                    }
-                }
-            }
-
-            //Una vez quitados los repetidos, guardamos los tipos unicos en las sesiones
-            for(TypeEntity tipo : tiposRutina){
-                TypeHasRoutineEntityId typeHasRoutineEntityId = new TypeHasRoutineEntityId();
-                typeHasRoutineEntityId.setRoutineIdroutine(idRutina);
-                typeHasRoutineEntityId.setTypeIdtype(tipo.getId());
-
-                TypeHasRoutineEntity typeHasRoutineEntity = new TypeHasRoutineEntity();
-                typeHasRoutineEntity.setId(typeHasRoutineEntityId);
-               // typeHasRoutineEntity.setRoutineIdroutine(routine);
-                typeHasRoutineEntity.setTypeIdtype(tipo);
-                typeHasRoutineRepository.save(typeHasRoutineEntity);
-            }
-
+            routineService.actualizarSesionesRutina(idRutina, allParams);
             // Redirigir a la página de visualización de la rutina
             return "redirect:/home/trainer/ver?idRutina=" + idRutina;
         }
 
-    }*/
+    }
 
     @GetMapping("/crear")
     public String doNuevo (Model model, HttpSession session) {
