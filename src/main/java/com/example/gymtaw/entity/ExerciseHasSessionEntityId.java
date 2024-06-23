@@ -1,5 +1,5 @@
+//David Zarzavilla Borrego
 package com.example.gymtaw.entity;
-//Marta Granado Rodríguez (toDTO())
 import com.example.gymtaw.dto.DTO;
 import com.example.gymtaw.dto.ExerciseHasSessionId;
 import com.example.gymtaw.dto.RoutineHasSessionId;

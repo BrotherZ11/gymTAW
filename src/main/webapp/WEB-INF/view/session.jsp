@@ -1,5 +1,4 @@
-<%@ page import="com.example.gymtaw.entity.SessionEntity" %>
-<%@ page import="com.example.gymtaw.entity.ExerciseEntity" %>
+<%-- David Zarzavilla Borrego--%>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="com.example.gymtaw.dto.Session" %>

@@ -1,7 +1,6 @@
+<%-- David Zarzavilla Borrego--%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ page import="com.example.gymtaw.entity.RoutineEntity" %>
 <%@ page import="java.util.List" %>
-<%@ page import="com.example.gymtaw.entity.TypeEntity" %>
 <%@ page import="com.example.gymtaw.dto.Routine" %>
 <%@ page import="com.example.gymtaw.dto.Type" %><%--
   Created by IntelliJ IDEA.

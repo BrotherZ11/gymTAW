@@ -1,3 +1,4 @@
+//David Zarzavilla Borrego 80%, David Molina Lopez 20%
 package com.example.gymtaw.service;
 
 import com.example.gymtaw.dao.RoutineHasSessionRepository;

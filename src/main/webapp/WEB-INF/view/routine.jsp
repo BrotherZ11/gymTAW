@@ -1,8 +1,6 @@
+<%-- David Zarzavilla Borrego--%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ page import="com.example.gymtaw.entity.RoutineEntity" %>
-<%@ page import="java.util.Date" %>
-<%@ page import="java.time.LocalDate" %>
-<%@ page import="com.example.gymtaw.dto.Routine" %><%--
+<%--
   Created by IntelliJ IDEA.
   User: dzarz
   Date: 29/04/2024

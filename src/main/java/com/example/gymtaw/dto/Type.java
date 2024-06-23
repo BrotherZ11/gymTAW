@@ -1,3 +1,4 @@
+//David Zarzavilla Borrego
 package com.example.gymtaw.dto;
 
 import com.example.gymtaw.entity.ExerciseEntity;

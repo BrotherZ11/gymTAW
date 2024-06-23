@@ -1,5 +1,5 @@
 package com.example.gymtaw.service;
-//Marta Granado Rodríguez 70%
+//Marta Granado Rodríguez 80%, David Zarzavilla Borrego 10%, David Molina Lopez 10%
 import com.example.gymtaw.dao.ClientExerciseRepository;
 import com.example.gymtaw.dao.ExerciseRepository;
 import com.example.gymtaw.dto.Exercise;

@@ -1,3 +1,4 @@
+// David Zarzavilla Borrego 50%, David Molina Lopez 50%
 package com.example.gymtaw.ui;
 
 import com.example.gymtaw.dto.Type;

@@ -1,11 +1,10 @@
+//David Zarzavilla Borrego
 package com.example.gymtaw.controller;
 
-import com.example.gymtaw.dao.*;
 import com.example.gymtaw.dto.Exercise;
 import com.example.gymtaw.dto.ExerciseHasSession;
 import com.example.gymtaw.dto.Session;
 import com.example.gymtaw.dto.User;
-import com.example.gymtaw.entity.*;
 import com.example.gymtaw.service.ExerciseHasSessionService;
 import com.example.gymtaw.service.ExerciseService;
 import com.example.gymtaw.service.SessionService;
@@ -18,33 +17,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.sql.Date;
-import java.time.LocalDate;
 import java.util.*;
 
 @Controller
 @RequestMapping("/home/trainer")
 public class SessionController extends BaseController{
-    @Autowired
-    SessionRepository sessionRepository;
 
     @Autowired
     SessionService sessionService;
 
     @Autowired
     ExerciseService exerciseService;
-
-    @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    ExerciseRepository exerciseRepository;
-
-    @Autowired
-    ExerciseHasSessionRepository exerciseHasSessionRepository;
-
-    @Autowired
-    TypeHasSessionRepository typeHasSessionRepository;
 
     @Autowired
     ExerciseHasSessionService exerciseHasSessionService;
@@ -77,10 +60,11 @@ public class SessionController extends BaseController{
             User usuario = (User) session.getAttribute("usuario");
             Integer idRutina = (Integer) session.getAttribute("idRutina");
             Session sesion = this.sessionService.buscarSesion(idSesion);
-            List<ExerciseHasSessionEntity> ejerciciosEnSesion = exerciseHasSessionRepository.findBySessionId(idSesion);
+            List<ExerciseHasSession> ejerciciosEnSesion = exerciseHasSessionService.listarOrdenado(idSesion);
             List<Exercise> ejercicios;
             Map<Integer, Integer> ejercicioOrdenMap = new HashMap<>();
-            for (ExerciseHasSessionEntity ejercicioEnSesion : ejerciciosEnSesion) {
+
+            for (ExerciseHasSession ejercicioEnSesion : ejerciciosEnSesion) {
                 ejercicioOrdenMap.put(ejercicioEnSesion.getId().getExerciseId(), ejercicioEnSesion.getId().getOrder());
             }
             if(usuario.getRol().getType().equals("bodybuilding")){
