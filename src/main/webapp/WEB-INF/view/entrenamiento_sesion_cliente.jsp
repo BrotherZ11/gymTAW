@@ -36,17 +36,20 @@
         <th></th>
     </tr>
     <% for (Exercise e : ejercicios) {
+        Integer idEntrenador = -1;
         boolean encontradoEjercicio = false;
         for(ClientExercise ce : clientExercises){
             if(ce.getExercise().getId() == e.getId()){
                 encontradoEjercicio = true;
+                idEntrenador = ce.getTrainer().getId();
             }
+
         }
     %>
     <tr>
         <%if(encontradoEjercicio){%>
         <td>
-            <a href="/home/cliente/ejercicioIndividual?idEjercicio=<%= e.getId() %>&idRutina=<%=idRutina%>&idSesion=<%=idSesion%>"><%= e.getName() %></a>
+            <a href="/home/cliente/ejercicioIndividual?idEjercicio=<%= e.getId() %>&idRutina=<%=idRutina%>&idSesion=<%=idSesion%>&idTrainer=<%=idEntrenador%>"><%= e.getName() %></a>
         </td>
 
         <td><%= e.getDescription() != null ? e.getDescription() : "N/A" %></td>

@@ -10,11 +10,13 @@
 <%
     //Marta Granado Rodríguez 100%
     List<Exercise> ejercicios = (List<Exercise>) request.getAttribute("ejercicios");
+    List<User> entrenadores = (List<User>) request.getAttribute("entrenadores");
     Integer idSesion = -1;
     Integer idRutina = -1;
     User usuario= (User) session.getAttribute("usuario");
     List<Valoracion> valoraciones = (List<Valoracion>) request.getAttribute("valoraciones");
     Integer idCliente = usuario.getId();
+
 %>
 <html>
 <head>
@@ -45,7 +47,11 @@
 </form:form>
 
 <h1>Valoraciones de ejercicios</h1>
+<%for(User entrenador : entrenadores){
+    Integer idEntrenador = entrenador.getId();%>
 <% if (!ejercicios.isEmpty()) { %>
+<%=entrenador.getName() + " " + entrenador.getSurname()%>
+
 <table border="1">
     <tr>
         <th>Nombre</th>
@@ -56,10 +62,13 @@
         <th>Review</th>
         <th></th>
     </tr>
-    <% for (Exercise e : ejercicios) { %>
+    <% for (Exercise e : ejercicios) {
+        for (Valoracion v : valoraciones) {
+            if(v.getTrainer().equals(entrenador)){
+    %>
     <tr>
         <td>
-            <a href="/home/cliente/ejercicioIndividual?idEjercicio=<%= e.getId() %>&idRutina=<%=idRutina%>&idSesion=<%=idSesion%>"><%= e.getName()%>
+            <a href="/home/cliente/ejercicioIndividual?idEjercicio=<%= e.getId() %>&idRutina=<%=idRutina%>&idSesion=<%=idSesion%>&idTrainer=<%=idEntrenador%>"><%= e.getName()%>
             </a></td>
         <td><%=e.getDescription()%></td>
         <td><%=e.getVideo()%></td>
@@ -68,8 +77,8 @@
                 boolean isDone = false;
 
                 if (valoraciones != null) {
-                    for (Valoracion v : valoraciones) {
-                        if (v.getDone() == 1 && v.getUser().getId().equals(idCliente) && v.getExercise().getId().equals(e.getId())) {
+                    for (Valoracion val : valoraciones) {
+                        if (val.getDone() == 1 && val.getUser().getId().equals(idCliente) && val.getExercise().getId().equals(e.getId())) {
                             isDone = true;
                             break;  // Exit loop once match is found
                         }
@@ -92,19 +101,21 @@
             String review = "No tienes reviews aún.";
 
             if (valoraciones != null) {
-                for (Valoracion v : valoraciones) {
-                    if (v.getDone() == 1 && v.getUser().getId().equals(idCliente) && v.getExercise().getId().equals(e.getId())) {
-                        if (v.getStars() != null) {
+
+                for (Valoracion val : valoraciones) {
+                    if (val.getDone() == 1 && val.getUser().getId().equals(idCliente) && val.getExercise().getId().equals(e.getId())) {
+                        if (val.getStars() != null) {
                             valorado = true;
-                            estrellas = v.getStars();
+                            estrellas = val.getStars();
                             if (v.getReview() != null) {
-                                review = v.getReview();
+                                review = val.getReview();
                             }
                             break;  // Exit loop once match is found
                         }
                     }
                 }
             }
+
 
         %>
         <td align="center">
@@ -136,10 +147,13 @@
             <% } %>
         </td>
     </tr>
+    <%}%>
+    <%}%>
     <% } %>
 </table>
 <% } else { %>
 <h3>No hay ejercicios con esa valoración.</h3>
 <% } %>
+<%}%>
 </body>
 </html>

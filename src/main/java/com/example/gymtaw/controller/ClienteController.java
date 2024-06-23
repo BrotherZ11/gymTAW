@@ -37,6 +37,8 @@ public class ClienteController extends BaseController{
 
     @Autowired
     private ClientExerciseService clientExerciseService;
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/entrenamientos")
     public String doListar(Model model, HttpSession session) {
@@ -143,16 +145,17 @@ public class ClienteController extends BaseController{
     @GetMapping("/ejercicioIndividual")
     public String getEjercicioCliente(@RequestParam("idRutina") Integer idRutina,
                                       @RequestParam("idSesion") Integer idSesion,
-                                      @RequestParam("idEjercicio") Integer idEjercicio
-
-                                        , Model model, HttpSession session) {
+                                      @RequestParam("idEjercicio") Integer idEjercicio,
+                                      @RequestParam("idTrainer") Integer idTrainer,
+                                      Model model, HttpSession session) {
         String strTo = "entrenamiento_ejercicio_cliente";
         if(!estaAutenticado(session)){
             strTo = "redirect:/";
         } else{
+            User usuario = (User) session.getAttribute("usuario");
             Exercise ejercicio = exerciseService.findByidEjercicio(idEjercicio);
             model.addAttribute("ejercicio", ejercicio);
-            List<ClientExercise> clientExercise = clientExerciseService.getClientExercisesByIdEjercicio(idEjercicio);
+            ClientExercise clientExercise = clientExerciseService.findClientExerciseByIdExerciseIdClienteAndIdEntrenador(idEjercicio, usuario.getId(), idTrainer);
             model.addAttribute("clientExercise", clientExercise);
             model.addAttribute("idRutina", idRutina);
             model.addAttribute("idSesion", idSesion);
@@ -213,11 +216,12 @@ public class ClienteController extends BaseController{
             List<Routine> rutinas = routineService.listarRutinasCliente(usuario.getId());
             model.addAttribute("rutinas", rutinas);
 
-
+            List<User> entrenadores =  userService.listarEntrenadoresAsignados(usuario.getId());
 
             List<Exercise> ejercicios = exerciseService.findAllExercisesByUsuarioId(usuario.getId());
             List<Valoracion> valoraciones = valoracionService.getValoracionesByUsuario(usuario);
 
+            model.addAttribute("entrenadores", entrenadores);
             model.addAttribute("valoraciones", valoraciones);
             model.addAttribute("ejercicios", ejercicios);
             Integer idSesion=-1;
@@ -241,8 +245,11 @@ public class ClienteController extends BaseController{
 
             List<Exercise> ejercicios = exerciseService.filtrarValoraciones(usuario.getId(), filtro.getStars());
 
+            List<User> entrenadores =  userService.listarEntrenadoresAsignados(usuario.getId());
+
             List<Valoracion> valoraciones = valoracionService.getValoracionesByUsuario(usuario);
 
+            model.addAttribute("entrenadores", entrenadores);
             model.addAttribute("valoraciones", valoraciones);
             model.addAttribute("idSesion", -1);
             model.addAttribute("idRutina", -1);
@@ -264,7 +271,8 @@ public class ClienteController extends BaseController{
 
             List<Exercise> ejercicios = exerciseService.filtrarEjercicios(filtroEj);
             List<Valoracion> valoraciones = valoracionService.getValoracionesByUsuario(usuario);
-
+            List<User> entrenadores =  userService.listarEntrenadoresAsignados(usuario.getId());
+            model.addAttribute("entrenadores", entrenadores);
             model.addAttribute("valoraciones", valoraciones);
             model.addAttribute("idSesion", -1);
             model.addAttribute("idRutina", -1);
