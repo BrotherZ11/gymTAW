@@ -1,6 +1,5 @@
+<%-- David Zarzavilla Borrego--%>
 <%@ page import="java.util.List" %>
-<%@ page import="com.example.gymtaw.dto.Exercise" %>
-<%@ page import="com.example.gymtaw.dto.User" %>
 <%@ page import="com.example.gymtaw.dto.ExerciseHasSession" %>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -41,7 +40,6 @@
     </tr>
     <%
     }else{
-        int i = 1;
         for(ExerciseHasSession e : listaEjercicios){
     %>
     <tr>
@@ -52,7 +50,6 @@
         <td><%=e.getExercise().getTypeIdtype().getName()%></td>
     </tr>
     <%
-                i++;
             }
         }
     %>

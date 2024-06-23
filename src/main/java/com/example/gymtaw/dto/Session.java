@@ -1,5 +1,6 @@
 package com.example.gymtaw.dto;
-//Marta Granado Rodríguez 100%
+//David Zarzavilla Borrego 80%
+//David Molina Lopez 20%
 import com.example.gymtaw.entity.*;
 import lombok.Data;
 
@@ -13,5 +14,6 @@ public class Session {
     private Integer trainerId;
     private Set<Integer> exerciseHasSessions = new LinkedHashSet<>();
     private Set<Integer> routineHasSessions = new LinkedHashSet<>();
+    private Set<Integer> types =  new LinkedHashSet<>();
 
 }

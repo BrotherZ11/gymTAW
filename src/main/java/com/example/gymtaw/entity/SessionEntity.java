@@ -51,9 +51,9 @@ public class SessionEntity implements DTO<Session> {
         this.routineHasSessions.forEach(routineHasSessionEntity -> {routineHasSessions.add(routineHasSessionEntity.getRoutine().getId());});
         session.setRoutineHasSessions(routineHasSessions);
 
-        /*Set<Integer> types = new LinkedHashSet<>();
+        Set<Integer> types = new LinkedHashSet<>();
         this.types.forEach(typeEntity -> {types.add(typeEntity.getId());});
-        session.setTypes(types);*/
+        session.setTypes(types);
 
 
         return session;

@@ -1,5 +1,6 @@
 package com.example.gymtaw.service;
-//Marta Granado Rodríguez 40%
+//David Zarzavilla Borrego 80%, Marta Granado Rodríguez 10%, David Molina Lopez 10%
+
 import com.example.gymtaw.dao.SessionRepository;
 import com.example.gymtaw.dao.UserRepository;
 import com.example.gymtaw.dto.Exercise;
@@ -68,6 +69,9 @@ public class SessionService extends DTOService<Session, SessionEntity>{
     public void guardarSesion(User usuario, Integer idSesion, String nombre,List<Integer> ejercicioIds, Map<String, String> requestParams) {
         UserEntity entrenador = userRepository.findById(usuario.getId()).orElse(null);
         SessionEntity sesion = new SessionEntity();
+        if(idSesion != -1){
+            sesion = sessionRepository.findById(idSesion).orElse(null);
+        }
         sesion.setName(nombre);
         sesion.setIdtrainer(entrenador);
         this.sessionRepository.save(sesion);

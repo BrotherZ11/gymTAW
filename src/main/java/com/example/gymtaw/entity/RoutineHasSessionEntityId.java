@@ -1,8 +1,8 @@
+//David Zarzavilla Borrego
 package com.example.gymtaw.entity;
 
 import com.example.gymtaw.dto.DTO;
 import com.example.gymtaw.dto.RoutineHasSessionId;
-import com.example.gymtaw.dto.UserHasTrainerId;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.Getter;

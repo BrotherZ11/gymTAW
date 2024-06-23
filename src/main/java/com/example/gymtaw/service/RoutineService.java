@@ -1,5 +1,5 @@
 package com.example.gymtaw.service;
-//Marta Granado Rodríguez
+//David Zarzavilla Borrego 55%, David Molina Lopez 45%
 import com.example.gymtaw.dao.*;
 import com.example.gymtaw.dto.Routine;
 import com.example.gymtaw.dto.Session;

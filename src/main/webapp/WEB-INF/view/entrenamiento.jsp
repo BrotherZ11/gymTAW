@@ -1,3 +1,7 @@
+<%--
+David Molina Lopez 80%
+David Zarzavilla Borrego 20%
+--%>
 <%@ page import="java.util.List" %>
 <%@ page import="com.example.gymtaw.dto.RoutineHasSession" %>
 <%@ page import="com.example.gymtaw.dto.Session" %>
