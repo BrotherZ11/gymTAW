@@ -1,5 +1,5 @@
 package com.example.gymtaw.dao;
-//Marta Granado Rodríguez 70%, David Zarzavilla Borrego 5%
+//Marta Granado Rodríguez 70%, David Zarzavilla Borrego 5%, Gonzalo Muñoz Rubio 10%, David Molina Lopez 15%
 import com.example.gymtaw.dto.Exercise;
 import com.example.gymtaw.entity.ExerciseEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -33,4 +33,10 @@ public interface ExerciseRepository extends JpaRepository<ExerciseEntity, Intege
 
     @Query("select e from ExerciseEntity e where e.typeIdtype.id = 1")
     List<ExerciseEntity> getExerciseFuerza();
+
+    @Query("select e from ExerciseEntity e where e.typeIdtype.id = :idTipo")
+    List<ExerciseEntity> findExercisesByType(Integer idTipo);
+
+    @Query("select e from ExerciseEntity e where e.name like concat('%', :nombre, '%') and e.description like concat('%', :descripcion, '%') and e.video like concat('%', :url, '%')  ")
+    List<ExerciseEntity> findExercisesByNameDescriptionUrl(String nombre, String descripcion, String url);
 }

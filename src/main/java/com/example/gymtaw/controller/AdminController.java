@@ -9,15 +9,13 @@ import com.example.gymtaw.dto.Exercise;
 import com.example.gymtaw.dto.Rol;
 import com.example.gymtaw.dto.Type;
 import com.example.gymtaw.dto.User;
-import com.example.gymtaw.entity.RolEntity;
-import com.example.gymtaw.entity.UserEntity;
-import com.example.gymtaw.entity.UserHasTrainerEntity;
-import com.example.gymtaw.entity.UserHasTrainerEntityId;
+import com.example.gymtaw.entity.*;
 import com.example.gymtaw.service.ExerciseService;
 import com.example.gymtaw.service.RolService;
 import com.example.gymtaw.service.TypeService;
 import com.example.gymtaw.service.UserService;
 import com.example.gymtaw.ui.Filtro;
+import com.example.gymtaw.ui.FiltroEjercicio;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.Banner;
@@ -200,7 +198,10 @@ public class AdminController extends BaseController{
             strTo = "redirect:/";
         } else {
             List<Exercise> ejercicios = exerciseService.listarEjercicios();
+            List<Type> tipos = typeService.cogerTipos();
             model.addAttribute("ejercicios", ejercicios);
+            model.addAttribute("filtro", new FiltroEjercicio());
+            model.addAttribute("tipos", tipos);
         }
         return strTo;
     }
@@ -258,6 +259,27 @@ public class AdminController extends BaseController{
             strTo = "redirect:/";
         } else {
             this.exerciseService.guardarCreacionEjercicio(ejercicio);
+        }
+        return strTo;
+    }
+
+    @PostMapping("/filtrarEjercicios")
+    public String doFiltrarEjerciciosPorTipo(@ModelAttribute("filtro") FiltroEjercicio filtro, Model model, HttpSession session){
+        String strTo = "listadoEjercicios";
+        if(!estaAutenticado(session)){
+            strTo = "redirect:/";
+        } else {
+            List<Exercise> ejercicios = new ArrayList<>();
+            if(filtro.getIdTipo() != null){
+                ejercicios = exerciseService.filtrarEjerciciosPorTipo(filtro.getIdTipo());
+            } else {
+                ejercicios = exerciseService.filtrarEjerciciosPorNombreDescripcionUrl(filtro.getNombre(), filtro.getDescripcion(), filtro.getURL());
+            }
+
+            List<Type> tipos = typeService.cogerTipos();
+            model.addAttribute("ejercicios", ejercicios);
+            model.addAttribute("filtro", filtro);
+            model.addAttribute("tipos", tipos);
         }
         return strTo;
     }
