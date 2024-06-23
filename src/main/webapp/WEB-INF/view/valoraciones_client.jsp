@@ -30,7 +30,7 @@
 <p><a href="/home/trainer">Home</a> / <a href="clients">Clientes</a> / Valoraciones <%=cliente.getName()%> <%=cliente.getSurname()%></p><br>
 <%
     int i = 0;
-    for(ClientExercise ejercicioCliente : ejerciciosCliente){
+    for(Valoracion valoracion : valoraciones){
 %>
 <table border="1">
     <tr>
@@ -43,6 +43,15 @@
     </tr>
     <tr>
         <td><%=ejercicios.get(i).getName()%></td>
+        <%
+            ClientExercise ejercicioCliente = null;
+        for(ClientExercise ejercicioDelCliente : ejerciciosCliente){
+            if(ejercicioDelCliente.getExercise().getId() == valoracion.getExercise().getId()){
+                ejercicioCliente = ejercicioDelCliente;
+            }
+        }
+        %>
+
         <td><%=ejercicioCliente.getReps()%></td>
         <td><%=ejercicioCliente.getSets()%></td>
         <td><%=ejercicioCliente.getWeight()%></td>
@@ -58,9 +67,9 @@
                     <th>REVIEW</th>
                 </tr>
                 <tr>
-                    <td><%=valoraciones.get(i).getDone()==1?"Completado":"Sin completar"%></td>
-                    <td><%=valoraciones.get(i).getStars()%></td>
-                    <td><%=valoraciones.get(i).getReview()%></td>
+                    <td><%=valoracion.getDone()==1?"Completado":"Sin completar"%></td>
+                    <td><%=valoracion.getStars() == null ? "Sin valoración" : valoracion.getStars()%></td>
+                    <td><%=((valoracion.getReview() == null) || (valoracion.getReview().equals("No tienes reviews aún."))) ? "Sin review" : valoracion.getReview()%></td>
                 </tr>
             </table>
         </td>

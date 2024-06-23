@@ -94,7 +94,6 @@
                     if (v.getDone() == 1 && v.getUser().getId().equals(idCliente) && v.getExercise().getId().equals(e.getId())) {
                         if (v.getStars() != null) {
                             valorado = true;
-                            System.out.println("llega");
                             estrellas = v.getStars();
                             if (v.getReview() != null) {
                                 review = v.getReview();
@@ -105,7 +104,6 @@
                 }
             }
 
-            System.out.println(valorado? "yes" : "no");
         %>
         <td align="center">
             <% if (isDone && !valorado) { %>

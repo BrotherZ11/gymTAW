@@ -20,42 +20,21 @@ import java.util.List;
 public class ClienteController extends BaseController{
 
     @Autowired
-    RoutineRepository routineRepository;
-
-    @Autowired
     RoutineService routineService;
-
-    @Autowired
-    RoutineHasSessionRepository routineHasSessionRepository;
 
     @Autowired
     RoutineHasSessionService routineHasSessionService;
 
     @Autowired
-    SessionRepository sessionRepository;
-
-    @Autowired
     SessionService sessionService;
 
-    @Autowired
-    ExerciseHasSessionRepository exerciseHasSessionRepository;
-
-    @Autowired
-    ExerciseRepository exerciseRepository;
 
     @Autowired
     ExerciseService exerciseService;
 
     @Autowired
-    ClientExerciseRepository clientExerciseRepository;
+    ValoracionService valoracionService;
 
-    @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    ValoracionRepository valoracionRepository;
-    @Autowired
-    private ValoracionService valoracionService;
     @Autowired
     private ClientExerciseService clientExerciseService;
 
@@ -109,7 +88,7 @@ public class ClienteController extends BaseController{
 
             List<Exercise> ejercicios = exerciseService.getExercisesByIdSession(idSesion);
 
-            List<Valoracion> valoraciones = valoracionService.getValoracionesByExercises(ejercicios, usuario);
+            List<Valoracion> valoraciones = valoracionService.getValoracionesByUsuario(usuario);
 
             model.addAttribute("valoraciones", valoraciones);
             model.addAttribute("usuario",usuario);
@@ -147,7 +126,7 @@ public class ClienteController extends BaseController{
         // Refresh data after updating
         List<Session> sesiones = sessionService.listarSesionByIdRutina(idRutina);
         List<Exercise> ejercicios = exerciseService.getExercisesByIdSession(idSesion);
-        List<Valoracion> valoraciones = valoracionService.getValoracionesByExercises(ejercicios, usuario);
+        List<Valoracion> valoraciones = valoracionService.getValoracionesByUsuario(usuario);
 
         model.addAttribute("sesiones", sesiones);
         model.addAttribute("ejercicios", ejercicios);
@@ -233,8 +212,8 @@ public class ClienteController extends BaseController{
             model.addAttribute("rutinas", rutinas);
 
             List<Exercise> ejercicios = exerciseService.findAllExercisesByUsuarioId(usuario.getId());
-
-            List<Valoracion> valoraciones = valoracionService.getValoracionesByExercises(ejercicios, usuario);
+            System.out.println(ejercicios);
+            List<Valoracion> valoraciones = valoracionService.getValoracionesByUsuario(usuario);
 
             model.addAttribute("valoraciones", valoraciones);
             model.addAttribute("ejercicios", ejercicios);
@@ -259,7 +238,7 @@ public class ClienteController extends BaseController{
 
             List<Exercise> ejercicios = exerciseService.filtrarValoraciones(usuario.getId(), filtro.getStars());
 
-            List<Valoracion> valoraciones = valoracionService.getValoracionesByExercises(ejercicios, usuario);
+            List<Valoracion> valoraciones = valoracionService.getValoracionesByUsuario(usuario);
 
             model.addAttribute("valoraciones", valoraciones);
             model.addAttribute("idSesion", -1);
@@ -281,7 +260,7 @@ public class ClienteController extends BaseController{
             User usuario = (User) session.getAttribute("usuario");
 
             List<Exercise> ejercicios = exerciseService.filtrarEjercicios(filtroEj);
-            List<Valoracion> valoraciones = valoracionService.getValoracionesByExercises(ejercicios, usuario);
+            List<Valoracion> valoraciones = valoracionService.getValoracionesByUsuario(usuario);
 
             model.addAttribute("valoraciones", valoraciones);
             model.addAttribute("idSesion", -1);
