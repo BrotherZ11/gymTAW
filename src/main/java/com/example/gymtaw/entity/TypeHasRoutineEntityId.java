@@ -1,5 +1,7 @@
 package com.example.gymtaw.entity;
 
+import com.example.gymtaw.dto.DTO;
+import com.example.gymtaw.dto.TypeHasRoutineId;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.Getter;
@@ -12,7 +14,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @Embeddable
-public class TypeHasRoutineEntityId implements Serializable {
+public class TypeHasRoutineEntityId implements Serializable, DTO<TypeHasRoutineId> {
     private static final long serialVersionUID = -8465782132180965679L;
     @Column(name = "type_idtype", nullable = false)
     private Integer typeIdtype;
@@ -32,6 +34,13 @@ public class TypeHasRoutineEntityId implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(routineIdroutine, typeIdtype);
+    }
+
+    public TypeHasRoutineId toDTO(){
+        TypeHasRoutineId typeHasRoutineId = new TypeHasRoutineId();
+        typeHasRoutineId.setTypeIdtype(this.getTypeIdtype());
+        typeHasRoutineId.setRoutineIdroutine(this.getRoutineIdroutine());
+        return typeHasRoutineId;
     }
 
 }

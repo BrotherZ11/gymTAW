@@ -1,6 +1,9 @@
 package com.example.gymtaw.service;
 
 import com.example.gymtaw.dao.RoutineHasSessionRepository;
+import com.example.gymtaw.dao.RoutineRepository;
+import com.example.gymtaw.dao.SessionRepository;
+import com.example.gymtaw.dto.Routine;
 import com.example.gymtaw.dto.RoutineHasSession;
 import com.example.gymtaw.dto.Session;
 import com.example.gymtaw.entity.RoutineEntity;
@@ -18,6 +21,12 @@ public class RoutineHasSessionService extends DTOService<RoutineHasSession, Rout
    @Autowired
    private RoutineHasSessionRepository routineHasSessionRepository;
 
+   @Autowired
+   private SessionRepository sessionRepository;
+
+   @Autowired
+   private RoutineRepository routineRepository;
+
     public List<RoutineHasSession> getSessionsRoutineByIdRoutine(Integer idRutina){
         List<RoutineHasSessionEntity> sesiones = this.routineHasSessionRepository.getSessionsRoutineByIdRoutine(idRutina);
         return this.entidadesADTO(sesiones);
@@ -28,16 +37,11 @@ public class RoutineHasSessionService extends DTOService<RoutineHasSession, Rout
         routineHasSessionRepository.deleteAll(sesiones);
     }
 
-/*    public void actualizarSesiones(Integer idRutina, Set<Integer> sesiones) {
-        routineHasSessionRepository.deleteByRoutineId(idRutina);
-        sesiones.forEach(sessionId -> {
-            RoutineHasSessionEntity entity = new RoutineHasSessionEntity(new RoutineHasSessionEntityId(idRutina, sessionId));
-            entity.setSession(sessionRepository.findById(sessionId).orElse(null));
-            routineHasSessionRepository.save(entity);
-        });
-    }*/
 
-    public void guardarSesionEnRutina(RoutineEntity routine, SessionEntity sesion, int dia) {
+    public void guardarSesionEnRutina(Routine routine, Session session, int dia) {
+        RoutineEntity rutina = routineRepository.findById(routine.getId()).orElse(null);
+        SessionEntity sesion = sessionRepository.findById(session.getId()).orElse(null);
+
         RoutineHasSessionEntityId routineHasSessionId = new RoutineHasSessionEntityId();
         routineHasSessionId.setDay(dia);
         routineHasSessionId.setSessionId(sesion.getId());
@@ -45,7 +49,7 @@ public class RoutineHasSessionService extends DTOService<RoutineHasSession, Rout
 
         RoutineHasSessionEntity sessionRoutineEntity = new RoutineHasSessionEntity();
         sessionRoutineEntity.setId(routineHasSessionId);
-        sessionRoutineEntity.setRoutine(routine);
+        sessionRoutineEntity.setRoutine(rutina);
         sessionRoutineEntity.setSession(sesion);
         routineHasSessionRepository.save(sessionRoutineEntity);
     }

@@ -1,5 +1,7 @@
 package com.example.gymtaw.entity;
 
+import com.example.gymtaw.dto.DTO;
+import com.example.gymtaw.dto.TypeHasSession;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +12,7 @@ import org.hibernate.annotations.OnDeleteAction;
 @Setter
 @Entity
 @Table(name = "type_has_session")
-public class TypeHasSessionEntity {
+public class TypeHasSessionEntity implements DTO<TypeHasSession> {
     @EmbeddedId
     private TypeHasSessionEntityId id;
 
@@ -25,5 +27,13 @@ public class TypeHasSessionEntity {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "session_id", nullable = false)
     private SessionEntity session;
+
+    public TypeHasSession toDTO() {
+        TypeHasSession typeHasSession = new TypeHasSession();
+        typeHasSession.setId(this.id.toDTO());
+        typeHasSession.setTypeIdtype(this.typeIdtype.toDTO());
+        typeHasSession.setSession(this.session.toDTO());
+        return typeHasSession;
+    }
 
 }

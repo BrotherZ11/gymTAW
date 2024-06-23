@@ -126,25 +126,25 @@ public class RoutineService extends DTOService<Routine, RoutineEntity>{
         routineHasSessionService.borrarSesionesPorRutina(idRutina);
         typeHasRoutineService.borrarTiposPorRutina(idRutina);
 
-        Set<TypeEntity> tiposRutina = new HashSet<>();
+        Set<Type> tiposRutina = new HashSet<>();
 
-        RoutineEntity routine = routineRepository.findById(idRutina).orElse(null);
+        Routine routine = buscarRutina(idRutina);
 
         for (int i = 1; i <= 7; i++) {
             String sessionIdParam = allParams.get("idSesion" + i);
             if (sessionIdParam != null && !sessionIdParam.equals("-1")) {
                 Integer idSesion = Integer.parseInt(sessionIdParam);
-                SessionEntity sesion = sessionRepository.getById(idSesion);
+                Session sesion = sessionService.buscarSesion(idSesion);
 
                 routineHasSessionService.guardarSesionEnRutina(routine, sesion, i);
 
-                List<TypeEntity> tiposSesion = typeService.getTypesBySessionId(sesion.getId());
+                List<Type> tiposSesion = typeService.getTypesBySessionId(sesion.getId());
                 tiposRutina.addAll(tiposSesion);
             }
         }
 
-        for (TypeEntity tipo : tiposRutina) {
-            typeHasRoutineService.guardarTipoEnRutina(idRutina, tipo, routine);
+        for (Type tipo : tiposRutina) {
+            typeHasRoutineService.guardarTipoEnRutina(tipo, routine);
         }
     }
 }

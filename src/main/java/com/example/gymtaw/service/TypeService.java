@@ -26,9 +26,11 @@ public class TypeService extends DTOService<Type, TypeEntity> {
         return this.entidadesADTO(typeEntities);
     }
 
-    public List<TypeEntity> getTypesBySessionId(Integer sessionId) {
+    public List<Type> getTypesBySessionId(Integer sessionId) {
         List<TypeHasSessionEntity> typeSessions = typeHasSessionRepository.getTypeHasRoutineEntitiesBySessionId(sessionId);
-        return typeSessions.stream().map(TypeHasSessionEntity::getTypeIdtype).collect(Collectors.toList());
+        return typeSessions.stream()
+                .map(typeSession -> typeSession.getTypeIdtype().toDTO())
+                .collect(Collectors.toList());
     }
 
 

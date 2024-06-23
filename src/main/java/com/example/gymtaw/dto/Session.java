@@ -8,7 +8,7 @@ import java.util.Set;
 
 @Data
 public class Session {
-    private Integer id;
+    private Integer id = -1;
     private String name;
     private Integer trainerId;
     private Set<Integer> exerciseHasSessions = new LinkedHashSet<>();

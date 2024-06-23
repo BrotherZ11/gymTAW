@@ -1,8 +1,11 @@
 package com.example.gymtaw.service;
 
+import com.example.gymtaw.dao.RoutineRepository;
 import com.example.gymtaw.dao.TypeHasRoutineRepository;
+import com.example.gymtaw.dao.TypeRepository;
+import com.example.gymtaw.dto.Routine;
+import com.example.gymtaw.dto.Type;
 import com.example.gymtaw.dto.TypeHasRoutine;
-import com.example.gymtaw.dto.TypeHasRoutineId;
 import com.example.gymtaw.entity.RoutineEntity;
 import com.example.gymtaw.entity.TypeEntity;
 import com.example.gymtaw.entity.TypeHasRoutineEntity;
@@ -18,6 +21,11 @@ public class TypeHasRoutineService extends DTOService<TypeHasRoutine, TypeHasRou
     @Autowired
     private TypeHasRoutineRepository typeHasRoutineRepository;
 
+    @Autowired
+    private RoutineRepository routineRepository;
+    @Autowired
+    private TypeRepository typeRepository;
+
     public List<TypeHasRoutine> getRoutinebyType(Integer idRutina){
         List<TypeHasRoutineEntity> tiposRutinaABorrar = typeHasRoutineRepository.getTypeHasRoutineEntitiesByRoutineIdroutine(idRutina);
         return this.entidadesADTO(tiposRutinaABorrar);
@@ -28,14 +36,17 @@ public class TypeHasRoutineService extends DTOService<TypeHasRoutine, TypeHasRou
         typeHasRoutineRepository.deleteAll(tipos);
     }
 
-    public void guardarTipoEnRutina(Integer idRutina, TypeEntity tipo, RoutineEntity routine) {
+    public void guardarTipoEnRutina(Type type, Routine routine) {
+        RoutineEntity rutina = routineRepository.findById(routine.getId()).orElse(null);
+        TypeEntity tipo = typeRepository.findById(type.getId()).orElse(null);
+
         TypeHasRoutineEntityId typeHasRoutineEntityId = new TypeHasRoutineEntityId();
-        typeHasRoutineEntityId.setRoutineIdroutine(idRutina);
-        typeHasRoutineEntityId.setTypeIdtype(tipo.getId());
+        typeHasRoutineEntityId.setRoutineIdroutine(routine.getId());
+        typeHasRoutineEntityId.setTypeIdtype(type.getId());
 
         TypeHasRoutineEntity typeHasRoutineEntity = new TypeHasRoutineEntity();
         typeHasRoutineEntity.setId(typeHasRoutineEntityId);
-        typeHasRoutineEntity.setRoutineIdroutine(routine);
+        typeHasRoutineEntity.setRoutineIdroutine(rutina);
         typeHasRoutineEntity.setTypeIdtype(tipo);
         typeHasRoutineRepository.save(typeHasRoutineEntity);
     }
