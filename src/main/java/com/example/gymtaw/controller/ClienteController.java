@@ -1,6 +1,6 @@
 package com.example.gymtaw.controller;
 
-//Marta Granado Rodríguez
+//Marta Granado Rodríguez 100%
 
 import com.example.gymtaw.dao.*;
 import com.example.gymtaw.dto.*;

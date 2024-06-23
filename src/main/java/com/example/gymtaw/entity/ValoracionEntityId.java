@@ -1,5 +1,5 @@
 package com.example.gymtaw.entity;
-//Marta Granado Rodríguez
+//Marta Granado Rodríguez (toDTO())
 import com.example.gymtaw.dto.DTO;
 import com.example.gymtaw.dto.ValoracionId;
 import jakarta.persistence.Column;

@@ -8,7 +8,7 @@
 <%@ page import="com.example.gymtaw.dto.ValoracionId" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    //Marta Granado Rodríguez
+    //Marta Granado Rodríguez 100%
     List<Exercise> ejercicios = (List<Exercise>) request.getAttribute("ejercicios");
     Integer idSesion = -1;
     Integer idRutina = -1;

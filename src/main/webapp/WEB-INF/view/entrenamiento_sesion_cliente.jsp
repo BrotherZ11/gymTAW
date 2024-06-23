@@ -7,7 +7,7 @@
 <%@ page import="com.example.gymtaw.dto.Valoracion" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    //Marta Granado Rodríguez
+    //Marta Granado Rodríguez 100%
     List<Session> sesiones = (List<Session>) request.getAttribute("sesiones");
     List<Exercise> ejercicios = (List<Exercise>) request.getAttribute("ejercicios");
     List<Valoracion> valoraciones = (List<Valoracion>) request.getAttribute("valoraciones");

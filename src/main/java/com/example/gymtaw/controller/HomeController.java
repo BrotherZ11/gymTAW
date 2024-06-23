@@ -1,5 +1,5 @@
 package com.example.gymtaw.controller;
-//Marta Granado Rodríguez
+//Marta Granado Rodríguez 50%
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

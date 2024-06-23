@@ -1,5 +1,5 @@
 package com.example.gymtaw.dao;
-//Marta Granado Rodríguez
+//Marta Granado Rodríguez 50%
 import com.example.gymtaw.entity.ClientExerciseEntity;
 import com.example.gymtaw.entity.ClientExerciseEntityId;
 import org.springframework.data.jpa.repository.JpaRepository;

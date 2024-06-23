@@ -9,7 +9,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    //Marta Granado Rodríguez
+    //Marta Granado Rodríguez 100%
     List<Routine> rutinas = (List<Routine>) request.getAttribute("rutinas");
 %>
 <html>

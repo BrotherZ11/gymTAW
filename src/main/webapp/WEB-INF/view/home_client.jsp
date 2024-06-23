@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    //Marta Granado Rodríguez
+    //Marta Granado Rodríguez 100%
 %>
 <html>
 <head>

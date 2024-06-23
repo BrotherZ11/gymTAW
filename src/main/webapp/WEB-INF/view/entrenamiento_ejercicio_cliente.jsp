@@ -11,7 +11,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    //Marta Granado Rodríguez
+    //Marta Granado Rodríguez 100%
     Exercise ejercicio = (Exercise) request.getAttribute("ejercicio");
     List<ClientExercise> clientExercise = (List<ClientExercise>) request.getAttribute("clientExercise");
     Integer idRutina = (Integer) request.getAttribute("idRutina");
