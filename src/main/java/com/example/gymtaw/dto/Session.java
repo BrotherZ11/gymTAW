@@ -1,5 +1,5 @@
 package com.example.gymtaw.dto;
-
+//Marta Granado Rodríguez
 import com.example.gymtaw.entity.*;
 import lombok.Data;
 

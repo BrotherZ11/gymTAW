@@ -8,6 +8,7 @@
 <%@ page import="com.example.gymtaw.dto.ValoracionId" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
+    //Marta Granado Rodríguez
     List<Exercise> ejercicios = (List<Exercise>) request.getAttribute("ejercicios");
     Integer idSesion = -1;
     Integer idRutina = -1;
@@ -26,7 +27,7 @@
 
     <label for="stars">Valoración:</label>
     <select id="stars" name="stars">
-        <option value="">Todas</option>
+        <option value="0">Todas</option>
         <option value="1" ${filtro.stars == 1 ? 'selected' : ''}>1 estrella</option>
         <option value="2" ${filtro.stars == 2 ? 'selected' : ''}>2 estrellas</option>
         <option value="3" ${filtro.stars == 3 ? 'selected' : ''}>3 estrellas</option>

@@ -1,5 +1,5 @@
 package com.example.gymtaw.entity;
-
+//Marta Granado Rodríguez
 import com.example.gymtaw.dto.DTO;
 import com.example.gymtaw.dto.Exercise;
 import com.example.gymtaw.dto.Routine;

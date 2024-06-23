@@ -1,5 +1,5 @@
 package com.example.gymtaw.service;
-
+//Marta Granado Rodríguez
 import com.example.gymtaw.dao.ClientExerciseRepository;
 import com.example.gymtaw.dao.ExerciseRepository;
 import com.example.gymtaw.dao.UserRepository;
@@ -30,11 +30,6 @@ public class ClientExerciseService extends DTOService<ClientExercise, ClientExer
     public List<ClientExercise> getClientExercisesByIdEjercicio(Integer idEjercicio) {
         List<ClientExerciseEntity> clientExercises = clientExerciseRepository.getClientExercisesByIdEjercicio(idEjercicio);
         return this.entidadesADTO(clientExercises);
-    }
-
-    public List<Integer> findExerciseIdByClientId(Integer id) {
-        List<Integer> clientExerciseEntities = clientExerciseRepository.findExerciseIdByClientId(id);
-        return clientExerciseEntities;
     }
 
     public List<ClientExercise> findClientExercisesWithAReviewByIdClient(Integer idCliente){

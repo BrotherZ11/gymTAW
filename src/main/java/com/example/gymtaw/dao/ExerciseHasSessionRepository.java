@@ -14,9 +14,9 @@ public interface ExerciseHasSessionRepository extends JpaRepository<ExerciseHasS
     @Query("select es from ExerciseHasSessionEntity es where es.session.id = :idSesion order by es.id.order")
     public List<ExerciseHasSessionEntity> findBySessionId(@Param("idSesion") Integer idSesion);
 
-    @Query(value = "select e from ExerciseEntity e join ExerciseHasSessionEntity es on e.id = es.exercise.id where es.session.id = :idSesion")
-    public List<ExerciseEntity> getExercisesByIdSession(@Param("idSesion") Integer idSesion);
-
-    @Query(value = "SELECT e FROM ExerciseHasSessionEntity e where e.session.id = :id")
-    public List<ExerciseHasSessionEntity> getExercisesHasSessionByIdSession(@Param("id") Integer id);
+//    @Query(value = "select e from ExerciseEntity e join ExerciseHasSessionEntity es on e.id = es.exercise.id where es.session.id = :idSesion")
+//    public List<ExerciseEntity> getExercisesByIdSession(@Param("idSesion") Integer idSesion);
+//
+//    @Query(value = "SELECT e FROM ExerciseHasSessionEntity e where e.session.id = :id")
+//    public List<ExerciseHasSessionEntity> getExercisesHasSessionByIdSession(@Param("id") Integer id);
 }

@@ -1,5 +1,5 @@
 package com.example.gymtaw.service;
-
+//Marta Granado Rodríguez
 import com.example.gymtaw.dao.ClientExerciseRepository;
 import com.example.gymtaw.dao.ExerciseRepository;
 import com.example.gymtaw.dao.UserRepository;
@@ -11,14 +11,12 @@ import com.example.gymtaw.entity.ExerciseEntity;
 import com.example.gymtaw.entity.UserEntity;
 import com.example.gymtaw.entity.ValoracionEntity;
 import com.example.gymtaw.entity.ValoracionEntityId;
-import com.example.gymtaw.ui.FiltroValoracion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class ValoracionService extends DTOService<Valoracion, ValoracionEntity>{

@@ -11,6 +11,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
+    //Marta Granado Rodríguez
     Exercise ejercicio = (Exercise) request.getAttribute("ejercicio");
     List<ClientExercise> clientExercise = (List<ClientExercise>) request.getAttribute("clientExercise");
     Integer idRutina = (Integer) request.getAttribute("idRutina");
@@ -29,6 +30,7 @@
 <a href="http://localhost:8080/home/cliente/valorar">Volver atrás</a>
 <%}%>
 <%
+
     if (ejercicio != null && clientExercise != null) {
         for (ClientExercise ce : clientExercise) {
 %>

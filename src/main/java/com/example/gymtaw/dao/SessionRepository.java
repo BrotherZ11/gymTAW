@@ -1,5 +1,5 @@
 package com.example.gymtaw.dao;
-
+//Marta Granado Rodríguez
 import com.example.gymtaw.entity.RoutineEntity;
 import com.example.gymtaw.entity.SessionEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -19,6 +19,6 @@ public interface SessionRepository extends JpaRepository<SessionEntity, Integer>
     @Query(value = "select s from SessionEntity s where s.id = :idSesion")
     public List<SessionEntity> findSessionBySessionId(@Param("idSesion") Integer idSesion);
 
-    @Query(value = "select s from SessionEntity s join  ExerciseHasSessionEntity es on s.id = es.session.id where es.exercise.id = :exerciseId")
-    SessionEntity getSessionsByIdEjercicio(@Param("exerciseId") Integer exerciseId);
+//    @Query(value = "select s from SessionEntity s join  ExerciseHasSessionEntity es on s.id = es.session.id where es.exercise.id = :exerciseId")
+//    SessionEntity getSessionsByIdEjercicio(@Param("exerciseId") Integer exerciseId);
 }

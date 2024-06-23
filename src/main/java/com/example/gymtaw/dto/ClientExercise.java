@@ -1,8 +1,5 @@
 package com.example.gymtaw.dto;
-
-import com.example.gymtaw.entity.ClientExerciseEntityId;
-import com.example.gymtaw.entity.ExerciseEntity;
-import com.example.gymtaw.entity.UserEntity;
+//Marta Granado Rodríguez
 import lombok.Data;
 
 @Data

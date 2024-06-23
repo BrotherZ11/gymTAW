@@ -1,6 +1,8 @@
 package com.example.gymtaw.entity;
-
+//Marta Granado Rodríguez
 import com.example.gymtaw.dto.ClientExerciseId;
+import com.example.gymtaw.dto.DTO;
+import com.example.gymtaw.dto.ExerciseHasSessionId;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.Getter;
@@ -13,7 +15,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @Embeddable
-public class ClientExerciseEntityId implements Serializable {
+public class ClientExerciseEntityId implements Serializable, DTO<ClientExerciseId> {
     private static final long serialVersionUID = -3932182480453692957L;
     @Column(name = "user_id", nullable = false)
     private Integer userId;
