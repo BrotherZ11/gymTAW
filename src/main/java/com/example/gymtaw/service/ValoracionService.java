@@ -123,8 +123,28 @@ public class ValoracionService extends DTOService<Valoracion, ValoracionEntity>{
         }
     }
 
-    public List<Valoracion> findValoracionEntitiesByIdClient(Integer idCliente){
+    public List<Valoracion> findValoracionByIdClient(Integer idCliente){
         List<ValoracionEntity> valoraciones = valoracionRepository.findValoracionEntitiesByIdCliente(idCliente);
         return this.entidadesADTO(valoraciones);
+    }
+
+    public void crearValoracionNueva(Integer idCliente, Integer idEjercicio){
+        ValoracionEntity valoracion = valoracionRepository.getValoracionesByExerciseAndCliente(idEjercicio, idCliente);
+        if(valoracion == null){
+            ExerciseEntity ejercicio = exerciseRepository.findById(idEjercicio).orElse(null);
+            UserEntity cliente = userRepository.findById(idCliente).orElse(null);
+
+            ValoracionEntityId valoracionEntityId = new ValoracionEntityId();
+            valoracionEntityId.setExerciseId(idEjercicio);
+            valoracionEntityId.setUserId(idCliente);
+
+            valoracion = new ValoracionEntity();
+            valoracion.setId(valoracionEntityId);
+            valoracion.setExercise(ejercicio);
+            valoracion.setUser(cliente);
+            valoracion.setDone((byte) 0);
+
+            valoracionRepository.save(valoracion);
+        }
     }
 }

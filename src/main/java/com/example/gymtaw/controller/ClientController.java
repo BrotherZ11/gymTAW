@@ -68,7 +68,7 @@ public class ClientController extends BaseController{
 
             List<Exercise> ejercicios = exerciseService.findExercisesWithAReviewByIdClient(idCliente);
             List<ClientExercise> ejerciciosCliente = clientExerciseService.findClientExercisesWithAReviewByIdClient(idCliente);
-            List<Valoracion> valoraciones = valoracionService.findValoracionEntitiesByIdClient(idCliente);
+            List<Valoracion> valoraciones = valoracionService.findValoracionByIdClient(idCliente);
 
             model.addAttribute("ejercicios", ejercicios);
             model.addAttribute("ejerciciosCliente", ejerciciosCliente);
@@ -262,6 +262,7 @@ public class ClientController extends BaseController{
             User cliente = (User) session.getAttribute("cliente");
 
             ClientExercise clientExercise = clientExerciseService.saveClientExercise(idEjercicio, cliente.getId(), reps, sets, peso, calorias, distancia);
+            valoracionService.crearValoracionNueva(idEjercicio, cliente.getId());
 
             model.addAttribute("ejercicio", clientExercise);
         }
