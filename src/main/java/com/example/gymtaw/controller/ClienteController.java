@@ -109,7 +109,7 @@ public class ClienteController extends BaseController{
 
             List<Exercise> ejercicios = exerciseService.getExercisesByIdSession(idSesion);
 
-            List<Valoracion> valoraciones = valoracionService.getValoracionesByExercises(ejercicios);
+            List<Valoracion> valoraciones = valoracionService.getValoracionesByExercises(ejercicios, usuario);
 
             model.addAttribute("valoraciones", valoraciones);
             model.addAttribute("usuario",usuario);
@@ -147,7 +147,7 @@ public class ClienteController extends BaseController{
         // Refresh data after updating
         List<Session> sesiones = sessionService.listarSesionByIdRutina(idRutina);
         List<Exercise> ejercicios = exerciseService.getExercisesByIdSession(idSesion);
-        List<Valoracion> valoraciones = valoracionService.getValoracionesByExercises(ejercicios);
+        List<Valoracion> valoraciones = valoracionService.getValoracionesByExercises(ejercicios, usuario);
 
         model.addAttribute("sesiones", sesiones);
         model.addAttribute("ejercicios", ejercicios);
@@ -234,7 +234,7 @@ public class ClienteController extends BaseController{
 
             List<Exercise> ejercicios = exerciseService.findAllExercisesByUsuarioId(usuario.getId());
 
-            List<Valoracion> valoraciones = valoracionService.getValoracionesByExercises(ejercicios);
+            List<Valoracion> valoraciones = valoracionService.getValoracionesByExercises(ejercicios, usuario);
 
             model.addAttribute("valoraciones", valoraciones);
             model.addAttribute("ejercicios", ejercicios);
@@ -259,7 +259,7 @@ public class ClienteController extends BaseController{
 
             List<Exercise> ejercicios = exerciseService.filtrarValoraciones(usuario.getId(), filtro.getStars());
 
-            List<Valoracion> valoraciones = valoracionService.getValoracionesByExercises(ejercicios);
+            List<Valoracion> valoraciones = valoracionService.getValoracionesByExercises(ejercicios, usuario);
 
             model.addAttribute("valoraciones", valoraciones);
             model.addAttribute("idSesion", -1);
@@ -278,9 +278,10 @@ public class ClienteController extends BaseController{
         if(!estaAutenticado(session)){
             strTo = "redirect:/";
         } else{
+            User usuario = (User) session.getAttribute("usuario");
 
             List<Exercise> ejercicios = exerciseService.filtrarEjercicios(filtroEj);
-            List<Valoracion> valoraciones = valoracionService.getValoracionesByExercises(ejercicios);
+            List<Valoracion> valoraciones = valoracionService.getValoracionesByExercises(ejercicios, usuario);
 
             model.addAttribute("valoraciones", valoraciones);
             model.addAttribute("idSesion", -1);
