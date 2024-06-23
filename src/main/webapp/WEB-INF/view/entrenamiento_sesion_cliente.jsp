@@ -81,12 +81,18 @@
                 }
             }
         %>
-        <td align="center"><%= valorado ? estrellas : "Completar para valorar" %></td>
         <td align="center">
             <% if (isDone && !valorado) { %>
-            <a href="valorarEjercicio?idEjercicio=<%= e.getId() %>&idSesion=<%=s.getId()%>&idRutina=<%=idRutina%>">Valorar</a>
+            <a href="valorarEjercicio?idEjercicio=<%= e.getId() %>&idSesion=<%=idSesion%>&idRutina=<%=idRutina%>">Valorar</a>
             <% } else if (valorado) { %>
-            <a href="valorarEjercicio?idEjercicio=<%= e.getId() %>&idSesion=<%=s.getId()%>&idRutina=<%=idRutina%>">Editar valoracion</a>
+            <%=estrellas%>
+            <% } else { %>
+            <p>Completar para valorar</p>
+            <% } %>
+        </td>
+        <td align="center">
+            <%if (valorado) { %>
+            <a href="valorarEjercicio?idEjercicio=<%= e.getId() %>&idSesion=<%=idSesion%>&idRutina=<%=idRutina%>">Editar valoracion</a>
             <% } else { %>
             -
             <% } %>

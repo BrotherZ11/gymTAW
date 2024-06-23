@@ -34,37 +34,38 @@ public class ValoracionService extends DTOService<Valoracion, ValoracionEntity>{
 
 
     public void buscarOCrearValoracion(Exercise exercise, User usuario, String done, Integer idEjercicio) {
-        // Busca o crea la valoracion para el ejercicio
+        // Busca las valoraciones del ejercicio especificado
+        List<ValoracionEntity> valoraciones = valoracionRepository.getValoracionesByExercise(exercise.getId());
 
-        List<ValoracionEntity> val = valoracionRepository.getValoracionesByExercise(exercise.getId());
-        boolean valoracionExists = false;
-        if (val != null) {
-            for (ValoracionEntity v : val) {
-                if (v.getUser().getId().equals(usuario.getId())) {
-                    if ("1".equals(done)) {
-                        v.setDone((byte) 1); // Marca como completado
-                    } else {
-                        v.setDone((byte) 0); // Marca como NO completado
-                    }
-                    valoracionRepository.save(v);
-                    valoracionExists = true;
+        boolean valoracionExistente = false;
+
+        // Si hay valoraciones, busca si ya existe una para el usuario
+        if (valoraciones != null) {
+            for (ValoracionEntity valoracion : valoraciones) {
+                if (valoracion.getUser().getId().equals(usuario.getId())) {
+                    // Actualiza el estado de "done" según el valor recibido
+                    valoracion.setDone("1".equals(done) ? (byte) 1 : (byte) 0);
+                    valoracionRepository.save(valoracion);
+                    valoracionExistente = true;
                     break;
                 }
             }
         }
 
-        if (!valoracionExists && "1".equals(done)) {
-            ValoracionEntity newValoracion = new ValoracionEntity();
+        // Si no se encontró una valoración existente para el usuario, crea una nueva si "done" es "1"
+        if (!valoracionExistente && "1".equals(done)) {
+            ValoracionEntity nuevaValoracion = new ValoracionEntity();
             ValoracionEntityId valoracionId = new ValoracionEntityId();
             valoracionId.setUserId(usuario.getId());
             valoracionId.setExerciseId(idEjercicio);
-            newValoracion.setId(valoracionId);
-            newValoracion.setUser(userRepository.findById(usuario.getId()).orElse(new UserEntity()));
-            newValoracion.setExercise(exerciseRepository.findById(exercise.getId()).orElse(new ExerciseEntity()));
-            newValoracion.setDone((byte) 1);
-            valoracionRepository.save(newValoracion);
+            nuevaValoracion.setId(valoracionId);
+            nuevaValoracion.setUser(userRepository.findById(usuario.getId()).orElseThrow(() -> new RuntimeException("User not found")));
+            nuevaValoracion.setExercise(exerciseRepository.findById(exercise.getId()).orElseThrow(() -> new RuntimeException("Exercise not found")));
+            nuevaValoracion.setDone((byte) 1);
+            valoracionRepository.save(nuevaValoracion);
         }
     }
+
 
     public List<Valoracion> getValoracionesByExercises(List<Exercise> ejercicios) {
         List<ValoracionEntity> valoraciones = new ArrayList<>();
