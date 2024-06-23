@@ -22,23 +22,21 @@ public class ExerciseService extends DTOService<Exercise, ExerciseEntity>{
     @Autowired
     ClientExerciseRepository clientExerciseRepository;
 
-<<<<<<< Updated upstream
-    public List<Exercise> listarEjercicios(){
-        List<ExerciseEntity> exer = exerciseRepository.findAll();
-        return this.entidadesADTO(exer);
-    }
+    @Autowired
+    TypeRepository typeRepository;
+
+
 
     public List<Exercise> listarEjerciciosFuerza(){
         List<ExerciseEntity> exer = exerciseRepository.getExerciseFuerza();
         return this.entidadesADTO(exer);
-=======
-    @Autowired
-    TypeRepository typeRepository;
+    }
+
 
     public List<Exercise> listarEjercicios() {
         List<ExerciseEntity> ejercicios = exerciseRepository.findAll();
         return this.entidadesADTO(ejercicios);
->>>>>>> Stashed changes
+
     }
 
     public List<Exercise> getExercisesByIdSession(Integer idSesion){

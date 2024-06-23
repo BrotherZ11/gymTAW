@@ -13,7 +13,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/home/trainer")
-public class ClientController extends BaseController{
+public class TrainerClientController extends BaseController{
 
     @Autowired
     RoutineService routineService;
