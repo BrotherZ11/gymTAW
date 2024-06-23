@@ -212,7 +212,6 @@ public class ClienteController extends BaseController{
             model.addAttribute("rutinas", rutinas);
 
             List<Exercise> ejercicios = exerciseService.findAllExercisesByUsuarioId(usuario.getId());
-            System.out.println(ejercicios);
             List<Valoracion> valoraciones = valoracionService.getValoracionesByUsuario(usuario);
 
             model.addAttribute("valoraciones", valoraciones);
