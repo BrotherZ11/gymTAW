@@ -1,15 +1,15 @@
 <%@ page import="java.util.List" %>
-<%@ page import="com.example.gymtaw.entity.SessionEntity" %>
-<%@ page import="com.example.gymtaw.entity.RoutineHasSessionEntity" %>
-<%@ page import="com.example.gymtaw.entity.UserEntity" %>
+<%@ page import="com.example.gymtaw.dto.Session" %>
+<%@ page import="com.example.gymtaw.dto.RoutineHasSession" %>
+<%@ page import="com.example.gymtaw.dto.User" %>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    List<SessionEntity> listaSesiones = (List<SessionEntity>) request.getAttribute("listaSesiones");
-    List<RoutineHasSessionEntity> listaSesionesDias = (List<RoutineHasSessionEntity>) request.getAttribute("listaSesionesDias");
+    List<Session> listaSesiones = (List<Session>) request.getAttribute("listaSesiones");
+    List<RoutineHasSession> listaSesionesDias = (List<RoutineHasSession>) request.getAttribute("listaSesionesDias");
     Integer idRutina = (Integer) request.getAttribute("idRutina");
     String nombreRutina = (String) request.getAttribute("nombreRutina");
-    UserEntity cliente = (UserEntity) session.getAttribute("cliente");
+    User cliente = (User) session.getAttribute("cliente");
 %>
 <html>
 <head>

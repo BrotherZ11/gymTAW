@@ -2,10 +2,13 @@ package com.example.gymtaw.service;
 
 import com.example.gymtaw.dao.*;
 import com.example.gymtaw.dto.Routine;
+import com.example.gymtaw.dto.Type;
 import com.example.gymtaw.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -58,6 +61,19 @@ public class RoutineService extends DTOService<Routine, RoutineEntity>{
         return this.entidadesADTO(routines);
     }
 
+    public List<Routine> listarRutinasFiltradasPorEntrenadorClienteNombreYTipos(Integer idEntrenador,
+                                                                                Integer idCliente,
+                                                                                String nombre,
+                                                                                Set<Integer> tipos){
+        Set<TypeEntity> tiposEntity = new HashSet<>();
+        for(Integer idTipo : tipos){
+            TypeEntity tipeEntity = typeRepository.findById(idTipo).orElse(null);
+            tiposEntity.add(tipeEntity);
+        }
+        List<RoutineEntity> routines = routineRepository.getRoutinesByIdEntrenadorAndIdClienteFiltroNombreYTipos(idEntrenador, idCliente, nombre, tiposEntity);
+        return this.entidadesADTO(routines);
+    }
+
 /*    public List<Routine> listarRutinas(String nombre, Integer id, Set<Integer> types) {
         List<RoutineEntity> routines = this.routineRepository.findByFiltro(nombre, id, types);
         return this.entidadesADTO(routines);
@@ -74,6 +90,19 @@ public class RoutineService extends DTOService<Routine, RoutineEntity>{
 
     public void borrarRutina(Integer id) {
         routineRepository.deleteById(id);
+    }
+
+    public void quitarClienteDeRutina(Integer idRutina){
+        RoutineEntity rutina = routineRepository.findById(idRutina).orElse(null);
+        rutina.setIdclient(null);
+        routineRepository.save(rutina);
+    }
+
+    public void asignarClienteEnRutina(Integer idRutina, Integer idCliente){
+        RoutineEntity rutina = routineRepository.findById(idRutina).orElse(null);
+        UserEntity cliente= userRepository.findById(idCliente).orElse(null);
+        rutina.setIdclient(cliente);
+        routineRepository.save(rutina);
     }
 
 

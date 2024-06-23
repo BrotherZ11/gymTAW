@@ -47,7 +47,7 @@
         <td><%=ejercicioCliente.getSets()%></td>
         <td><%=ejercicioCliente.getWeight()%></td>
         <td><%=ejercicioCliente.getCalories()%></td>
-        <td><%=ejercicioCliente.getDistance()%></td>
+        <td><%=ejercicioCliente.getDistance()%> Km</td>
     </tr>
     <tr>
         <td colspan="6">

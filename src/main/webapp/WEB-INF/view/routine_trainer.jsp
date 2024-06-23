@@ -34,7 +34,7 @@
     <%
         for(TypeEntity tipo : tipos){
     %>
-    <form:checkbox value="<%=tipo%>" label="<%=tipo.getName()%>" path="tipos"/>
+    <form:checkbox value="<%=tipo.getId()%>" label="<%=tipo.getName()%>" path="tipos"/>
     <%
             }
         }

@@ -1,16 +1,16 @@
 <%@ page import="java.util.List" %>
-<%@ page import="com.example.gymtaw.entity.ExerciseEntity" %>
-<%@ page import="com.example.gymtaw.entity.UserEntity" %>
+<%@ page import="com.example.gymtaw.dto.Exercise" %>
+<%@ page import="com.example.gymtaw.dto.User" %>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    List<ExerciseEntity> listaEjercicios = (List<ExerciseEntity>) request.getAttribute("listaEjercicios");
-    List<ExerciseEntity> listaEjerciciosConDatos = (List<ExerciseEntity>) request.getAttribute("listaEjerciciosConDatos");
+    List<Exercise> listaEjercicios = (List<Exercise>) request.getAttribute("listaEjercicios");
+    List<Exercise> listaEjerciciosConDatos = (List<Exercise>) request.getAttribute("listaEjerciciosConDatos");
     Integer idSesion = (Integer) request.getAttribute("idSesion");
     Integer idRutina = (Integer) request.getAttribute("idRutina");
     String nombreRutina = (String) request.getAttribute("nombreRutina");
     String nombreSesion = (String) request.getAttribute("nombreSesion");
-    UserEntity cliente = (UserEntity) session.getAttribute("cliente");
+    User cliente = (User) session.getAttribute("cliente");
 %>
 <html>
 <head>
@@ -46,7 +46,7 @@
     <%
     }else{
         int i = 1;
-        for(ExerciseEntity e : listaEjercicios){
+        for(Exercise e : listaEjercicios){
     %>
     <tr>
         <td><%=i%></td>

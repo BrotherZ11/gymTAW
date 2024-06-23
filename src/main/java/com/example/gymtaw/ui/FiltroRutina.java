@@ -1,13 +1,13 @@
 package com.example.gymtaw.ui;
 
-import com.example.gymtaw.entity.TypeEntity;
+import com.example.gymtaw.dto.Type;
 
 import java.util.Set;
 
 public class FiltroRutina {
     protected String nombre;
 
-    protected Set<TypeEntity> tipos;
+    protected Set<Integer> tipos;
 
     protected Integer idEntrenador;
 
@@ -25,11 +25,11 @@ public class FiltroRutina {
         this.nombre = nombre;
     }
 
-    public Set<TypeEntity> getTipos() {
+    public Set<Integer> getTipos() {
         return tipos;
     }
 
-    public void setTipos(Set<TypeEntity> tipos) {
+    public void setTipos(Set<Integer> tipos) {
         this.tipos = tipos;
     }
 

@@ -17,6 +17,15 @@ public class SessionService extends DTOService<Session, SessionEntity>{
     @Autowired
     private SessionRepository sessionRepository;
 
+    public Session buscarSesion(Integer idSesion){
+        SessionEntity sesion = sessionRepository.findById(idSesion).orElse(null);
+        if (sesion != null) {
+            return sesion.toDTO();
+        } else {
+            return null;
+        }
+    }
+
     public List<Session> listarSesionByIdRutina(Integer idRutina) {
         List<SessionEntity> sessions = sessionRepository.getSessionsByIdRoutine(idRutina);
         return this.entidadesADTO(sessions);

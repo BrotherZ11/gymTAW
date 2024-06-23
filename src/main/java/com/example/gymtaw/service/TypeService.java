@@ -18,4 +18,6 @@ public class TypeService extends DTOService<Type, TypeEntity> {
         List<TypeEntity> typeEntities = typeRepository.findAll();
         return this.entidadesADTO(typeEntities);
     }
+
+
 }

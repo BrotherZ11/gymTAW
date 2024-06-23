@@ -3,6 +3,7 @@
 <%@ page import="com.example.gymtaw.dto.Routine" %>
 <%@ page import="com.example.gymtaw.dto.User" %>
 <%@ page import="com.example.gymtaw.dto.Type" %>
+<%@ page import="com.example.gymtaw.ui.FiltroRutina" %>
 
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -13,8 +14,7 @@
     User cliente = (User) session.getAttribute("cliente");
     Integer idCliente = (Integer) request.getAttribute("idCliente");
     List<Type> tipos = (List<Type>) request.getAttribute("tipos");
-    String filtro = request.getParameter("filtro");
-    if (filtro == null) filtro = "";
+    FiltroRutina filtro = (FiltroRutina) request.getAttribute("filtro");
 %>
 <html>
 <head>
@@ -35,7 +35,7 @@
     <%
         for(Type tipo : tipos){
     %>
-    <form:checkbox value="<%=tipo%>" label="<%=tipo.getName()%>" path="tipos"/>
+    <form:checkbox value="<%=tipo.getId()%>" label="<%=tipo.getName()%>" path="tipos"/>
     <%
             }
         }

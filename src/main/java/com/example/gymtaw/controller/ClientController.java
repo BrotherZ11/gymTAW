@@ -81,6 +81,7 @@ public class ClientController extends BaseController{
     }
 
     //Redirecciones de la pestaña de rutinas
+
     @GetMapping("/routine_client")
     public String doRoutineClient (@RequestParam("idCliente") Integer idCliente,
                                    Model model,
@@ -107,7 +108,6 @@ public class ClientController extends BaseController{
         }
         return strTo;
     }
-    /*
 
     @PostMapping("/routine_client_filtrar")
     public String doRoutineClientFiltrar (@ModelAttribute("filtro") FiltroRutina filtro,
@@ -118,12 +118,12 @@ public class ClientController extends BaseController{
             strTo = "redirect:/";
         } else {
 
-            UserEntity usuario = (UserEntity) session.getAttribute("usuario");
-            UserEntity cliente = (UserEntity) session.getAttribute("cliente");
+            User usuario = (User) session.getAttribute("usuario");
+            User cliente = (User) session.getAttribute("cliente");
 
-            List<RoutineEntity> rutinasCliente = routineRepository.getRoutinesByIdEntrenadorAndIdClienteFiltroNombreYTipos(usuario.getId(), cliente.getId(), filtro.getNombre(), filtro.getTipos());
-            List<RoutineEntity> rutinasSinAsignar = routineRepository.getRoutinesByIdEntrenadorNoCliente(usuario.getId());
-            List<TypeEntity> tipos = typeRepository.findAll();
+            List<Routine> rutinasCliente = routineService.listarRutinasFiltradasPorEntrenadorClienteNombreYTipos(usuario.getId(), cliente.getId(), filtro.getNombre(), filtro.getTipos());
+            List<Routine> rutinasSinAsignar = routineService.listarRutinasSinAsignarPorEntrenador(usuario.getId());
+            List<Type> tipos = typeService.cogerTipos();
 
             model.addAttribute("listaRutinasCliente", rutinasCliente);
             model.addAttribute("listaRutinasSinAsignar", rutinasSinAsignar);
@@ -134,46 +134,37 @@ public class ClientController extends BaseController{
         return strTo;
     }
 
-@GetMapping("/quitar_rutina")
+    @GetMapping("/quitar_rutina")
     public String doQuitarRutina (@RequestParam("idRutina") Integer idRutina,
                                   Model model,
                                   HttpSession session) {
-        UserEntity cliente = (UserEntity) session.getAttribute("cliente");
+        User cliente = (User) session.getAttribute("cliente");
         String strTo = "redirect:/home/trainer/routine_client?idCliente="+cliente.getId();
 
         if (!estaAutenticado(session)) {
             strTo = "redirect:/";
         } else {
 
-            Optional<RoutineEntity> rutinaOptional = routineRepository.findById(idRutina);
-            if (rutinaOptional.isPresent()) {
-                RoutineEntity rutina = rutinaOptional.get();
-                rutina.setIdclient(null);
-                routineRepository.save(rutina);
-            }
+            routineService.quitarClienteDeRutina(idRutina);
+
         }
 
         return strTo;
     }
 
-@PostMapping("/asignar_rutina")
+    @PostMapping("/asignar_rutina")
     public String doAsignarRutina (@RequestParam("idRutina") int idRutina,
                                    Model model,
                                    HttpSession session) {
-        UserEntity cliente = (UserEntity) session.getAttribute("cliente");
+        User cliente = (User) session.getAttribute("cliente");
         String strTo = "redirect:/home/trainer/routine_client?idCliente="+cliente.getId();
 
         if (!estaAutenticado(session)) {
             strTo = "redirect:/";
         } else {
 
-            Optional<RoutineEntity> rutinaOptional = routineRepository.findById(idRutina);
-            Optional<UserEntity> clienteOptional = clientRepository.findById(cliente.getId());
-            if (clienteOptional.isPresent() && rutinaOptional.isPresent()) {
-                RoutineEntity rutina = rutinaOptional.get();
-                rutina.setIdclient(clienteOptional.get());
-                routineRepository.save(rutina);
-            }
+            routineService.asignarClienteEnRutina(idRutina, cliente.getId());
+
         }
 
         return strTo;
@@ -190,9 +181,10 @@ public class ClientController extends BaseController{
             strTo = "redirect:/";
         } else {
 
-            List<RoutineHasSessionEntity> sesionesDias = routineHasSessionRepository.getSessionsRoutineByIdRoutine(idRutina);
-            List<SessionEntity> sesiones = sessionRepository.getSessionsByIdRoutine(idRutina);
-            RoutineEntity rutina = routineRepository.findById(idRutina).orElse(null);
+            List<RoutineHasSession> sesionesDias = routineHasSessionService.getSessionsRoutineByIdRoutine(idRutina);
+            List<Session> sesiones = sessionService.listarSesionByIdRutina(idRutina);
+            Routine rutina = routineService.buscarRutina(idRutina);
+
             model.addAttribute("listaSesionesDias", sesionesDias);
             model.addAttribute("listaSesiones", sesiones);
             model.addAttribute("idRutina", idRutina);
@@ -213,10 +205,11 @@ public class ClientController extends BaseController{
         if (!estaAutenticado(session)) {
             strTo = "redirect:/";
         } else {
-            List<ExerciseEntity> ejercicios = exerciseRepository.getExercisesByIdSession(idSesion);
-            List<ExerciseEntity> ejerciciosConDatos = exerciseRepository.getExercisesByIdSessionWithData(idSesion);
-            RoutineEntity rutina = routineRepository.findById(idRutina).orElse(null);
-            SessionEntity sesion = sessionRepository.findById(idSesion).orElse(null);
+
+            List<Exercise> ejercicios = exerciseService.getExercisesByIdSession(idSesion);
+            List<Exercise> ejerciciosConDatos = exerciseService.findExercisesWithDataByIdSesion(idSesion);
+            Routine rutina = routineService.buscarRutina(idRutina);
+            Session sesion = sessionService.buscarSesion(idSesion);
 
             model.addAttribute("listaEjercicios", ejercicios);
             model.addAttribute("listaEjerciciosConDatos", ejerciciosConDatos);
@@ -231,25 +224,22 @@ public class ClientController extends BaseController{
     @GetMapping("/exercise_client_info")
     public String doExerciseClientInfo (@RequestParam("idEjercicio") Integer idEjercicio,
                                         @RequestParam("idSesion") Integer idSesion,
+                                        @RequestParam("idRutina") Integer idRutina,
                                         Model model,
                                         HttpSession session) {
         String strTo = "exercise_client_info";
         if (!estaAutenticado(session)) {
             strTo = "redirect:/";
         } else {
+            User cliente = (User) session.getAttribute("cliente");
 
-            UserEntity cliente = (UserEntity) session.getAttribute("cliente");
-
-            ClientExerciseEntityId clientExerciseId = new ClientExerciseEntityId();
-            clientExerciseId.setExerciseId(idEjercicio);
-            clientExerciseId.setUserId(cliente.getId());
-
-            ClientExerciseEntity clientExercise = clientExerciseRepository.findById(clientExerciseId).orElse(null);
-            ExerciseEntity exercise = exerciseRepository.findById(idEjercicio).orElse(null);
+            ClientExercise clientExercise = clientExerciseService.findClientExerciseByIdExerciseAndIdCliente(idEjercicio, cliente.getId());
+            Exercise exercise = exerciseService.findByidEjercicio(idEjercicio);
 
             model.addAttribute("ejercicioCliente", clientExercise);
             model.addAttribute("ejercicio", exercise);
             model.addAttribute("idSesion", idSesion);
+            model.addAttribute("idRutina", idRutina);
         }
         return strTo;
     }
@@ -261,8 +251,8 @@ public class ClientController extends BaseController{
                                         @RequestParam("reps") String reps,
                                         @RequestParam("sets") String sets,
                                         @RequestParam("peso") String peso,
-                                        @RequestParam("calorias") Double calorias,
-                                        @RequestParam("distancia") Double distancia,
+                                        @RequestParam(name = "calorias", required = false) Double calorias,
+                                        @RequestParam(name = "distancia", required = false) Double distancia,
                                         Model model,
                                         HttpSession session) {
         String strTo = "redirect:/home/trainer/exercise_client?idSesion="+idSesion+"&idRutina="+idRutina;
@@ -270,32 +260,13 @@ public class ClientController extends BaseController{
             strTo = "redirect:/";
         } else {
 
-            UserEntity cliente = (UserEntity) session.getAttribute("cliente");
+            User cliente = (User) session.getAttribute("cliente");
 
-            ClientExerciseEntityId clientExerciseId = new ClientExerciseEntityId();
-            clientExerciseId.setExerciseId(idEjercicio);
-            clientExerciseId.setUserId(cliente.getId());
-
-            ClientExerciseEntity clientExercise = clientExerciseRepository.findById(clientExerciseId).orElse(null);
-
-            if (clientExercise == null) {
-                clientExercise = new ClientExerciseEntity();
-            }
-
-            clientExercise.setExercise(exerciseRepository.findById(idEjercicio).orElse(null));
-            clientExercise.setUser(cliente);
-            clientExercise.setId(clientExerciseId);
-            clientExercise.setReps(reps);
-            clientExercise.setSets(sets);
-            clientExercise.setWeight(peso);
-            clientExercise.setCalories(calorias);
-            clientExercise.setDistance(distancia);
-
-            clientExerciseRepository.save(clientExercise);
+            ClientExercise clientExercise = clientExerciseService.saveClientExercise(idEjercicio, cliente.getId(), reps, sets, peso, calorias, distancia);
 
             model.addAttribute("ejercicio", clientExercise);
         }
         return strTo;
     }
-     */
+
 }
