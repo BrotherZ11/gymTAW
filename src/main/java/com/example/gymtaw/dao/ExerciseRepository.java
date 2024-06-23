@@ -33,4 +33,10 @@ public interface ExerciseRepository extends JpaRepository<ExerciseEntity, Intege
 
     @Query("select e from ExerciseEntity e where e.typeIdtype.id = 1")
     List<ExerciseEntity> getExerciseFuerza();
+
+    @Query("select e from ExerciseEntity e where e.typeIdtype.id = :idTipo")
+    List<ExerciseEntity> findExercisesByType(Integer idTipo);
+
+    @Query("select e from ExerciseEntity e where e.name like concat('%', :nombre, '%') and e.description like concat('%', :descripcion, '%') and e.video like concat('%', :url, '%')  ")
+    List<ExerciseEntity> findExercisesByNameDescriptionUrl(String nombre, String descripcion, String url);
 }

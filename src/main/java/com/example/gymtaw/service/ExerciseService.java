@@ -115,4 +115,14 @@ public class ExerciseService extends DTOService<Exercise, ExerciseEntity>{
         exer.setTypeIdtype(type);
         this.exerciseRepository.save(exer);
     }
+
+    public List<Exercise> filtrarEjerciciosPorTipo(Integer idTipo) {
+        List<ExerciseEntity> ejercicios = this.exerciseRepository.findExercisesByType(idTipo);
+        return this.entidadesADTO(ejercicios);
+    }
+
+    public List<Exercise> filtrarEjerciciosPorNombreDescripcionUrl(String nombre, String descripcion, String url) {
+        List<ExerciseEntity> ejercicios = this.exerciseRepository.findExercisesByNameDescriptionUrl(nombre, descripcion, url);
+        return this.entidadesADTO(ejercicios);
+    }
 }
