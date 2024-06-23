@@ -1,5 +1,6 @@
 <%@ page import="com.example.gymtaw.entity.UserEntity" %>
 <%@ page import="java.util.List" %>
+<%@ page import="com.example.gymtaw.dto.User" %>
 <%--
   Created by IntelliJ IDEA.
   User: Gonzalo Muñoz Rubio
@@ -8,14 +9,14 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<% List<UserEntity> usuariosAsignar = (List<UserEntity>) request.getAttribute("usuariosDesasignacion");%>
-<% UserEntity usuario = (UserEntity) request.getAttribute("usuario");%>
+<% List<User> usuariosAsignar = (List<User>) request.getAttribute("usuariosDesasignacion");%>
+<% User usuario = (User) request.getAttribute("usuario");%>
 <html>
 <head>
     <title>Desasignación</title>
 </head>
 <body>
-<h2><%if(usuario.getIdRol().getId() == 4){%>
+<h2><%if(usuario.getRol().getId() == 4){%>
     Desasignar entrenadores a <%=usuario.getName() + " " + usuario.getSurname()%>
     <%} else {%>
     Desasignar clientes a <%=usuario.getName() + " " + usuario.getSurname()%>
@@ -25,14 +26,14 @@
     <input type="hidden" name="idUsuario" value="<%=usuario.getId()%>"/>
     <table border="1">
         <tr>
-            <td><%if(usuario.getIdRol().getId() == 4){%>
+            <td><%if(usuario.getRol().getId() == 4){%>
                 Entrenadores asignados:
                 <%} else {%>
                 Clientes asignados:
                 <%}%>
             </td>
             <td><select name="idsUsuariosDesasignar" multiple>
-                <%for(UserEntity user: usuariosAsignar){%>
+                <%for(User user: usuariosAsignar){%>
                 <option value="<%=user.getId()%>" ><%=user.getName() + " " + user.getSurname()%></option>
                 <%}%>
             </select></td>

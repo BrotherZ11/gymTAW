@@ -96,18 +96,19 @@ public class AdminController extends BaseController{
         return strTo;
     }
 
-//    @GetMapping("/crearUsuario")
-//    public String crearUsuario (Model model, HttpSession session) {
-//        String strTo = "crearUsuario";
-//        if(!estaAutenticado(session)){
-//            strTo = "redirect:/";
-//        }
-//        UserEntity userEntity = new UserEntity();
-//        userEntity.setId(-1);
-//        model.addAttribute("usuario", userEntity);
-//        return strTo;
-//    }
-//
+    @GetMapping("/crearUsuario")
+    public String crearUsuario (Model model, HttpSession session) {
+        String strTo = "crearUsuario";
+        if(!estaAutenticado(session)){
+            strTo = "redirect:/";
+        }
+        User usuario = new User();
+        List<Rol> rols = rolService.listarRoles();
+        model.addAttribute("usuario", usuario);
+        model.addAttribute("rols", rols);
+        return strTo;
+    }
+
     @PostMapping("/guardarEdicion")
     public String doGuardarEdicion (@ModelAttribute("usuario") User usuario, HttpSession session) {
         String strTo = "redirect:/users/";
@@ -118,133 +119,70 @@ public class AdminController extends BaseController{
         }
         return strTo;
     }
-//
-//    @PostMapping("/guardarCreacion")
-//    public String doGuardarCreacion (@RequestParam("id") Integer id,
-//                                     @RequestParam("gmail") String gmail,
-//                                     @RequestParam("nombre") String nombre,
-//                                     @RequestParam("apellido") String apellido,
-//                                     @RequestParam("edad") Integer edad,
-//                                     @RequestParam("telefono") String telefono,
-//                                     @RequestParam("genero") String genero,
-//                                     @RequestParam("contrasena") String contrasena,
-//                                     @RequestParam("dni") String dni,
-//                                     @RequestParam("rol") int rol,
-//                                     HttpSession session) {
-//
-//        String strTo = "redirect:/users/";
-//        if (!estaAutenticado(session)) {
-//            strTo = "redirect:/";
-//        } else {
-//            UserEntity usuario = userRepository.findById(id).orElse(new UserEntity());
-//            usuario.setEmail(gmail);
-//            usuario.setName(nombre);
-//            usuario.setSurname(apellido);
-//            usuario.setAge(edad);
-//            usuario.setPhone(telefono);
-//            usuario.setGender(genero);
-//            usuario.setPassword(contrasena);
-//            usuario.setDni(dni);
-//            RolEntity rolEntity = rolRepository.findById(rol).orElse(new RolEntity());
-//            usuario.setIdRol(rolEntity);
-//
-//            this.userRepository.save(usuario);
-//        }
-//        return strTo;
-//    }
-//
-//    @GetMapping("/asignar")
-//    public String asignar(@RequestParam("id") int idUsuario, Model model, HttpSession session){
-//        UserEntity usuario = userRepository.findById(idUsuario).get();
-//        if(!estaAutenticado(session)){
-//            return "redirect:/";
-//        }
-//        List<UserEntity> usuarios;
-//        if(usuario.getIdRol().getId() == 4){
-//            usuarios = userRepository.findTrainersNotAssignedToUser(usuario.getId());
-//        } else {
-//            usuarios = userRepository.findClientsNotAssignedToTrainer(usuario.getId());
-//        }
-//        model.addAttribute("usuario", usuario);
-//        model.addAttribute("usuariosAsignacion", usuarios);
-//        return "asignarView";
-//    }
-//
-//    @PostMapping("/realizarAsignacion")
-//    public String doAsignacion (@RequestParam("idUsuario") Integer idUsuario, @RequestParam("idsUsuariosAsignar") List<Integer> usuariosAsignar, Model model, HttpSession session){
-//        UserEntity usuario = userRepository.findById(idUsuario).get();
-//        if(!estaAutenticado(session)){
-//            return "redirect:/";
-//        }
-//        List<UserEntity> usuarios = userRepository.findAllById(usuariosAsignar);
-//        if(usuario.getIdRol().getId()== 4){
-//            for(UserEntity u : usuarios){
-//                UserHasTrainerEntity ut = new UserHasTrainerEntity();
-//                UserHasTrainerEntityId utId = new UserHasTrainerEntityId();
-//                utId.setUserId(usuario.getId());
-//                utId.setTrainerId(u.getId());
-//                ut.setId(utId);
-//                ut.setUser(usuario);
-//                ut.setTrainer(u);
-//                this.userTrainerRepository.save(ut);
-//            }
-//        } else {
-//            for(UserEntity u : usuarios){
-//                UserHasTrainerEntity ut = new UserHasTrainerEntity();
-//                UserHasTrainerEntityId utId = new UserHasTrainerEntityId();
-//                utId.setUserId(u.getId());
-//                utId.setTrainerId(usuario.getId());
-//                ut.setId(utId);
-//                ut.setUser(u);
-//                ut.setTrainer(usuario);
-//                this.userTrainerRepository.save(ut);
-//            }
-//        }
-//        return "redirect:/users/";
-//    }
-//
-//    @GetMapping("/desasignar")
-//    public String desasignar(@RequestParam("id") int idUsuario, Model model, HttpSession session){
-//        UserEntity usuario = userRepository.findById(idUsuario).get();
-//        if(!estaAutenticado(session)){
-//            return "redirect:/";
-//        }
-//        List<UserEntity> usuarios;
-//        if(usuario.getIdRol().getId()== 4){
-//            usuarios = userRepository.findTrainersAssignedToUser(usuario.getId());
-//        } else {
-//            usuarios = userRepository.findClientsAssignedToTrainer(usuario.getId());
-//        }
-//        model.addAttribute("usuario", usuario);
-//        model.addAttribute("usuariosDesasignacion", usuarios);
-//
-//        return "desasignarView";
-//    }
-//
-//    @PostMapping("/realizarDesasignacion")
-//    public String doDesasignacion (@RequestParam("idUsuario") Integer idUsuario, @RequestParam("idsUsuariosDesasignar") List<Integer> usuariosDeasignar, Model model, HttpSession session){
-//        UserEntity usuario = userRepository.findById(idUsuario).get();
-//        if(!estaAutenticado(session)){
-//            return "redirect:/";
-//        }
-//        List<UserEntity> usuarios = userRepository.findAllById(usuariosDeasignar);
-//        if(usuario.getIdRol().getId() == 4){
-//            for(UserEntity u : usuarios){
-//                UserHasTrainerEntityId utId = new UserHasTrainerEntityId();
-//                utId.setUserId(usuario.getId());
-//                utId.setTrainerId(u.getId());
-//                UserHasTrainerEntity ut = userTrainerRepository.findById(utId).get();
-//                userTrainerRepository.delete(ut);
-//            }
-//        } else {
-//            for(UserEntity u : usuarios){
-//                UserHasTrainerEntityId utId = new UserHasTrainerEntityId();
-//                utId.setUserId(u.getId());
-//                utId.setTrainerId(usuario.getId());
-//                UserHasTrainerEntity ut = userTrainerRepository.findById(utId).get();
-//                userTrainerRepository.delete(ut);
-//            }
-//        }
-//        return "redirect:/users/";
-//    }
+
+    @PostMapping("/guardarCreacion")
+    public String doGuardarCreacion (@ModelAttribute("usuario") User usuario, HttpSession session) {
+
+        String strTo = "redirect:/users/";
+        if (!estaAutenticado(session)) {
+            strTo = "redirect:/";
+        } else {
+            this.userService.guardarCreacionUsuario(usuario);
+
+        }
+        return strTo;
+    }
+
+    @GetMapping("/asignar")
+    public String asignar(@RequestParam("id") int idUsuario, Model model, HttpSession session){
+        if(!estaAutenticado(session)){
+            return "redirect:/";
+        }
+        User usuario = this.userService.BuscarPorId(idUsuario);
+        List<User> usuarios;
+        if(usuario.getRol().getId() == 4){
+            usuarios = this.userService.listarEntrenadoresNoAsignados(idUsuario);
+        } else {
+            usuarios = this.userService.listarClientesNoAsignados(idUsuario);
+        }
+        model.addAttribute("usuario", usuario);
+        model.addAttribute("usuariosAsignacion", usuarios);
+        return "asignarView";
+    }
+
+    @PostMapping("/realizarAsignacion")
+    public String doAsignacion (@RequestParam("idUsuario") Integer idUsuario, @RequestParam("idsUsuariosAsignar") List<Integer> usuariosAsignar, Model model, HttpSession session){
+        if(!estaAutenticado(session)){
+            return "redirect:/";
+        }
+        this.userService.asignarUsuarios(idUsuario, usuariosAsignar);
+        return "redirect:/users/";
+    }
+
+    @GetMapping("/desasignar")
+    public String desasignar(@RequestParam("id") int idUsuario, Model model, HttpSession session){
+        if(!estaAutenticado(session)){
+            return "redirect:/";
+        }
+        User usuario = this.userService.BuscarPorId(idUsuario);
+        List<User> usuarios;
+        if(usuario.getRol().getId()== 4){
+            usuarios = userService.listarEntrenadoresAsignados(usuario.getId());
+        } else {
+            usuarios = userService.listarClientesAsignados(usuario.getId());
+        }
+        model.addAttribute("usuario", usuario);
+        model.addAttribute("usuariosDesasignacion", usuarios);
+
+        return "desasignarView";
+    }
+
+    @PostMapping("/realizarDesasignacion")
+    public String doDesasignacion (@RequestParam("idUsuario") Integer idUsuario, @RequestParam("idsUsuariosDesasignar") List<Integer> usuariosDeasignar, Model model, HttpSession session){
+        if(!estaAutenticado(session)){
+            return "redirect:/";
+        }
+        this.userService.desasignarUsuarios(idUsuario, usuariosDeasignar);
+        return "redirect:/users/";
+    }
 }

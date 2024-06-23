@@ -1,3 +1,4 @@
+//David Zarzavilla 10%, David Molina 10%, Marta Granado, Gonzalo Muñoz 70%
 package com.example.gymtaw.controller;
 
 import com.example.gymtaw.dto.Rol;
@@ -41,7 +42,7 @@ public class LoginController extends BaseController {
     public String doAutentica (@ModelAttribute("usuario") Usuario usuario,
                                Model model, HttpSession session) {
         String strTo = "redirect:";
-        User user = this.userService.autenticar(usuario.getUser(), usuario.getPassword());
+        User user = this.userService.autenticar(usuario.getUser(), usuario.getPassword().hashCode());
 
         if (user == null) {
             model.addAttribute("error", "Usuario o contraseña incorrectos");
