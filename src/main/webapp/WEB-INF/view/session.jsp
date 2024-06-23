@@ -1,7 +1,9 @@
 <%@ page import="com.example.gymtaw.entity.SessionEntity" %>
 <%@ page import="com.example.gymtaw.entity.ExerciseEntity" %>
 <%@ page import="java.util.List" %>
-<%@ page import="java.util.Map" %><%--
+<%@ page import="java.util.Map" %>
+<%@ page import="com.example.gymtaw.dto.Session" %>
+<%@ page import="com.example.gymtaw.dto.Exercise" %><%--
   Created by IntelliJ IDEA.
   User: dzarz
   Date: 29/04/2024
@@ -10,11 +12,11 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    SessionEntity sesion = (SessionEntity) request.getAttribute("sesion");
+    Session sesion = (Session) request.getAttribute("sesion");
     Integer id = (Integer) request.getAttribute("idRutina");
     boolean esEditar = (sesion.getId() != -1);
     String nombre = "";
-    List<ExerciseEntity> ejercicios = (List<ExerciseEntity>) request.getAttribute("ejercicios");
+    List<Exercise> ejercicios = (List<Exercise>) request.getAttribute("ejercicios");
     Map<Integer, Integer> ejercicioOrdenMap = (Map<Integer, Integer>) request.getAttribute("ejercicioOrdenMap");
     if (esEditar) {
         nombre = sesion.getName();
@@ -42,7 +44,7 @@
             <td>
                 <table border="1">
                     <%
-                        for (ExerciseEntity ejercicio : ejercicios) {
+                        for (Exercise ejercicio : ejercicios) {
                             Integer orden = ejercicioOrdenMap.get(ejercicio.getId());
                     %>
                     <tr>

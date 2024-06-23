@@ -26,6 +26,11 @@ public class ExerciseService extends DTOService<Exercise, ExerciseEntity>{
     @Autowired
     ClientExerciseRepository clientExerciseRepository;
 
+    public List<Exercise> listarEjercicios(){
+        List<ExerciseEntity> exer = exerciseRepository.findAll();
+        return this.entidadesADTO(exer);
+    }
+
     public List<Exercise> getExercisesByIdSession(Integer idSesion){
         List<ExerciseEntity> exer = exerciseRepository.getExercisesByIdSession(idSesion);
         return this.entidadesADTO(exer);
