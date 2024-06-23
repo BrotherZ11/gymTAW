@@ -22,6 +22,12 @@ public class ValoracionEntity  implements DTO<Valoracion> {
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
 
+    @MapsId("trainerId")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "trainer_id", nullable = false)
+    private UserEntity trainer;
+
     @MapsId("exerciseId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "exercise_id", nullable = false)
@@ -41,6 +47,7 @@ public class ValoracionEntity  implements DTO<Valoracion> {
         Valoracion valoracion = new Valoracion();
         valoracion.setId(this.id.toDTO());
         valoracion.setUser(this.user.toDTO());
+        valoracion.setTrainer(this.trainer.toDTO());
         valoracion.setExercise(this.exercise.toDTO());
         valoracion.setReview(this.review);
         valoracion.setStars(this.stars);

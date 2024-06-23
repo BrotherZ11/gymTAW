@@ -19,6 +19,9 @@ public class ValoracionEntityId implements Serializable, DTO<ValoracionId> {
     @Column(name = "user_id", nullable = false)
     private Integer userId;
 
+    @Column(name = "trainer_id", nullable = false)
+    private Integer trainerId;
+
     @Column(name = "exercise_id", nullable = false)
     private Integer exerciseId;
 
@@ -28,18 +31,20 @@ public class ValoracionEntityId implements Serializable, DTO<ValoracionId> {
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
         ValoracionEntityId entity = (ValoracionEntityId) o;
         return Objects.equals(this.exerciseId, entity.exerciseId) &&
-                Objects.equals(this.userId, entity.userId);
+                Objects.equals(this.userId, entity.userId) &&
+                Objects.equals(this.trainerId, entity.trainerId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(exerciseId, userId);
+        return Objects.hash(exerciseId, userId, trainerId);
     }
 
     public ValoracionId toDTO() {
         ValoracionId entity = new ValoracionId();
         entity.setExerciseId(this.exerciseId);
         entity.setUserId(this.userId);
+        entity.setTrainerId(this.trainerId);
         return entity;
     }
 }

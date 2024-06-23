@@ -6,4 +6,5 @@ import lombok.Data;
 public class ClientExerciseId {
     private Integer userId;
     private Integer exerciseId;
+    private Integer trainerId;
 }

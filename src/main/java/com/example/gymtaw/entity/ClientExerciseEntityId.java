@@ -20,6 +20,9 @@ public class ClientExerciseEntityId implements Serializable, DTO<ClientExerciseI
     @Column(name = "user_id", nullable = false)
     private Integer userId;
 
+    @Column(name = "trainer_id", nullable = false)
+    private Integer trainerId;
+
     @Column(name = "exercise_id", nullable = false)
     private Integer exerciseId;
 
@@ -29,18 +32,20 @@ public class ClientExerciseEntityId implements Serializable, DTO<ClientExerciseI
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
         ClientExerciseEntityId entity = (ClientExerciseEntityId) o;
         return Objects.equals(this.exerciseId, entity.exerciseId) &&
-                Objects.equals(this.userId, entity.userId);
+                Objects.equals(this.userId, entity.userId) &&
+                Objects.equals(this.trainerId, entity.trainerId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(exerciseId, userId);
+        return Objects.hash(exerciseId, userId, trainerId);
     }
 
     public ClientExerciseId toDTO() {
         ClientExerciseId clientExerciseEntityId = new ClientExerciseId();
         clientExerciseEntityId.setExerciseId(this.exerciseId);
         clientExerciseEntityId.setUserId(this.userId);
+        clientExerciseEntityId.setTrainerId(this.trainerId);
         return clientExerciseEntityId;
     }
 }

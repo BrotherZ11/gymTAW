@@ -22,8 +22,15 @@ public class ClientExerciseEntity implements DTO<ClientExercise> {
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
 
+    @MapsId("trainerId")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "trainer_id", nullable = false)
+    private UserEntity trainer;
+
     @MapsId("exerciseId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "exercise_id", nullable = false)
     private ExerciseEntity exercise;
 
@@ -46,6 +53,7 @@ public class ClientExerciseEntity implements DTO<ClientExercise> {
         ClientExercise clientExercise = new ClientExercise();
         clientExercise.setId(this.id.toDTO());
         clientExercise.setUser(this.user.toDTO());
+        clientExercise.setTrainer(this.trainer.toDTO());
         clientExercise.setExercise(this.exercise.toDTO());
         clientExercise.setReps(this.reps);
         clientExercise.setSets(this.sets);

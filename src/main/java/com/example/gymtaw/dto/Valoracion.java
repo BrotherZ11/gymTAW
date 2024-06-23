@@ -7,6 +7,7 @@ public class Valoracion
 {
     private ValoracionId id;
     private User user;
+    private User trainer;
     private Exercise exercise;
     private String review;
     private Integer stars;
