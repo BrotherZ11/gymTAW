@@ -68,7 +68,6 @@ public class SessionService extends DTOService<Session, SessionEntity>{
     public void guardarSesion(User usuario, Integer idSesion, String nombre,List<Integer> ejercicioIds, Map<String, String> requestParams) {
         UserEntity entrenador = userRepository.findById(usuario.getId()).orElse(null);
         SessionEntity sesion = new SessionEntity();
-        sesion.setId(idSesion);
         sesion.setName(nombre);
         sesion.setIdtrainer(entrenador);
         this.sessionRepository.save(sesion);

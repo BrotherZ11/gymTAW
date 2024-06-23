@@ -1,7 +1,6 @@
 package com.example.gymtaw.controller;
 
 import com.example.gymtaw.dto.*;
-import com.example.gymtaw.entity.ValoracionEntity;
 import com.example.gymtaw.service.*;
 import com.example.gymtaw.ui.FiltroRutina;
 import jakarta.servlet.http.HttpSession;
