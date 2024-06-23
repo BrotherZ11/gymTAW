@@ -92,11 +92,13 @@ public class RoutineController extends BaseController{
         if(!estaAutenticado(session)) return  "redirect:/";
         else{
             User usuario = (User) session.getAttribute("usuario");
+            String nombreRutina = routineService.obtenerNombreRutina(idRutina);
             List<RoutineHasSession> sessionRoutineEntities = routineHasSessionService.getSessionsRoutineByIdRoutine(idRutina);
             List<Session> sessionCompleteEntities = sessionService.buscarSesionesByEntrenador(usuario.getId());
             model.addAttribute("listaSesionRutina", sessionRoutineEntities);
             model.addAttribute("listaCompleta", sessionCompleteEntities);
             model.addAttribute("idRutina", idRutina);
+            model.addAttribute("nombreRutina", nombreRutina);
 
             // Guardar idRutina
             session.setAttribute("idRutina", idRutina);
