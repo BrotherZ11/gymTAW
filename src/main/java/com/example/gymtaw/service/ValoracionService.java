@@ -72,7 +72,11 @@ public class ValoracionService extends DTOService<Valoracion, ValoracionEntity>{
         List<ValoracionEntity> valoraciones = new ArrayList<>();
         ValoracionEntity valoracion = new ValoracionEntity();
         for (Exercise exercise : ejercicios) {
-          valoracion = valoracionRepository.getValoracionByExercise(exercise.getId());
+            ValoracionEntityId valoracionEntityId = new ValoracionEntityId();
+            valoracionEntityId.setExerciseId(exercise.getId());
+            valoracionEntityId.setUserId(usuario.getId());
+
+          valoracion = valoracionRepository.findById(valoracionEntityId).orElse(null);
           if(valoracion == null){
               ExerciseEntity ejer = exerciseRepository.findById(exercise.getId()).orElse(null);
               valoracion = new ValoracionEntity();
