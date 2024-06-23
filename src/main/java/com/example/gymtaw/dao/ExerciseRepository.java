@@ -30,4 +30,7 @@ public interface ExerciseRepository extends JpaRepository<ExerciseEntity, Intege
 
     @Query("select e from ExerciseEntity e join ValoracionEntity v on v.exercise.id = e.id where v.stars = :stars and v.user.id = :idUsuario")
     List<ExerciseEntity> getExercisesByNumEstrellasEIdUsuario(Integer idUsuario, Integer stars);
+
+    @Query("select e from ExerciseEntity e where e.typeIdtype.id = 1")
+    List<ExerciseEntity> getExerciseFuerza();
 }

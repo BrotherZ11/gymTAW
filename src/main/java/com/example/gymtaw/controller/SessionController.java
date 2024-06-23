@@ -54,8 +54,14 @@ public class SessionController extends BaseController{
     public String doNueva(Model model, HttpSession session) {
         if(!estaAutenticado(session)) return  "redirect:/";
         else{
+            User usuario = (User) session.getAttribute("usuario");
             Integer idRutina = (Integer) session.getAttribute("idRutina");
-            List<Exercise> ejercicios = exerciseService.listarEjercicios();
+            List<Exercise> ejercicios;
+            if(usuario.getRol().getType().equals("bodybuilding")){
+                ejercicios = exerciseService.listarEjerciciosFuerza();
+            }else{
+                ejercicios = exerciseService.listarEjercicios();
+            }
             model.addAttribute("ejercicioOrdenMap", Map.of());
             model.addAttribute("sesion", new Session());
             model.addAttribute("idRutina", idRutina);
@@ -68,15 +74,20 @@ public class SessionController extends BaseController{
     public String doEditar(Model model, HttpSession session, @RequestParam("idSesion") Integer idSesion) {
         if(!estaAutenticado(session)) return "redirect:/";
         else{
+            User usuario = (User) session.getAttribute("usuario");
             Integer idRutina = (Integer) session.getAttribute("idRutina");
             Session sesion = this.sessionService.buscarSesion(idSesion);
             List<ExerciseHasSessionEntity> ejerciciosEnSesion = exerciseHasSessionRepository.findBySessionId(idSesion);
-
+            List<Exercise> ejercicios;
             Map<Integer, Integer> ejercicioOrdenMap = new HashMap<>();
             for (ExerciseHasSessionEntity ejercicioEnSesion : ejerciciosEnSesion) {
                 ejercicioOrdenMap.put(ejercicioEnSesion.getId().getExerciseId(), ejercicioEnSesion.getId().getOrder());
             }
-            List<Exercise> ejercicios = exerciseService.listarEjercicios();
+            if(usuario.getRol().getType().equals("bodybuilding")){
+                ejercicios = exerciseService.listarEjerciciosFuerza();
+            }else{
+                ejercicios = exerciseService.listarEjercicios();
+            }
 
             model.addAttribute("ejercicios", ejercicios);
             model.addAttribute("sesion", sesion);
