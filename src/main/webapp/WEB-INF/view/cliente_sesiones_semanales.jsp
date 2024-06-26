@@ -20,7 +20,7 @@
 <h1> Sesiones del Cliente </h1>
 <h2> TAW </h2>
 
-<table border="1 ">
+<table border="1">
     <tr>
         <th>DIA</th>
         <td>Lunes</td>
@@ -34,38 +34,62 @@
     <tr>
         <th>NOMBRE</th>
         <%
+            //int index = 0;
             for(int i = 1; i <= 7; i++){
                 boolean found = false;
-                for(int j = 0; j < sesiones.size(); j++){
-                    if(sesionRutina.get(j).getId().getDay() == i){
+                for (RoutineHasSession sesionR : sesionRutina) {
+                    if (sesionR.getId().getDay() == i) {
                         found = true;
         %>
-        <td><%= sesiones.get(j).getName() %></td>
+        <td>
+            <%
+                for(Session sesion: sesiones){
+                    if (sesionR.getSession().getId().equals(sesion.getId())) {
+
+            %>
+            <%=sesion.getName()%>
+            <%
+                    }
+                }
+            %>
+        </td>
         <%
-                    //break;
+                    break;
                 }
             }
             if (!found) {
         %>
-        <td>No hay sesion</td>
+        <td>
+            <%
+                for(Session sesion: sesiones){
+            %>
+            <%=sesion.getName()%>
+            <%
+                }
+            %>
+        </td>
         <%
                 }
             }
         %>
     </tr>
 
+
     <tr>
         <th></th>
         <%
             for(int i = 1; i <= 7; i++){
                 boolean found = false;
-                for(int j = 0; j < sesiones.size(); j++){
-                    if(sesionRutina.get(j).getId().getDay() == i){
+                for (RoutineHasSession sesionR : sesionRutina) {
+                    if (sesionR.getId().getDay() == i) {
                         found = true;
         %>
-        <td><a href="/home/cliente/ejercicio?idSesion=<%= sesiones.get(j).getId() %>&idRutina=<%=idRutina%>">Ver</a></td>
+        <td>
+            <a href="/home/cliente/ejercicio?idSesion=<%= sesionR.getSession().getId() %>&idRutina=<%=idRutina%>">Ver</a>
+        </td>
+
         <%
-                    //break;
+                    break;
                 }
             }
             if (!found) {

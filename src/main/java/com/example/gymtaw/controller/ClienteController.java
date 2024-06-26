@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -218,12 +219,10 @@ public class ClienteController extends BaseController{
 
             List<User> entrenadores =  userService.listarEntrenadoresAsignados(usuario.getId());
 
-            List<Exercise> ejercicios = exerciseService.findAllExercisesByUsuarioId(usuario.getId());
             List<Valoracion> valoraciones = valoracionService.getValoracionesByUsuario(usuario);
 
             model.addAttribute("entrenadores", entrenadores);
             model.addAttribute("valoraciones", valoraciones);
-            model.addAttribute("ejercicios", ejercicios);
             Integer idSesion=-1;
             Integer idRutina=-1;
             model.addAttribute("idSesion", idSesion);
@@ -243,17 +242,19 @@ public class ClienteController extends BaseController{
         } else{
             User usuario = (User) session.getAttribute("usuario");
 
-            List<Exercise> ejercicios = exerciseService.filtrarValoraciones(usuario.getId(), filtro.getStars());
+            List<Valoracion> valoracionesfiltradas = valoracionService.filtrarValoracionesPorEstrella(usuario.getId(), filtro.getStars());
+            List<Valoracion> valoraciones = valoracionService.getValoracionesByUsuario(usuario);
+            List<Valoracion> valoracionesFinal = new ArrayList<>();
+            for(Valoracion val : valoracionesfiltradas){
+                if(valoraciones.contains(val)) valoracionesFinal.add(val);
+            }
 
             List<User> entrenadores =  userService.listarEntrenadoresAsignados(usuario.getId());
 
-            List<Valoracion> valoraciones = valoracionService.getValoracionesByUsuario(usuario);
-
             model.addAttribute("entrenadores", entrenadores);
-            model.addAttribute("valoraciones", valoraciones);
+            model.addAttribute("valoraciones", valoracionesFinal);
             model.addAttribute("idSesion", -1);
             model.addAttribute("idRutina", -1);
-            model.addAttribute("ejercicios", ejercicios);
             model.addAttribute("filtro", filtro);
             model.addAttribute("filtroEj", new FiltroEjercicio());
         }
@@ -269,14 +270,17 @@ public class ClienteController extends BaseController{
         } else{
             User usuario = (User) session.getAttribute("usuario");
 
-            List<Exercise> ejercicios = exerciseService.filtrarEjercicios(filtroEj);
+            List<Valoracion> valoracionesfiltradas = valoracionService.filtrarValoraciones(filtroEj);
             List<Valoracion> valoraciones = valoracionService.getValoracionesByUsuario(usuario);
+            List<Valoracion> valoracionesFinal = new ArrayList<>();
+            for(Valoracion val : valoracionesfiltradas){
+                if(valoraciones.contains(val)) valoracionesFinal.add(val);
+            }
             List<User> entrenadores =  userService.listarEntrenadoresAsignados(usuario.getId());
             model.addAttribute("entrenadores", entrenadores);
-            model.addAttribute("valoraciones", valoraciones);
+            model.addAttribute("valoraciones", valoracionesFinal);
             model.addAttribute("idSesion", -1);
             model.addAttribute("idRutina", -1);
-            model.addAttribute("ejercicios", ejercicios);
             model.addAttribute("filtro", new FiltroValoracion());
             model.addAttribute("filtroEj", filtroEj);
         }
@@ -287,6 +291,7 @@ public class ClienteController extends BaseController{
     @PostMapping("/guardarReview")
     public String guardarReview(@RequestParam("exerciseId") Integer exerciseId,
                                 @RequestParam("review") String review,
+                                @RequestParam("entrenadorId") Integer entrenadorId,
                                 Model model, HttpSession session) {
         String strTo = "redirect:/home/cliente/valorar";
         if(!estaAutenticado(session)){
@@ -294,7 +299,7 @@ public class ClienteController extends BaseController{
         } else{
             User usuario = (User) session.getAttribute("usuario");
 
-            valoracionService.guardarReview(usuario, exerciseId, review);
+            valoracionService.guardarReview(usuario, exerciseId, review, entrenadorId);
 
 
         }

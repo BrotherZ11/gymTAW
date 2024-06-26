@@ -67,7 +67,7 @@ public class TrainerClientController extends BaseController{
             User cliente = userService.BuscarPorId(idCliente);
             User usuario = (User) session.getAttribute("usuario");
 
-            List<Exercise> ejercicios = exerciseService.findExercisesWithAReviewByIdClient(idCliente);
+            List<Exercise> ejercicios = exerciseService.findExercisesWithAReviewByIdClientAndIdEntrenador(idCliente, usuario.getId());
             List<ClientExercise> ejerciciosCliente = clientExerciseService.findClientExercisesWithAReviewByIdClientAndIdETrainer(idCliente, usuario.getId());
             List<Valoracion> valoraciones = valoracionService.findValoracionByIdClientAndIdEntrenador(idCliente, usuario.getId());
 

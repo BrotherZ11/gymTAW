@@ -8,12 +8,11 @@
 <%@ page import="com.example.gymtaw.dto.ValoracionId" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    //Marta Granado Rodríguez 100%
-    List<Exercise> ejercicios = (List<Exercise>) request.getAttribute("ejercicios");
+    // Marta Granado Rodríguez 100%
     List<User> entrenadores = (List<User>) request.getAttribute("entrenadores");
     Integer idSesion = -1;
     Integer idRutina = -1;
-    User usuario= (User) session.getAttribute("usuario");
+    User usuario = (User) session.getAttribute("usuario");
     List<Valoracion> valoraciones = (List<Valoracion>) request.getAttribute("valoraciones");
     Integer idCliente = usuario.getId();
 
@@ -47,10 +46,10 @@
 </form:form>
 
 <h1>Valoraciones de ejercicios</h1>
-<%for(User entrenador : entrenadores){
-    Integer idEntrenador = entrenador.getId();%>
-<% if (!ejercicios.isEmpty()) { %>
-<%=entrenador.getName() + " " + entrenador.getSurname()%>
+<% for (User entrenador : entrenadores) {
+    Integer idEntrenador = entrenador.getId(); %>
+<% if (!valoraciones.isEmpty()) { %>
+<%= entrenador.getName() + " " + entrenador.getSurname() %>
 
 <table border="1">
     <tr>
@@ -62,77 +61,47 @@
         <th>Review</th>
         <th></th>
     </tr>
-    <% for (Exercise e : ejercicios) {
-        for (Valoracion v : valoraciones) {
-            if(v.getTrainer().equals(entrenador)){
+    <%
+        for (Valoracion val : valoraciones) {
+            if(val.getTrainer().getId() == entrenador.getId()){
     %>
     <tr>
         <td>
-            <a href="/home/cliente/ejercicioIndividual?idEjercicio=<%= e.getId() %>&idRutina=<%=idRutina%>&idSesion=<%=idSesion%>&idTrainer=<%=idEntrenador%>"><%= e.getName()%>
-            </a></td>
-        <td><%=e.getDescription()%></td>
-        <td><%=e.getVideo()%></td>
-        <td align="center">
-            <%
-                boolean isDone = false;
-
-                if (valoraciones != null) {
-                    for (Valoracion val : valoraciones) {
-                        if (val.getDone() == 1 && val.getUser().getId().equals(idCliente) && val.getExercise().getId().equals(e.getId())) {
-                            isDone = true;
-                            break;  // Exit loop once match is found
-                        }
-                    }
-                }
-            %>
+            <a href="/home/cliente/ejercicioIndividual?idEjercicio=<%= val.getExercise().getId() %>&idRutina=<%=idRutina%>&idSesion=<%=idSesion%>"><%= val.getExercise().getName()%></a>
+        </td>
+        <td>
+            <%=val.getExercise().getDescription()%>
+        </td>
+        <td>
+            <a href="<%=val.getExercise().getVideo()%>"><%=val.getExercise().getVideo()%></a>
+        </td>
+        <td>
             <form action="/home/cliente/guardarCompletado" method="post">
-                <input type="hidden" name="idEjercicio" value="<%= e.getId() %>" />
+                <input type="hidden" name="idEjercicio" value="<%= val.getExercise().getId() %>" />
                 <input type="hidden" name="idSesion" value="<%= idSesion %>" />
                 <input type="hidden" name="idRutina" value="<%= idRutina %>" />
-                <input type="checkbox" name="done" value="1" <% if (isDone) { %>checked disabled<% } %> />
-                <% if (!isDone) { %>
+                <input type="checkbox" name="done" value="1" <% if (val.getDone()==1) { %>checked disabled<% } %> />
+                <% if (val.getDone()==0) { %>
                 <button type="submit">Guardar</button>
                 <% } %>
             </form>
         </td>
-        <%
-            boolean valorado = false;
-            Integer estrellas = null;
-            String review = "No tienes reviews aún.";
-
-            if (valoraciones != null) {
-
-                for (Valoracion val : valoraciones) {
-                    if (val.getDone() == 1 && val.getUser().getId().equals(idCliente) && val.getExercise().getId().equals(e.getId())) {
-                        if (val.getStars() != null) {
-                            valorado = true;
-                            estrellas = val.getStars();
-                            if (v.getReview() != null) {
-                                review = val.getReview();
-                            }
-                            break;  // Exit loop once match is found
-                        }
-                    }
-                }
-            }
-
-
-        %>
-        <td align="center">
-            <% if (isDone && !valorado) { %>
-            <a href="valorarEjercicio?idEjercicio=<%= e.getId() %>&idSesion=<%=idSesion%>&idRutina=<%=idRutina%>">Valorar</a>
-            <% } else if (valorado) { %>
-            <%=estrellas%>
+        <td>
+            <% if (val.getDone()==1 && val.getStars()==null) { %>
+            <a href="valorarEjercicio?idEjercicio=<%= val.getExercise().getId() %>&idSesion=<%= idSesion %>&idRutina=<%= idRutina %>">Valorar</a>
+            <% } else if (val.getStars()!=null) { %>
+            <%= val.getStars() %>
             <% } else { %>
             <p>Completar para valorar</p>
             <% } %>
         </td>
         <td>
-            <% if (isDone) { %>
+            <% if (val.getDone()==1) { %>
             <form method="post" action="/home/cliente/guardarReview">
                 <input type="hidden" id="userId" name="userId" value="<%= usuario.getId() %>">
-                <input type="hidden" id="exerciseId" name="exerciseId" value="<%= e.getId() %>">
-                <input type="text" name="review" value="<%= review %>"/>
+                <input type="hidden" id="entrenadorId" name="entrenadorId" value="<%= idEntrenador %>">
+                <input type="hidden" id="exerciseId" name="exerciseId" value="<%= val.getExercise().getId() %>">
+                <input type="text" name="review" value="<%= val.getReview()==null?"No hay review":val.getReview() %>"/>
                 <button type="submit">Guardar</button>
             </form>
             <% } else { %>
@@ -140,20 +109,21 @@
             <% } %>
         </td>
         <td>
-            <%if (valorado) { %>
-            <a href="valorarEjercicio?idEjercicio=<%= e.getId() %>&idSesion=<%=idSesion%>&idRutina=<%=idRutina%>">Editar valoracion</a>
+            <% if (val.getStars()!=null) { %>
+            <a href="valorarEjercicio?idEjercicio=<%= val.getExercise().getId() %>&idSesion=<%= idSesion %>&idRutina=<%= idRutina %>">Editar valoracion</a>
             <% } else { %>
             -
             <% } %>
         </td>
     </tr>
-    <%}%>
-    <%}%>
-    <% } %>
-</table>
+    <%
+            }
+        }
+    %>
+</table><br>
 <% } else { %>
 <h3>No hay ejercicios con esa valoración.</h3>
 <% } %>
-<%}%>
+<% } %>
 </body>
 </html>

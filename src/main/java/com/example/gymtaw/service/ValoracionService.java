@@ -11,6 +11,7 @@ import com.example.gymtaw.entity.ExerciseEntity;
 import com.example.gymtaw.entity.UserEntity;
 import com.example.gymtaw.entity.ValoracionEntity;
 import com.example.gymtaw.entity.ValoracionEntityId;
+import com.example.gymtaw.ui.FiltroEjercicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -106,10 +107,11 @@ public class ValoracionService extends DTOService<Valoracion, ValoracionEntity>{
     }
 
 
-    public void guardarReview(User usuario, Integer exerciseId, String review) {
+    public void guardarReview(User usuario, Integer exerciseId, String review, Integer entrenadorId) {
         ValoracionEntityId valoracionId = new ValoracionEntityId();
         valoracionId.setUserId(usuario.getId());
         valoracionId.setExerciseId(exerciseId);
+        valoracionId.setTrainerId(entrenadorId);
 
         Optional<ValoracionEntity> valoracionEntity = this.valoracionRepository.findById(valoracionId);
         if (valoracionEntity.isPresent()) {
@@ -118,6 +120,8 @@ public class ValoracionService extends DTOService<Valoracion, ValoracionEntity>{
             valoracionRepository.save(valoracion);
         }
     }
+
+
 
     public List<Valoracion> findValoracionByIdClientAndIdEntrenador(Integer idCliente, Integer idEntrenador){
         List<ValoracionEntity> valoraciones = valoracionRepository.findValoracionEntitiesByIdClienteAndIdEntrenador(idCliente, idEntrenador);
@@ -145,5 +149,22 @@ public class ValoracionService extends DTOService<Valoracion, ValoracionEntity>{
 
             valoracionRepository.save(valoracion);
         }
+    }
+
+    public List<Valoracion> filtrarValoraciones( FiltroEjercicio filtroEj) {
+        List<ValoracionEntity> ejercicios = new ArrayList<>();
+        if (filtroEj.getNombre() != null && !filtroEj.getNombre().isEmpty()) {
+            ejercicios = valoracionRepository.findValoracionesExercisesByName(filtroEj.getNombre());
+        }
+        return this.entidadesADTO(ejercicios);
+    }
+
+    public List<Valoracion> filtrarValoracionesPorEstrella(Integer idUsuario, Integer stars) {
+
+        List<ValoracionEntity> ejercicios = valoracionRepository.getExercisesByNumEstrellasEIdUsuario(idUsuario, stars);
+        if(stars == 0){
+            ejercicios = valoracionRepository.findValoracionEntitiesByIdCliente(idUsuario);
+        }
+        return this.entidadesADTO(ejercicios);
     }
 }

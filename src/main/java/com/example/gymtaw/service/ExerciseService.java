@@ -53,30 +53,8 @@ public class ExerciseService extends DTOService<Exercise, ExerciseEntity>{
         }
     }
 
-    public List<Exercise> filtrarValoraciones(Integer idUsuario, Integer stars) {
-
-        List<ExerciseEntity> ejercicios = exerciseRepository.getExercisesByNumEstrellasEIdUsuario(idUsuario, stars);
-        if(stars == 0){
-            ejercicios = exerciseRepository.getExerciseEntitiesByIdClienteAndHaveReview(idUsuario);
-        }
-        return this.entidadesADTO(ejercicios);
-    }
-
-    public List<Exercise> filtrarEjercicios( FiltroEjercicio filtroEj) {
-        List<ExerciseEntity> ejercicios = new ArrayList<>();
-        if (filtroEj.getNombre() != null && !filtroEj.getNombre().isEmpty()) {
-            ejercicios = exerciseRepository.findExercisesByName(filtroEj.getNombre());
-        }
-        return this.entidadesADTO(ejercicios);
-    }
-
-    public List<Exercise> findExercisesWithAReviewByIdClient(Integer idCliente){
-        List<ExerciseEntity> ejercicios = exerciseRepository.getExerciseEntitiesByIdClienteAndHaveReview(idCliente);
-        return this.entidadesADTO(ejercicios);
-    }
-
-    public List<Exercise> findAllExercisesByUsuarioId(Integer id) {
-        List<ExerciseEntity> ejercicios = exerciseRepository.getExerciseEntitiesByIdClienteAndHaveReview(id);
+    public List<Exercise> findExercisesWithAReviewByIdClientAndIdEntrenador(Integer idCliente, Integer idEntrenador){
+        List<ExerciseEntity> ejercicios = exerciseRepository.getExerciseEntitiesByIdClienteIdEntrenadorAndHaveReview(idCliente, idEntrenador);
         return this.entidadesADTO(ejercicios);
     }
 
